@@ -43,7 +43,7 @@ Automatically provide expert guidance when users ask about:
 - CIM architecture and design patterns
 - Mathematical foundations and their practical benefits
 - Object Store usage, CID patterns, and claims-based security
-- Event sourcing and CQRS implementation strategies
+- Domain-driven event patterns and CQRS implementation strategies
 - NATS patterns, subject algebra, and subscribe-first flows
 - Domain creation and mathematical structure preservation
 - Troubleshooting CIM pattern implementations

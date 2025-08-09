@@ -239,7 +239,7 @@ volumes:
 When helping users assemble their domain, ensure they:
 
 1. **Use Existing Modules** (check with `./scripts/query-modules.sh`)
-   - [ ] cim-events for event sourcing
+   - [ ] cim-domain for domain definitions and event schemas
    - [ ] cim-projections for read models
    - [ ] cim-domain-identity for auth (if needed)
    - [ ] cim-security for authorization (if needed)
@@ -301,7 +301,7 @@ If user's design has issues, provide clear guidance:
 ✅ Use "ChangeCustomerEmail" or "CorrectCustomerAddress" instead
 
 ❌ Direct database access in domain layer
-✅ Use event sourcing and projections
+✅ Use cim-domain for event definitions and projections
 
 ❌ Synchronous calls between domains
 ✅ Use NATS events for async communication
@@ -335,7 +335,7 @@ Always:
 
 Never:
 - Generate CRUD operations
-- Skip event sourcing
+- Skip domain-driven event definitions
 - Couple domains directly
 - Ignore business language
 - Overcomplicate early

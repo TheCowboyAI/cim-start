@@ -407,7 +407,7 @@ ipld_link: CID → Content
 **Traditional Domain Setup:**
 - Define entities, relationships, constraints
 - Configure databases, schemas, migrations
-- Set up event sourcing, CQRS patterns
+- Set up event schemas, CQRS patterns via separate modules
 - Design APIs, serialization formats
 - Implement caching, deduplication logic
 - Create monitoring, logging systems
@@ -421,7 +421,7 @@ domain:
 
 # Everything else is mathematically derived:
 # - Graph structure is automatic
-# - Event sourcing follows from Category Theory
+# - Event-driven patterns follow from Category Theory via cim-domain
 # - IPLD provides storage and deduplication
 # - NATS provides communication patterns
 # - Monitoring follows from mathematical properties

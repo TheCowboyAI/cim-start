@@ -13,6 +13,163 @@ CIM-Start is your starting point for building a new domain-specific Composable I
 - **Event-driven architecture patterns** with stream management tools
 - **Domain-specific agent framework** for intelligent automation
 
+## 🎯 Our Objective: Self-Composing Linked Stores
+
+CIM-Start creates domains where all activity is stored in mathematically linked event and object stores that compose themselves automatically:
+
+```mermaid
+graph TB
+    subgraph "Domain Boundary"
+        subgraph "Event Store - Sequential Activities"
+            Events[Domain Events]
+            Systems[System Events]
+            Commands[Commands]
+        end
+        
+        subgraph "Object Store - Content Addressed"
+            LargePayloads[Large Payloads]
+            Documents[Documents]
+            Files[Files]
+        end
+        
+        subgraph "Self-Composing Links"
+            Events -->|CID References| LargePayloads
+            Systems -->|CID References| Documents
+            Commands -->|CID References| Files
+            
+            LargePayloads -->|Auto-Combine| CompositeObjects[Composite Objects]
+            Documents -->|Auto-Combine| CompositeObjects
+            Files -->|Auto-Combine| CompositeObjects
+        end
+    end
+    
+    subgraph "Mathematical Foundations"
+        CategoryTheory[Category Theory<br/>Domain = Category<br/>Objects = Entities<br/>Arrows = Systems]
+        GraphTheory[Graph Theory<br/>Nodes = Entities<br/>Edges = Relationships<br/>Paths = Workflows]
+        IPLD[Content Addressing<br/>CID = hash(content)<br/>Automatic Deduplication<br/>Referential Integrity]
+    end
+    
+    Events --> CategoryTheory
+    LargePayloads --> IPLD
+    CompositeObjects --> GraphTheory
+    
+    style Events fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style Systems fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style Commands fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style LargePayloads fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style Documents fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style Files fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style CompositeObjects fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+    style CategoryTheory fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style GraphTheory fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style IPLD fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+```
+
+### How Self-Composition Works
+
+```mermaid
+graph LR
+    subgraph "Business Activity"
+        CustomerOrder[Customer Places Order]
+        PaymentInfo[Payment Information]
+        ProductCatalog[Product Catalog]
+    end
+    
+    subgraph "Event Store"
+        OrderEvent[OrderPlaced Event<br/>Small metadata only]
+    end
+    
+    subgraph "Object Store" 
+        CustomerCID[Customer Data<br/>CID: bafk...abc]
+        PaymentCID[Payment Data<br/>CID: bafk...def]
+        ProductCID[Product Data<br/>CID: bafk...ghi]
+    end
+    
+    subgraph "Automatic Composition"
+        OrderPackageCID[Complete Order Package<br/>CID: bafk...xyz<br/>Contains: Customer + Payment + Products]
+    end
+    
+    CustomerOrder --> OrderEvent
+    CustomerOrder --> CustomerCID
+    PaymentInfo --> PaymentCID
+    ProductCatalog --> ProductCID
+    
+    OrderEvent -->|References| CustomerCID
+    OrderEvent -->|References| PaymentCID
+    OrderEvent -->|References| ProductCID
+    
+    CustomerCID --> OrderPackageCID
+    PaymentCID --> OrderPackageCID
+    ProductCID --> OrderPackageCID
+    
+    style CustomerOrder fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style PaymentInfo fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style ProductCatalog fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style OrderEvent fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style CustomerCID fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style PaymentCID fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style ProductCID fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style OrderPackageCID fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+```
+
+### Cross-Domain Composition and Distribution
+
+```mermaid
+graph TB
+    subgraph "Sales Domain"
+        SalesEvents[Sales Events]
+        SalesObjects[Sales Object Store]
+        SalesEvents -->|CID Refs| SalesObjects
+    end
+    
+    subgraph "Fulfillment Domain"
+        FulfillmentEvents[Fulfillment Events]
+        FulfillmentObjects[Fulfillment Object Store]
+        FulfillmentEvents -->|CID Refs| FulfillmentObjects
+    end
+    
+    subgraph "Analytics Domain"
+        AnalyticsEvents[Analytics Events]
+        AnalyticsObjects[Analytics Object Store]
+        AnalyticsEvents -->|CID Refs| AnalyticsObjects
+    end
+    
+    subgraph "Shared Object Network"
+        CustomerData[Customer Data<br/>CID: bafk...customer]
+        OrderData[Order Data<br/>CID: bafk...order]
+        SharedComposite[Multi-Domain Package<br/>CID: bafk...combined]
+    end
+    
+    SalesObjects -->|Shares| CustomerData
+    FulfillmentObjects -->|Shares| OrderData
+    AnalyticsObjects -->|References| CustomerData
+    AnalyticsObjects -->|References| OrderData
+    
+    CustomerData -->|Auto-Compose| SharedComposite
+    OrderData -->|Auto-Compose| SharedComposite
+    
+    SharedComposite -->|Available to| SalesObjects
+    SharedComposite -->|Available to| FulfillmentObjects
+    SharedComposite -->|Available to| AnalyticsObjects
+    
+    style SalesEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style FulfillmentEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style AnalyticsEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style SalesObjects fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style FulfillmentObjects fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style AnalyticsObjects fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style CustomerData fill:#95E1D3,stroke:#63C7B8,stroke-width:2px,color:#000
+    style OrderData fill:#95E1D3,stroke:#63C7B8,stroke-width:2px,color:#000
+    style SharedComposite fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+```
+
+**Key Benefits:**
+- **No Data Duplication**: Same customer data referenced across all domains
+- **Automatic Composition**: Related data combines into logical packages  
+- **Mathematical Consistency**: Category Theory ensures valid relationships
+- **Content Integrity**: IPLD guarantees data hasn't been corrupted
+- **Efficient Distribution**: Only unique content is stored and shared
+
 ## 📁 Project Structure
 
 ```
@@ -194,7 +351,7 @@ No complex setup, no configuration files to edit - the agents guide you through 
 CIM provides 38+ modules you can assemble:
 
 ### Core
-- `cim-events` - Event store
+- `cim-domain` - Domain definitions and event schemas
 - `cim-projections` - Read models
 - `cim-graph` - Knowledge graphs
 
