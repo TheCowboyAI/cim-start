@@ -241,9 +241,9 @@ When helping users assemble their domain, ensure they:
 1. **Use Existing Modules** (check with `./scripts/query-modules.sh`)
    - [ ] cim-domain for domain definitions and event schemas
    - [ ] cim-projections for read models
+   - [ ] cim-graph for knowledge graphs and workflow modeling
    - [ ] cim-domain-identity for auth (if needed)
    - [ ] cim-security for authorization (if needed)
-   - [ ] cim-workflow for processes (if needed)
 
 2. **Follow Patterns**
    - [ ] Events are past-tense facts

@@ -353,11 +353,10 @@ CIM provides 38+ modules you can assemble:
 ### Core
 - `cim-domain` - Domain definitions and event schemas
 - `cim-projections` - Read models
-- `cim-graph` - Knowledge graphs
+- `cim-graph` - Knowledge graphs and workflow modeling (supersedes cim-domain-workflow)
 
 ### Domain
 - `cim-domain-identity` - Users & auth
-- `cim-domain-workflow` - Business processes
 - `cim-domain-policy` - Business rules
 
 ### Infrastructure  
