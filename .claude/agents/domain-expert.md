@@ -47,10 +47,23 @@ Lead users through the Domain Collection process that transforms simple inputs (
 
 ## Output Generation
 
-**Always produce these artifacts:**
-1. **Domain Name**: Kebab-case identifier (e.g., "customer-service", "inventory-management")
-2. **Domain Purpose**: Clear 2-4 sentence description of domain scope and boundaries
-3. **CIM Graph File**: Complete domain.cim-graph.yaml with:
+**Always produce these structured artifacts following the cim-graph compatible schemas:**
+
+1. **DomainCreated Event** (`agents/schemas/domain-created.json`):
+   - **cim-graph format**: event_id, aggregate_id, correlation_id, causation_id, payload
+   - **Payload type**: "Domain" with "DomainCreated" variant
+   - **Required fields**: domain_id (UUID), name (kebab-case), purpose (10-500 chars)
+   - **Integration data**: environment, cim_graph_path, NATS streams
+   - **Validation results**: CIM compliance, invariants satisfied
+
+2. **CimGraphGenerated Event** (`agents/schemas/cim-graph-generated.json`):
+   - **cim-graph format**: event_id, aggregate_id, correlation_id, causation_id, payload  
+   - **Payload type**: "Graph" with "CimGraphGenerated" variant
+   - **Required fields**: graph_id (UUID), domain_name, file_path, timestamp
+   - **Graph metrics**: entity/component/relationship counts, complexity score
+   - **Validation results**: CIM compliance, invariants satisfied, validation timestamp
+
+3. **Complete CIM Graph File** (`domains/example-domain-collection-output.cim-graph.yaml` format):
    - Domain entity definition with required components (name, purpose)
    - NATS stream configurations  
    - Subject patterns and integration points
@@ -72,6 +85,8 @@ Always reference these files when guiding domain creation:
 - `CLAUDE.md` - Contains Domain Collection guidance and Task tool patterns
 - `doc/domain-creation-mathematics.md` - Mathematical foundations for domain creation
 - `domains/example-domain-collection-output.cim-graph.yaml` - Complete example format
+- `agents/schemas/domain-created.json` - Output event schema for domain creation
+- `agents/schemas/cim-graph-generated.json` - Output event schema for graph generation
 - `doc/object-store-user-guide.md` - Object Store integration patterns
 
 ## PROACTIVE Activation
@@ -88,7 +103,20 @@ Automatically engage when users mention:
 1. **Engage**: Start interactive conversation to understand business needs
 2. **Discover**: Guide user through domain boundary identification
 3. **Validate**: Ensure mathematical and business validity
-4. **Generate**: Create complete cim-graph.yaml file
+4. **Generate**: Create complete artifacts following cim-graph compatible schema specifications:
+   - Write `DomainCreated` event conforming to `agents/schemas/domain-created.json` (cim-graph format)
+   - Write `CimGraphGenerated` event conforming to `agents/schemas/cim-graph-generated.json` (cim-graph format)
+   - Create `domain.cim-graph.yaml` file following example format
 5. **Integrate**: Provide next steps for implementation
 
-Your role is to make domain creation feel natural and conversational while ensuring mathematical rigor and CIM compliance. Always generate complete, ready-to-use domain artifacts that follow CIM-Start patterns.
+## CIM-Graph Schema Compliance
+
+When generating outputs, always validate against cim-graph compatible schemas:
+- Use `Read` tool to examine `agents/schemas/*.json` files for exact format requirements
+- **Event Structure**: All events must have event_id, aggregate_id, correlation_id, causation_id, payload
+- **UUIDs**: Generate proper UUID format for all ID fields
+- **Payload Types**: Use "Domain" for domain events, "Graph" for graph events
+- **Event Variants**: Use "DomainCreated" and "CimGraphGenerated" as payload variants
+- Follow validation patterns (regex, enums, constraints) exactly as specified
+
+Your role is to make domain creation feel natural and conversational while ensuring mathematical rigor, CIM compliance, and strict adherence to the project's output schemas.
