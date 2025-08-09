@@ -1,0 +1,279 @@
+domain:
+  name: example-business
+  description: E-commerce platform for online retail
+  bounded_context: sales
+  
+events:
+  - id: E001
+    name: CustomerRegistered
+    description: A new customer account was created
+    triggered_by: RegisterCustomer command
+    aggregate: Customer
+    data:
+      - customer_id: UUID
+      - email: String
+      - name: String
+      - registered_at: DateTime
+    
+  - id: E002
+    name: ProductAddedToCatalog
+    description: A new product was added to the catalog
+    triggered_by: AddProduct command
+    aggregate: Product
+    data:
+      - product_id: UUID
+      - name: String
+      - price: Money
+      - stock_quantity: Integer
+    
+  - id: E003
+    name: ItemAddedToCart
+    description: Customer added an item to their shopping cart
+    triggered_by: AddToCart command
+    aggregate: ShoppingCart
+    data:
+      - cart_id: UUID
+      - customer_id: UUID
+      - product_id: UUID
+      - quantity: Integer
+    
+  - id: E004
+    name: OrderPlaced
+    description: Customer completed checkout and placed an order
+    triggered_by: PlaceOrder command
+    aggregate: Order
+    data:
+      - order_id: UUID
+      - customer_id: UUID
+      - items: Array<OrderItem>
+      - total_amount: Money
+      - placed_at: DateTime
+    
+  - id: E005
+    name: PaymentProcessed
+    description: Payment for an order was successfully processed
+    triggered_by: ProcessPayment command
+    aggregate: Payment
+    data:
+      - payment_id: UUID
+      - order_id: UUID
+      - amount: Money
+      - payment_method: String
+      - processed_at: DateTime
+    
+  - id: E006
+    name: OrderShipped
+    description: Order was shipped to the customer
+    triggered_by: ShipOrder command
+    aggregate: Order
+    data:
+      - order_id: UUID
+      - tracking_number: String
+      - carrier: String
+      - shipped_at: DateTime
+    
+  - id: E007
+    name: StockReserved
+    description: Stock was reserved for an order
+    triggered_by: OrderPlaced event (policy)
+    aggregate: Inventory
+    data:
+      - product_id: UUID
+      - quantity: Integer
+      - order_id: UUID
+    
+  - id: E008
+    name: StockDepleted
+    description: Product is out of stock
+    triggered_by: StockReserved event (when quantity reaches 0)
+    aggregate: Inventory
+    data:
+      - product_id: UUID
+      - last_available: DateTime
+
+commands:
+  - id: C001
+    name: RegisterCustomer
+    actor: Guest User
+    produces_events: [E001]
+    validation:
+      - Email must be unique
+      - Email must be valid format
+      - Name is required
+    
+  - id: C002
+    name: AddProduct
+    actor: Admin User
+    produces_events: [E002]
+    validation:
+      - Product name must be unique
+      - Price must be positive
+      - Initial stock must be non-negative
+    
+  - id: C003
+    name: AddToCart
+    actor: Registered Customer
+    produces_events: [E003]
+    validation:
+      - Product must exist
+      - Quantity must be positive
+      - Product must be in stock
+    
+  - id: C004
+    name: PlaceOrder
+    actor: Registered Customer
+    produces_events: [E004, E007]
+    validation:
+      - Cart must not be empty
+      - All items must be in stock
+      - Customer must have valid address
+    
+  - id: C005
+    name: ProcessPayment
+    actor: Payment System
+    produces_events: [E005]
+    validation:
+      - Order must exist
+      - Order must be pending payment
+      - Payment amount must match order total
+
+aggregates:
+  - id: A001
+    name: Customer
+    description: Customer account and profile
+    owns_events: [E001]
+    key_properties:
+      - customer_id
+      - email
+      - name
+      - status
+    invariants:
+      - Email must be unique across all customers
+      - Customer cannot be deleted if they have orders
+    
+  - id: A002
+    name: Product
+    description: Product in the catalog
+    owns_events: [E002]
+    key_properties:
+      - product_id
+      - name
+      - price
+      - description
+    invariants:
+      - Product name must be unique
+      - Price cannot be negative
+    
+  - id: A003
+    name: Order
+    description: Customer order
+    owns_events: [E004, E006]
+    key_properties:
+      - order_id
+      - customer_id
+      - items
+      - status
+      - total_amount
+    invariants:
+      - Order must have at least one item
+      - Cannot ship before payment
+      - Cannot modify after shipping
+    
+  - id: A004
+    name: Inventory
+    description: Product stock levels
+    owns_events: [E007, E008]
+    key_properties:
+      - product_id
+      - available_quantity
+      - reserved_quantity
+    invariants:
+      - Available quantity cannot be negative
+      - Reserved cannot exceed available
+
+policies:
+  - id: P001
+    name: Reserve Stock on Order
+    when_event: E004 (OrderPlaced)
+    then_action: Reserve stock for each item
+    produces_events: [E007]
+    
+  - id: P002
+    name: Check Stock Depletion
+    when_event: E007 (StockReserved)
+    then_action: Check if stock is depleted
+    produces_events: [E008]
+    condition: available_quantity == 0
+    
+  - id: P003
+    name: Ship After Payment
+    when_event: E005 (PaymentProcessed)
+    then_action: Trigger shipping workflow
+    produces_command: ShipOrder
+    
+  - id: P004
+    name: Send Order Confirmation
+    when_event: E004 (OrderPlaced)
+    then_action: Send email to customer
+    external_system: email-service
+
+external_systems:
+  - name: payment-gateway
+    type: REST API
+    integrates_with_events: [E005]
+    description: Processes credit card payments
+    
+  - name: shipping-provider
+    type: REST API
+    integrates_with_events: [E006]
+    description: Handles package shipping
+    
+  - name: email-service
+    type: SMTP
+    integrates_with_events: [E001, E004, E006]
+    description: Sends transactional emails
+    
+  - name: inventory-supplier
+    type: EDI
+    integrates_with_events: [E008]
+    description: Notifies suppliers of stock depletion
+
+bounded_contexts:
+  - name: Sales
+    contains_aggregates: [A001, A003]
+    owns_events: [E001, E003, E004]
+    upstream_from: [Inventory]
+    downstream_to: [Fulfillment]
+    
+  - name: Catalog
+    contains_aggregates: [A002]
+    owns_events: [E002]
+    upstream_from: []
+    downstream_to: [Sales, Inventory]
+    
+  - name: Inventory
+    contains_aggregates: [A004]
+    owns_events: [E007, E008]
+    upstream_from: [Catalog]
+    downstream_to: [Sales]
+    
+  - name: Fulfillment
+    contains_aggregates: []
+    owns_events: [E006]
+    upstream_from: [Sales]
+    downstream_to: []
+
+workflows:
+  order_fulfillment:
+    name: Order Fulfillment Process
+    trigger: OrderPlaced event
+    steps:
+      - Reserve inventory
+      - Process payment
+      - Generate shipping label
+      - Ship order
+      - Send tracking info
+    end_states:
+      - Delivered
+      - Cancelled
+      - Refunded
