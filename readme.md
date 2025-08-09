@@ -143,37 +143,46 @@ nats-server -js
 
 ## 📚 Documentation
 
-- `/doc/quick-start.md` - 15-minute domain starter
-- `/doc/event-storming-guide.md` - Collaborative discovery process
-- `/doc/nats-setup.md` - NATS infrastructure guide
-- `/doc/agents-guide.md` - Complete agent integration guide
+- `CLAUDE.md` - **Claude Code development guide** with commands and patterns
+- `/doc/domain-creation-mathematics.md` - Mathematical foundations (Category Theory, Graph Theory, IPLD)
+- `/doc/object-store-user-guide.md` - Smart file system with CID patterns
+- `/doc/structure-preserving-propagation.md` - How mathematical structures propagate
 - `/agents/README.md` - Agent architecture overview
 
-## 🤖 CIM Agents
+## 🤖 Claude Code Agents
 
-CIM-Start includes a complete agent framework with four agent types:
+CIM-Start provides specialized Claude Code agents to guide development:
 
-### System Agents
-- Infrastructure monitoring and health checks
-- Resource management and auto-scaling
-- Operational automation
+### CIM Expert Agent (`@cim-expert`)
+- Explains mathematical foundations (Category Theory, Graph Theory, IPLD)
+- Guides Object Store usage and CID patterns  
+- Troubleshoots CIM architecture questions
+- Provides NATS patterns and subject algebra guidance
 
-### Integration Agents  
-- External API connections and data sync
-- Protocol translation and service orchestration
-- Third-party system integration
+### Domain Expert Agent (`@domain-expert`) 
+- Interactive domain creation sessions
+- Converts business requirements into CIM domains
+- Generates complete `domain.cim-graph.yaml` files
+- Validates mathematical domain structures
 
-### AI Agents
-- Natural language processing and conversation management
-- Fraud detection and risk analysis
-- Pattern recognition and decision making
+### Using the Agents
 
-### User Agents
-- Workflow automation and task management
-- Notification delivery and communication
-- User interface automation
+**Activate agents with `@` mentions:**
+```bash
+# Ask the CIM Expert about architecture
+"@cim-expert How does content-addressed storage prevent data corruption?"
 
-Agents integrate seamlessly with your domain events and participate in business workflows through NATS messaging.
+# Get domain creation guidance  
+"@domain-expert Help me create a customer service domain"
+```
+
+**Agents automatically activate when you:**
+- Ask about CIM concepts or mathematical foundations
+- Mention domain creation or bounded contexts
+- Need help with Object Store patterns or NATS flows
+- Discuss Category Theory, Graph Theory, or IPLD concepts
+
+These agents have access to all CIM-Start documentation and provide contextual, expert guidance for your specific development needs.
 
 ## 🔧 Available Modules
 
