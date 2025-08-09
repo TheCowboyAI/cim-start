@@ -1,0 +1,47 @@
+---
+description: terminal rule
+globs: .zshrc,.direnvrc,.envrc,*.sh
+alwaysApply: true
+---
+# Terminal Usage with Direnv and Zsh in NixOS
+
+## Core Principles
+- Avoid manual environment modifications - use declarative .envrc files
+- Prevent entering pager mode when possible for command output
+- Recognize when you're in a Nix development shell
+- Use environment variables consistently across shell sessions
+- Leverage zsh features for improved productivity
+
+## Direnv Setup
+- Initialize direnv in your zsh configuration
+- Create .envrc files for project-specific environments
+- Use `use flake` for flake-based projects
+- Implement layered .envrc configurations for complex projects
+- Always run `direnv allow` after modifying .envrc files
+- Always run `direnv reload` after modifying flake files
+
+## Zsh Configuration
+- Use starship.rs for plugin management
+- Implement proper prompt indicators for Nix environments
+- Configure completion for Nix commands
+- Set up aliases for common Nix operations using 'just' and 'justfile'
+- Enable history sharing between terminal sessions
+
+## Terminal Best Practices
+- Append `| cat` to commands that might trigger pagers (git, man, etc.)
+- Use `--no-pager` flag with Git commands
+- Set `PAGER=cat` for commands that default to paging output
+- Prefer `nix shell` over manually modifying PATH
+- Use `nix develop` for entering development environments
+
+## Integration with Nix
+- Display current Nix environment in the prompt
+- Set up shell hooks for automatic environment switching
+- Configure tab completion for Nix commands and packages
+- Use shell history to track and repeat successful Nix commands
+- Implement command-not-found handlers using Nix package database
+---
+# When Using the terminal:
+- avoid getting into pager mode
+- use direnv/.envrc
+- recognize we are in a devshell

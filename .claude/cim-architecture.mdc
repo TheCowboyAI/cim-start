@@ -1,0 +1,168 @@
+---
+description: Architectural Decision Support
+globs:
+alwaysApply: true
+---
+# CIM Architecture Rules
+
+## Core Architecture Principles
+
+CIM (Composable Information Machine) follows these architectural patterns:
+
+1. **Event-Driven Architecture with NATS JetStream**
+   - All state changes MUST go through events
+   - Events are the single source of truth
+   - Use CID chains for cryptographic integrity
+
+2. **CQRS Pattern Enforcement**
+   - Commands go through CommandHandlers → Aggregates → Events
+   - Queries use ReadModels/Projections, never aggregates
+   - EventStore is NEVER exposed to application layer
+
+3. **Layer Boundaries**
+   ```
+   Presentation (Bevy) → Application (Handlers) → Domain (Aggregates) → Infrastructure (NATS)
+   ```
+   - NEVER skip layers
+   - NEVER expose infrastructure to presentation
+
+## Implementation Patterns
+
+### Creating New Features
+
+```rust
+// 1. Start with Domain Event
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FeatureActivated {
+    pub feature_id: FeatureId,
+    pub timestamp: SystemTime,
+    pub metadata: HashMap<String, Value>,
+}
+
+// 2. Define Command
+#[derive(Debug, Clone)]
+pub struct ActivateFeature {
+    pub feature_id: FeatureId,
+    pub options: FeatureOptions,
+}
+
+// 3. Implement in Aggregate
+impl FeatureAggregate {
+    pub fn handle_command(&mut self, cmd: Command) -> Result<Vec<DomainEvent>> {
+        match cmd {
+            Command::ActivateFeature(cmd) => {
+                // Validate business rules
+                self.validate_activation(&cmd)?;
+
+                // Generate event
+                let event = FeatureActivated {
+                    feature_id: cmd.feature_id,
+                    timestamp: SystemTime::now(),
+                    metadata: cmd.options.into(),
+                };
+
+                // Apply to self
+                self.apply_event(&event);
+
+                Ok(vec![DomainEvent::FeatureActivated(event)])
+            }
+        }
+    }
+}
+
+// 4. Create Command Handler
+pub async fn handle_activate_feature(
+    cmd: ActivateFeature,
+    event_store: &EventStore,
+) -> Result<()> {
+    let aggregate = load_or_create_aggregate(&cmd.feature_id).await?;
+    let events = aggregate.handle_command(Command::ActivateFeature(cmd))?;
+    event_store.append_events(events).await?;
+    Ok(())
+}
+
+// 5. Bridge to Bevy
+fn process_feature_commands(
+    mut commands: EventReader<FeatureCommand>,
+    bridge: Res<AsyncSyncBridge>,
+) {
+    for cmd in commands.read() {
+        bridge.send_command(cmd.clone());
+    }
+}
+```
+
+## Decision Trees
+
+### When to Create a New Aggregate?
+1. Does it have its own lifecycle? → Yes → New Aggregate
+2. Does it enforce unique business rules? → Yes → New Aggregate
+3. Can it exist independently? → Yes → New Aggregate
+4. Otherwise → Add to existing aggregate
+
+### When to Use Projection vs Query Handler?
+1. Need real-time updates? → Projection
+2. Complex cross-aggregate query? → Query Handler
+3. Simple lookup? → Direct read from projection
+
+## Anti-Patterns to Avoid
+
+❌ **Direct Database Access from Bevy Systems**
+```rust
+// WRONG
+fn update_node(mut query: Query<&mut Node>, db: Res<Database>) {
+    db.update_node(...); // Never do this!
+}
+```
+
+✅ **Correct Pattern**
+```rust
+fn update_node(
+    mut commands: EventWriter<NodeCommand>,
+    query: Query<&Node>,
+) {
+    commands.send(NodeCommand::Update { ... });
+}
+```
+
+❌ **Exposing Infrastructure Types**
+```rust
+// WRONG
+pub struct GraphSystem {
+    pub nats_client: NatsClient, // Infrastructure leak!
+}
+```
+
+✅ **Correct Pattern**
+```rust
+pub struct GraphSystem {
+    command_sender: CommandSender, // Abstract interface
+}
+```
+
+## Integration Points
+
+### NATS → Bevy Flow
+1. NATS Event arrives
+2. AsyncSyncBridge receives and batches
+3. Bevy System polls bridge
+4. Events converted to ECS changes
+5. Visual update occurs
+
+### Bevy → NATS Flow
+1. User interaction in Bevy
+2. System generates Command
+3. Command sent through bridge
+4. Async handler processes
+5. Events published to NATS
+
+## Validation Checklist
+
+Before implementing any feature:
+- [ ] Domain events defined first
+- [ ] Commands model user intent
+- [ ] Aggregate enforces invariants
+- [ ] No infrastructure in domain
+- [ ] Proper async/sync bridge usage
+- [ ] Tests for each layer
+- [ ] Documentation updated

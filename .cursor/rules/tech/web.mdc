@@ -1,0 +1,9 @@
+---
+description: web rule
+globs: 
+alwaysApply: true
+---
+# Web Development Rules
+
+In a CIM, there is a Web Presence.
+This web presence serves as the public interface to what is in the CIM via a chat interface.

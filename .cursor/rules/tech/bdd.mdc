@@ -1,0 +1,41 @@
+---
+description: bdd/atdd rules
+globs: 
+alwaysApply: true
+---
+# Behavior Driven Development / Acceptance Test Driven Development
+
+## Core Principles
+- All functionality MUST be described by Gherkin scenarios before implementation
+- Tests drive development - implement only what's needed to make scenarios pass
+- Scenarios serve as living documentation and executable specifications
+- Collaborate with stakeholders to write scenarios in ubiquitous language
+
+## Gherkin Format
+- Use Feature/Scenario/Given/When/Then structure
+- Each Feature describes a discrete piece of functionality
+- Scenarios follow the pattern:
+  - Given [precondition]
+  - When [action]
+  - Then [expected result]
+- Use And/But for multiple conditions
+- Use Scenario Outline with Examples for data-driven tests
+
+## Implementation Guidelines
+- Map Gherkin steps to test code using step definitions
+- Keep step definitions reusable and atomic
+- Focus on behavior, not implementation details
+- Maintain one-to-one mapping between scenarios and acceptance criteria
+- Store feature files in a dedicated directory (e.g., features/)
+- Use tags to categorize and organize scenarios
+
+## Test Organization
+- Group related scenarios in a single feature file
+- Use Background for common preconditions
+- Tag scenarios for selective execution (@critical, @smoke, etc.)
+- Structure step definitions by domain concept
+
+## Integration Requirements
+- Run scenarios as part of CI/CD pipeline
+- Generate reports after test execution
+- Review failing scenarios before merging code

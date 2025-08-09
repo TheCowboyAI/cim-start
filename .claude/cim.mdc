@@ -1,0 +1,235 @@
+---
+description: Rules for a Composable Information Machine (CIM)
+globs:
+alwaysApply: true
+---
+# Composable Information Machine (CIM)
+
+## What is CIM?
+
+The **Composable Information Machine (CIM)** is a revolutionary distributed system architecture that transforms how we build, visualize, and reason about information systems. CIM combines:
+
+- **Event-Driven Architecture**: All state changes flow through immutable events (ZERO CRUD violations)
+- **Graph-Based Workflows**: Visual representation of business processes and knowledge
+- **Conceptual Spaces**: Geometric representation of semantic relationships
+- **AI-Native Design**: Built for seamless integration with intelligent agents
+- **Self-Referential Capability**: Systems that can visualize and reason about themselves
+
+## Core Philosophy
+
+### Information as Events
+We are building a world where information exists as a sequential, append-only series of events:
+
+```
+(Command<T> | Query<T>) → [Events<T>] → Models/Projections
+```
+
+This creates:
+- **Immutable History**: Every change is recorded forever
+- **Time Travel**: Replay events to any point in time
+- **Audit Trail**: Complete visibility into system evolution
+- **Distributed Consensus**: CID chains ensure cryptographic integrity
+
+### Graph-Based Workflow Representation
+
+CIM uses graphs as the primary abstraction for representing:
+
+1. **Business Workflows**: Visual processes that map to domain logic
+2. **Knowledge Structures**: Conceptual relationships between entities
+3. **Event Flows**: How information propagates through the system
+4. **System Architecture**: Self-documenting structure of the system itself
+
+#### Why Graphs?
+
+- **Natural Representation**: Workflows are inherently graph-like (nodes = steps, edges = transitions)
+- **Visual Reasoning**: Humans understand graphs intuitively
+- **Semantic Richness**: Edges carry meaning (similarity, dependency, sequence)
+- **Composability**: Subgraphs can be composed into larger workflows
+- **AI Compatibility**: Graph structures align with knowledge representation in AI
+
+## Architecture Principles
+
+### 1. Event Sourcing with CID Chains
+```rust
+pub struct DomainEvent {
+    pub event_cid: Cid,           // Content-addressed identifier
+    pub previous_cid: Option<Cid>, // Cryptographic chain
+    pub aggregate_id: AggregateId,
+    pub payload: EventPayload,
+    pub timestamp: SystemTime,
+}
+```
+
+Every event is:
+- Immutable once created
+- Linked to previous events via CID
+- The single source of truth
+- Replayable to reconstruct state
+
+### 2. CQRS Pattern
+- **Commands**: Express intent to change state
+- **Queries**: Read optimized projections
+- **Events**: Bridge between write and read models
+- **Projections**: Materialized views for specific use cases
+
+### 3. Dual ECS Systems
+```
+Bevy ECS (Presentation)          NATS/Event Store (Domain)
+├── Visual Components      ←→     ├── Domain Events
+├── User Interactions      ←→     ├── Command Handlers
+├── Real-time Updates      ←→     ├── Event Streams
+└── Graph Visualization    ←→     └── Projections
+```
+
+### 4. Conceptual Spaces Integration
+Every entity in CIM exists in both:
+- **Visual Space**: 3D position for rendering
+- **Conceptual Space**: Semantic position in knowledge dimensions
+
+This enables:
+- Semantic search and similarity
+- Knowledge-aware layouts
+- AI reasoning about relationships
+- Automatic categorization
+
+## Graph-Based Workflow Architecture
+
+### Graph Types in CIM
+
+1. **Workflow Graphs**
+   - Represent business processes
+   - Nodes: Steps, decisions, integrations
+   - Edges: Sequence, conditions, parallel flows
+   - Enable visual process design and execution
+
+2. **Conceptual Graphs**
+   - Represent knowledge and relationships
+   - Nodes: Concepts, categories, entities
+   - Edges: Similarity, hierarchy, association
+   - Support semantic reasoning
+
+3. **Event Flow Graphs**
+   - Visualize event propagation
+   - Nodes: Events, aggregates, projections
+   - Edges: Triggers, produces, consumes
+   - Debug and optimize event flows
+
+4. **Development Graphs** (Dog-fooding)
+   - Self-visualization of system development
+   - Nodes: Features, tasks, milestones
+   - Edges: Dependencies, blocks, implements
+   - Track and optimize development process
+
+### Graph Operations
+
+```rust
+// Commands flow through the graph
+GraphCommand::AddNode { node_type, position, metadata }
+GraphCommand::ConnectNodes { source, target, edge_type }
+GraphCommand::ExecuteWorkflow { start_node, context }
+
+// Events capture graph mutations
+GraphEvent::NodeAdded { node_id, conceptual_point, ... }
+GraphEvent::WorkflowExecuted { path, results, ... }
+
+// Queries traverse the graph
+GraphQuery::FindPath { from, to, constraints }
+GraphQuery::FindSimilar { node_id, threshold }
+```
+
+## Implementation Patterns
+
+### 1. Domain-First Design
+Always start with domain events, then build outward:
+```
+Domain Event → Aggregate → Command Handler → API → UI
+```
+
+### 2. Async/Sync Bridge
+```rust
+pub struct AsyncSyncBridge {
+    // Commands: Bevy (sync) → NATS (async)
+    command_channel: CrossbeamChannel<Command>,
+
+    // Events: NATS (async) → Bevy (sync)
+    event_channel: TokioChannel<Event>,
+}
+```
+
+### 3. Conceptual Mapping
+```rust
+pub trait ConceptualMapping {
+    fn to_conceptual(&self, visual: Position3D) -> ConceptualPoint;
+    fn to_visual(&self, conceptual: ConceptualPoint) -> Position3D;
+}
+```
+
+## Benefits of CIM Architecture
+
+### For Developers
+- **Clear Boundaries**: Well-defined layers and responsibilities
+- **Testability**: Event sourcing enables comprehensive testing
+- **Debugging**: Complete event history for troubleshooting
+- **Flexibility**: Loosely coupled components
+
+### For Business Users
+- **Visual Understanding**: See workflows as graphs
+- **Process Design**: Drag-and-drop workflow creation
+- **Real-time Insights**: Watch information flow
+- **Self-Documentation**: System explains itself
+
+### For AI Integration
+- **Semantic Foundation**: Conceptual spaces provide meaning
+- **Event Stream Analysis**: AI can learn from event patterns
+- **Graph Reasoning**: Navigate and understand relationships
+- **Tool Integration**: Agents can modify workflows
+
+## CIM in Practice
+
+### Example: Order Processing Workflow
+
+```rust
+// 1. Visual Design: User creates workflow graph
+let workflow = GraphBuilder::new("OrderProcessing")
+    .add_node("ReceiveOrder", NodeType::Start)
+    .add_node("ValidatePayment", NodeType::Process)
+    .add_node("CheckInventory", NodeType::Decision)
+    .add_edge("ReceiveOrder", "ValidatePayment", EdgeType::Sequence)
+    .build();
+
+// 2. Domain Events Generated
+OrderReceived { order_id, items, customer }
+PaymentValidated { order_id, amount, status }
+InventoryChecked { order_id, available: bool }
+
+// 3. Conceptual Analysis
+let similarity = conceptual_space.find_similar_orders(order);
+let category = conceptual_space.categorize(order);
+
+// 4. AI Enhancement
+let optimization = ai_agent.suggest_workflow_improvements(workflow);
+```
+
+## Key Differentiators
+
+1. **Not Just Event Sourcing**: Adds conceptual spaces and visual reasoning
+2. **Not Just Workflow Engine**: Includes semantic understanding
+3. **Not Just Graph Database**: Combines with event streams and ECS
+4. **Not Just AI Platform**: Grounds AI in concrete business workflows
+
+## Summary
+
+CIM represents a paradigm shift in how we build information systems:
+- **Events** provide the foundation of truth
+- **Graphs** make workflows visual and composable
+- **Conceptual Spaces** add semantic understanding
+- **ECS** enables real-time interaction
+- **AI** enhances with intelligence
+
+The result is a system that is simultaneously:
+- Rigorous (event sourced)
+- Intuitive (graph-based)
+- Intelligent (AI-ready)
+- Self-aware (dog-fooding)
+
+This creates truly composable information machines that can evolve, learn, and explain themselves.

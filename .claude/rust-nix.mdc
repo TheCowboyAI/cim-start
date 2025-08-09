@@ -1,0 +1,246 @@
+---
+description: Rules for Rust on Nix and NixOS
+globs: /src/*, *.rs, *.toml, *.nix
+alwaysApply: false
+autoAttached: true
+---
+When planning to write code, ALWAYS respect the documentation in /doc
+If instructions in /doc are unclear for the proposed functionality, ASK FOR CLARITY and add to the documentation before writing code.
+
+YOU HAVE MANY EXAMPLES TO FOLLOW IN /samples
+FOR BEVY AND EGUI CODE REFER TO THESE SAMPLES FOR SYNTAX CLARITY
+
+NEVER, EVER DOWNGRADE A RUST LIBRARY.
+IF THE CARGO.TOML FILE SPECIFIES A VERSION, YOU MAY ONLY GO UP, NEVER DOWN.
+
+DO NOT MAKE TEMPORARY DOWNGRADES, FIX THE PROBLEM AT HAND.
+
+USE `nix build` OR `nix develop -c cargo build` TO LOAD THE RIGHT NIX ENVIRONMENT
+
+For building Bevy applications on NixOS, always use the Nix build toolchain rather than cargo directly, as Nix handles all the proper library paths and dynamic linking that Bevy requires.
+
+ALWAYS be sure we CAN build before building as builds take some time.
+use `nix develop -c cargo build` and `nix develop -c cargo test` to ensure no errors exist before building.
+
+YOU MAY NOT CREATE ORPHANED PLACEHOLDERS
+IF YOU CREATE A VARIABLE, YOU MUST USE IT.
+IF YOU CREATE A FUNCTION YOU MUST IMPLEMENT IT, NOT LEAVE AN EMPTY STUB.
+
+```markdown
+
+# Rust Standard Libraries & Tooling Setup for NixOS (Bevy/Wayland, Nightly Rust 2024)
+
+## Context
+
+This rule ensures consistent and reproducible Rust toolchain and standard library setup in a NixOS environment, specifically for Bevy/Wayland applications using Nightly Rust 2024 edition.
+
+## Best Practices
+
+### 1. Toolchain Management
+
+- **Use oxalica/rust-overlay with flake-parts:**
+  - Configure your flake to pull in `rust-overlay` and set up Nightly Rust with `rust-src` and `rust-analyzer` extensions.
+  - Example:
+    ```
+    rust-nightly = (pkgs.rust-bin.selectLatestNightlyWith (toolchain:
+      toolchain.default.override {
+        extensions = ["rust-src" "rust-analyzer"];
+        targets = ["x86_64-unknown-linux-gnu"];
+      }
+    ));
+    ```
+- **Set `RUST_SRC_PATH`:**
+  - Export `RUST_SRC_PATH` in your shellHook to point to the Nightly Rust standard library.
+    ```
+    shellHook = ''
+      export RUST_SRC_PATH="${rust-nightly}/lib/rustlib/src/rust/library"
+    '';
+    ```
+
+### 2. Environment Setup
+
+- **Include required build inputs:**
+  - Add the following to `buildInputs`:
+    ```
+    buildInputs = with pkgs; [
+      vulkan-loader
+      libxkbcommon
+      wayland
+      udev
+      alsaLib
+      pkg-config
+      xorg.libX11
+    ];
+    ```
+- **Set Wayland environment variables:**
+  - Add to your shellHook:
+    ```
+    export WINIT_UNIX_BACKEND=wayland
+    export RUST_BACKTRACE=full
+    ```
+
+### 3. Project Structure
+
+- **Follow Rust conventions:**
+  - Use `src/` for source code, `main.rs`/`lib.rs` as entry points, `bin/` for multiple binaries, `tests/` for integration tests, and `examples/` for example code[2].
+- **Use a workspace if multi-crate:**
+  - Structure your project as a workspace for modularity.
+
+### 4. Cursor Rule Best Practices
+
+- **Keep rules concise and focused:**
+  - Avoid vague language; provide concrete examples and actionable guidance[1][5].
+- **Specify essential code elements:**
+  - Include critical environment variables, Nix expressions, and Rust toolchain configuration[5].
+- **Use auto-attach for relevant files:**
+  - Attach this rule to `Cargo.toml`, `flake.nix`, and `shell.nix` files for context-aware assistance[1][5].
+
+### 5. Example Shell Hook
+
+```
+shellHook = ''
+  export RUST_SRC_PATH="${rust-nightly}/lib/rustlib/src/1.75.0/library"
+  export WINIT_UNIX_BACKEND=wayland
+  export RUST_BACKTRACE=full
+'';
+```
+
+### 6. Additional Tips
+
+- **Pin Nightly Rust version:**
+  - Consider using a pinned Nightly Rust date for reproducibility.
+- **Update documentation:**
+  - Keep your README.md updated with setup instructions and environment requirements.
+
+---
+
+**References:**
+- [Cursor Rules Best Practices][1][5]
+- [Rust Project Structure][2]
+```
+
+This rule is designed to be concise, actionable, and scoped, providing clear guidance for both AI assistants and human developers working on Bevy/Wayland projects in NixOS with Nightly Rust[1][5][2].
+
+# Bevy Dynamic Linking & Nix Build Configuration
+
+## Development Setup
+
+**Cargo.toml features:**
+```
+[features]
+dev = [
+  "bevy/dynamic_linking",
+  "bevy/asset_processor",
+  "bevy/file_watcher"
+]
+```
+
+**Nix dev shell configuration:**
+```
+# flake.nix
+devShells.default = pkgs.mkShell {
+  packages = [rust-nightly];
+  buildInputs = with pkgs; [
+    vulkan-loader
+    libxkbcommon
+    wayland
+    udev
+  ];
+
+  shellHook = ''
+    export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
+    export CARGO_FEATURES_DEV="--features dev"
+  '';
+};
+```
+
+## Production Build Configuration
+
+**Nix package derivation:**
+```
+packages.default = pkgs.rustPlatform.buildRustPackage {
+  cargoLock.lockFile = ./Cargo.lock;
+
+  buildInputs = with pkgs; [
+    vulkan-loader
+    wayland
+  ];
+
+  cargoBuildFlags = "--release --no-default-features";
+
+  # Required for Wayland surface creation
+  LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath [
+    pkgs.vulkan-loader
+    pkgs.wayland
+  ]}";
+};
+```
+
+## Build Commands
+
+| Environment | Command                      | Flags                            |
+|-------------|------------------------------|----------------------------------|
+| Development | `nix develop`                | (shellHook auto-applies)         |
+| Production  | `nix build -L --impure`      | `--option sandbox relaxed`       |
+
+**Critical Nix Build Args:**
+```
+# For systems with proprietary drivers
+nix build --impure --option binary-caches "https://cache.nixos.org https://nixpkgs-wayland.cachix.org"
+```
+
+## Dependency Matrix
+
+| Library          | Development | Production |
+|------------------|-------------|------------|
+| vulkan-loader    | ✓ Dynamic   | ✓ Shared   |
+| libxkbcommon     | ✓ Dynamic   | ✓ Shared   |
+| wayland-protocols| ✓ Dynamic   | ✗ Static   |
+
+## Validation Checks
+
+**Pre-commit hook example:**
+```
+# Check for accidental dynamic linking in release builds
+! nix eval .#packages.${system}.default | grep "bevy_dylib"
+```
+
+**CI Pipeline check:**
+```
+- name: Verify static linking
+  run: |
+    readelf -d result/bin/bevy_app | grep -q 'NOTYPE.*GLOBAL DEFAULT.*bevy_dylib' && \
+      (echo "Dynamic linking detected!"; exit 1)
+```
+
+## Troubleshooting
+
+**Common Issues:**
+1. **Missing Vulkan layers:**
+   Add to Nix inputs:
+   ```
+   vulkan-validation-layers
+   glslang
+   ```
+2. **Wayland surface creation failures:**
+   Set in derivation:
+   ```
+   XDG_RUNTIME_DIR = "/tmp";
+   ```
+3. **Shader compilation errors:**
+   Include in build inputs:
+   ```
+   shaderc.override { preferVulkan = true; }
+   ```
+Citations:
+[1] https://docs.cursor.com/context/rules
+[2] https://github.com/sanjeed5/awesome-cursor-rules-mdc/blob/main/rules-mdc/rust.mdc
+[3] https://forum.cursor.com/t/best-practices-cursorrules/41775
+[4] https://dev.to/heymarkkop/my-top-cursor-tips-v043-1kcg
+[5] https://trigger.dev/blog/cursor-rules
+[6] https://www.reddit.com/r/cursor/comments/1jhurjt/best_practices_for_cursor_rules/
+[7] https://forum.cursor.com/t/best-cursor-rules-configuration/55979
+[8] https://forum.cursor.com/t/good-examples-of-cursorrules-file/4346
+[9] https://rust-unofficial.github.io/too-many-lists/sixth-cursors-impl.html
+[10] https://cursorrule.com/posts/gitbase-introduction
+

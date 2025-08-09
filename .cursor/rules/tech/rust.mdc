@@ -1,0 +1,62 @@
+---
+description: rust rules
+globs: *.rs,Cargo.toml,Cargo.lock
+alwaysApply: true
+---
+# Rust Development with Iced, Leptos, Tokio and Nix
+
+## Core Principles
+- Use Rust's strong type system and ownership model to ensure memory safety
+- Follow idiomatic Rust patterns and naming conventions
+- Leverage cargo and crates.io for dependency management
+- Always build and run through Nix for reproducible environments
+- Apply Domain-Driven Design principles to all code organization
+- Write behavior specifications before implementation (BDD/ATDD)
+- When following Examples, be sure it is version appropriate, especially from base training data, we MUST supplement syntax by verifying we are version compatible with the chosen crates.
+
+## Technology Stack
+- **Iced**: For native desktop applications
+  - Use the Elm-inspired architecture (Model, View, Update)
+  - Prefer pure functions for UI transformations
+  - Utilize message-passing for state management
+- **Leptos**: For web applications
+  - Apply reactive programming patterns
+  - Use signals for fine-grained reactivity
+  - Structure components hierarchically with clear boundaries
+- **Tokio**: For asynchronous and networked services
+  - Build around the async/await paradigm
+  - Use channels for communication between tasks
+  - Implement proper error handling and propagation
+
+## Testing Strategy
+- Implement BDD/ATDD using Cucumber for Rust
+- Write feature files in Gherkin syntax before implementation
+- Structure unit tests around behaviors, not functions
+- Use integration tests for component interactions
+- Apply property-based testing for complex algorithms
+- Implement continuous testing in CI pipeline
+
+## Domain-Driven Design Implementation
+- Define bounded contexts explicitly in module structure
+- Use strong types to represent domain concepts
+- Implement aggregates, entities, and value objects appropriately
+- Apply repository pattern for persistence abstractions
+- Define clear domain events for cross-boundary communication
+
+## Entity Component System Architecture
+- Separate data (components) from behavior (systems)
+- Design components to be composable and reusable
+- Implement systems that operate on related components
+- Use queries to efficiently process entity-component relationships
+- Apply ECS patterns for performance-critical parts of the application
+
+## Nix Integration
+- Define reproducible development environments with flakes
+- Create specialized shell.nix for different development contexts
+- Use buildRustPackage for consistent builds
+- Configure CI to use the same Nix environment
+- Package applications as Nix derivations for deployment
+description: rust rules
+globs: *.rs, *.toml;
+alwaysApply: true
+---

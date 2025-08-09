@@ -1,0 +1,118 @@
+---
+description: Guidelines for working with NixOS environments
+globs: *.nix, configuration.nix, default.nix, shell.nix, flake.nix, *.nixos, .envrc
+alwaysApply: false
+---
+
+# NixOS Environment Rule for Cursor 0.50.0
+
+This comprehensive rule will help the Cursor AI assistant understand and work effectively within a NixOS environment, leveraging the latest features in Cursor 0.50.0.
+
+```markdown
+# NixOS Environment Guidelines
+
+USE THE NIXOS MCP TOOL TO CLARIFY PACKAGE OPTIONS
+
+## Core Understanding
+
+- NixOS is a Linux distribution with a unique declarative approach to system configuration
+- System state is determined entirely by configuration files (primarily in Nix language)
+- System changes require rebuilding with `nixos-rebuild` (never modify system files directly)
+    - THIS MUST BE DONE BY A HUMAN
+- There is ALWAYS a .direnv, a local development shell for NixOS
+    - YOUR SHELL WILL ALWAYS EXECUTE THERE
+- Package management is handled through the Nix store with immutable, atomic operations
+- System configurations are designed to be reproducible and portable
+- NixOS REQUIRES files to be staged to be seen, STAGE NEW FILES WHEN BUILDING
+
+## Module Structure
+
+- Each NixOS module handles one logical aspect of the configuration
+- Modules can declare options for other modules to define
+- Modules can define options declared by other modules
+- Basic structure of a NixOS module:
+
+```
+{ config, pkgs, ... }:
+
+{
+  imports = [
+    # Paths of other modules
+  ];
+  
+  options = {
+    # Option declarations
+  };
+  
+  config = {
+    # Option definitions
+  };
+}
+```
+
+## Configuration Best Practices
+
+- Use git for version control of NixOS configurations
+- Apply configuration changes with `nixos-rebuild switch --flake .#hostname`
+    - **MUST BE DONE BY A HUMAN**
+- Debug issues with `--show-trace --print-build-logs --verbose` flags[9]
+- Store personal configurations in `~/nixos-config` with symlink from `/etc/nixos`[9]
+- Prefer declarative configuration over imperative changes
+- Create modular configurations with clear separation of concerns
+- Always make a devshell available via direnv
+
+## Nix Language Guidelines
+
+- Leverage functional programming paradigms (immutability, pure functions)
+- Use `let ... in` expressions for local variables
+- Avoid `with` expressions as they can cause namespace pollution
+- Format Nix code consistently using `nixpkgs-fmt` or `alejandra`
+- Comment complex expressions for better maintainability
+- Use string interpolation with care (`"${...}"`)
+- NEVER USE `heredoc` SYNTAX IN NIX FILES, FORMATTERS BREAK THEM
+- IF YOU ENCOUNTER EOF ON A LINE BY ITSELF IN A NIX FILE, BE SURE IT IS HAS ZERO WHITESPACE ON THE LINE BEFORE `EOF`
+
+## Flakes Support
+
+- Structure projects with `flake.nix` in the repository root
+- Define clear inputs with pinned versions
+- Specify nixosConfigurations output for system configurations
+- Use `specialArgs` to pass additional parameters to modules
+- Track flake.lock in version control for reproducibility
+- Update dependencies with `nix flake update`
+
+## Package Management
+
+- Define system packages in `environment.systemPackages`
+- Create development environments using `flake.nix` and `devShells` output
+- Override existing packages with `pkgs.override` or `pkgs.overrideAttrs`
+- Use overlays for consistent package modifications
+- Leverage `nixpkgs.config` options for global package configuration
+- Install user packages through home-manager when appropriate
+
+## Service Configuration
+
+- Define services using appropriate `services.*` options
+- Create custom services with `systemd.services.`
+- Set proper dependencies with `after`, `wants`, `requires`, etc.
+- Configure networking with `networking.*` options
+- Handle user accounts with `users.users.` options
+- Use `systemd.tmpfiles.rules` for filesystem setup
+
+## Cross-Platform Considerations
+
+- Use `lib.mkIf` for conditional configurations
+- Check system type with `pkgs.stdenv.hostPlatform.system`
+- Structure configurations to support multiple machines
+- Leverage hardware-detection modules for portable configurations
+- Create abstraction layers for hardware-specific requirements
+
+## Error Handling and Debugging
+
+- Set `warnings` or `assertions` for runtime validation
+- Monitor service issues with `journalctl -u service-name`
+- Check build logs in `/var/log/nixos`
+- Use `nix-store --verify` to check for store corruption
+- Execute `nix why-depends` to understand package dependencies
+- Run `nix-store --gc` to clean up unused packages
+```

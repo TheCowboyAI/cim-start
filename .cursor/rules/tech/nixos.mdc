@@ -1,0 +1,45 @@
+---
+description: nixos rule
+globs: 
+alwaysApply: true
+---
+# Flake-based NixOS Development
+
+## Core Principles
+- Always use Flake and Command enabled NixOS
+- NixOS requires strategic and deterministic thinking
+- Never "install" or "configure" anything live - only edit and deploy flake-based packages, systems, and modules
+- All system configuration is code, ensuring reproducibility
+
+## Flake Structure
+- Use `flake.nix` as the primary entry point
+- Define inputs with specific versions for reproducibility
+- Structure outputs by system architecture and purpose
+- Organize hosts, modules, and packages in dedicated directories
+- Use `flake.lock` for dependency pinning
+
+## Implementation Guidelines
+- Compose configuration from modular components
+- Maintain separation between system, user, and development environments
+- Use overlays for package customization
+- Implement custom modules for unique requirements
+- Leverage nix-topology for visualizing system architecture
+
+## Development Workflow
+- Use `nix develop` or `direnv` for development environments
+- Test changes in VM or container before deployment
+- Employ `nix flake check` for validation
+- Create custom development shells with required tooling
+- Utilize `nixos-rebuild` with appropriate flags for deployment
+
+## Integration Practices
+- Store flake configurations in version control
+- Document system architecture and module dependencies
+- Use CI/CD for testing and building configurations
+- Implement atomic updates and rollback capabilities
+- Maintain a clear upgrade path for system generations
+
+---
+- We are always on Flake and Command enabled NixOS
+- NixOS requires strategic and deterministic thinking
+- We do not "install" or "configure" anything live, only by editing and deploying flake based packages, systems, and modules
