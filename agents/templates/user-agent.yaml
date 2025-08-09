@@ -1,0 +1,118 @@
+# Copyright 2025 - Cowboy AI, LLC
+# User Agent Configuration Template
+
+agent:
+  id: "user-workflow-001"
+  name: "Workflow Executor"
+  type: "user"
+  version: "1.0.0"
+  
+metadata:
+  description: "Executes user workflows and manages task automation"
+  owner: "user-experience-team"
+  environment: "production"
+  
+capabilities:
+  - name: "workflow-execution"
+    description: "Execute multi-step user workflows"
+    permissions:
+      - "read:workflow-definitions"
+      - "write:workflow-events"
+  
+  - name: "task-management"
+    description: "Create, update, and track user tasks"
+    permissions:
+      - "read:user-tasks"
+      - "write:task-updates"
+  
+  - name: "notification-delivery"
+    description: "Send notifications to users through various channels"
+    permissions:
+      - "write:notifications"
+      - "read:user-preferences"
+
+configuration:
+  runtime:
+    memory_limit: "512MB"
+    cpu_limit: "0.5"
+    restart_policy: "always"
+    
+  nats:
+    subjects:
+      commands: "agent.user.workflow.commands"
+      events: "agent.user.workflow.events"
+      status: "agent.user.workflow.status"
+  
+  workflow:
+    max_concurrent_workflows: 100
+    default_timeout: "1h"
+    retry_failed_steps: true
+    
+  notifications:
+    channels:
+      - "email"
+      - "sms"
+      - "push"
+    default_channel: "email"
+    rate_limit: "10/min"
+    
+triggers:
+  - name: "workflow-started"
+    type: "event"
+    event_pattern: "event.workflow.started"
+    command: "ExecuteWorkflow"
+  
+  - name: "task-assigned"
+    type: "event"
+    event_pattern: "event.task.assigned"
+    command: "CreateTask"
+  
+  - name: "deadline-approaching"
+    type: "schedule"
+    schedule: "0 */6 * * *"  # Every 6 hours
+    command: "CheckDeadlines"
+
+commands:
+  - name: "ExecuteWorkflow"
+    description: "Execute a user workflow from start to finish"
+    handler: "workflow_executor"
+    
+  - name: "CreateTask"
+    description: "Create a new task for a user"
+    handler: "task_creator"
+    
+  - name: "CheckDeadlines"
+    description: "Check for approaching task deadlines"
+    handler: "deadline_checker"
+
+events:
+  - name: "WorkflowCompleted"
+    description: "User workflow has been completed"
+    schema: "schemas/workflow-completed.json"
+    
+  - name: "TaskCreated"
+    description: "New task created for user"
+    schema: "schemas/task-created.json"
+    
+  - name: "DeadlineAlert"
+    description: "Task deadline is approaching"
+    schema: "schemas/deadline-alert.json"
+
+workflow_templates:
+  onboarding:
+    steps:
+      - name: "send_welcome_email"
+        timeout: "5m"
+      - name: "create_initial_tasks"  
+        timeout: "2m"
+      - name: "schedule_check_in"
+        timeout: "1m"
+        
+  task_completion:
+    steps:
+      - name: "mark_complete"
+        timeout: "1m"
+      - name: "notify_stakeholders"
+        timeout: "3m"
+      - name: "update_metrics"
+        timeout: "2m"

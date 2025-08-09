@@ -1,533 +1,310 @@
-# NATS JetStream Setup Guide
+# NATS JetStream Setup Guide for Domain Events
 
-## 🚀 Quick Start Options
+Copyright 2025 - Cowboy AI, LLC
 
-### Option 1: Docker (Fastest - 2 minutes)
+## Overview
 
-```bash
-# Start NATS with JetStream
-docker run -d \
-  --name nats-js \
-  -p 4222:4222 \
-  -p 8222:8222 \
-  nats:latest \
-  -js -m 8222
+CIM-Start provides a production-ready NATS JetStream environment specifically configured for domain event storage with a comprehensive subject algebra. This setup enables event sourcing, CQRS patterns, and domain-driven architecture.
 
-# Verify it's running
-curl http://localhost:8222/healthz
+## Subject Algebra
 
-# Connect with CLI
-docker exec -it nats-js nats-cli
+CIM uses a hierarchical subject structure to organize domain events:
+
+```
+{environment}.{category}.{domain}.{aggregate}.{event_type}.{event_id}
 ```
 
-### Option 2: Docker Compose (Recommended - 5 minutes)
-
-Create `docker-compose.yml`:
-```yaml
-version: '3.8'
-
-services:
-  nats:
-    image: nats:2.10-alpine
-    container_name: cim-nats
-    ports:
-      - "4222:4222"  # Client connections
-      - "8222:8222"  # HTTP monitoring
-      - "6222:6222"  # Cluster routing
-    command: 
-      - "-js"                 # Enable JetStream
-      - "-sd"                 # Storage directory
-      - "/data"
-      - "-m"                  # Monitoring port
-      - "8222"
-      - "--name"              # Server name
-      - "cim-nats-1"
-    volumes:
-      - nats-data:/data
-      - ./nats.conf:/etc/nats/nats.conf:ro
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8222/healthz"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  nats-box:
-    image: natsio/nats-box:latest
-    container_name: cim-nats-box
-    depends_on:
-      - nats
-    command: sleep infinity
-    volumes:
-      - ./scripts:/scripts
-
-volumes:
-  nats-data:
-    driver: local
+**Examples:**
+```
+dev.domain.sales.order.created.550e8400-e29b-41d4-a716-446655440000
+prod.command.inventory.product.update
+prod.projection.order-summary.update
 ```
 
-Start the stack:
+See `/nats-config/subject-algebra.md` for complete documentation.
+
+## 🚀 Quick Start
+
+### 1. Start NATS Environment
+
 ```bash
+# Start the complete CIM NATS stack
 docker-compose up -d
 
-# Check logs
-docker-compose logs -f nats
-
-# Access NATS CLI
-docker-compose exec nats-box nats --help
+# Check that all services are running
+docker-compose ps
 ```
 
-### Option 3: NixOS VM (Production-like - 15 minutes)
+### 2. Initialize Domain Streams
 
-Create `nats-vm.nix`:
-```nix
-{ config, pkgs, lib, ... }:
-
-{
-  # VM Configuration
-  virtualisation = {
-    cores = 2;
-    memorySize = 2048;
-    diskSize = 10240;
-    
-    # Forward NATS ports
-    forwardPorts = [
-      { from = "host"; host.port = 4222; guest.port = 4222; }
-      { from = "host"; host.port = 8222; guest.port = 8222; }
-      { from = "host"; host.port = 6222; guest.port = 6222; }
-    ];
-  };
-
-  # NATS Server
-  services.nats = {
-    enable = true;
-    package = pkgs.nats-server;
-    
-    settings = {
-      server_name = "cim-nats-vm";
-      listen = "0.0.0.0:4222";
-      monitor_port = 8222;
-      
-      # JetStream Configuration
-      jetstream = {
-        store_dir = "/var/lib/nats/jetstream";
-        max_memory_store = "512MB";
-        max_file_store = "2GB";
-        
-        # Streams configuration
-        streams = [
-          {
-            name = "EVENTS";
-            subjects = ["event.>"];
-            retention = "limits";
-            max_msgs = 1000000;
-            max_age = "7d";
-            storage = "file";
-            replicas = 1;
-          }
-          {
-            name = "COMMANDS";
-            subjects = ["cmd.>"];
-            retention = "interest";
-            max_age = "1h";
-            storage = "memory";
-            replicas = 1;
-          }
-        ];
-      };
-      
-      # Clustering (optional)
-      cluster = {
-        name = "cim-cluster";
-        listen = "0.0.0.0:6222";
-        
-        # Add other nodes here for clustering
-        routes = [
-          # "nats://node2:6222"
-          # "nats://node3:6222"
-        ];
-      };
-      
-      # Authorization (optional)
-      authorization = {
-        users = [
-          {
-            user = "admin";
-            password = "$2a$11$W2zko751KUvVy59mUTWmpOdWjpEm5qhcCZRd05GjI/sSOT.xtiHyG"; # "changeme"
-            permissions = {
-              publish = ">";
-              subscribe = ">";
-            };
-          }
-          {
-            user = "client";
-            password = "$2a$11$W2zko751KUvVy59mUTWmpOdWjpEm5qhcCZRd05GjI/sSOT.xtiHyG"; # "changeme"
-            permissions = {
-              publish = ["cmd.>", "event.>"];
-              subscribe = ["event.>", "_INBOX.>"];
-            };
-          }
-        ];
-      };
-      
-      # Logging
-      debug = false;
-      trace = false;
-      logtime = true;
-      
-      # Limits
-      max_connections = 1000;
-      max_payload = "1MB";
-      max_pending = "64MB";
-      
-      # TLS (optional)
-      # tls = {
-      #   cert_file = "/etc/nats/certs/server.crt";
-      #   key_file = "/etc/nats/certs/server.key";
-      # };
-    };
-  };
-
-  # Firewall
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 4222 6222 8222 ];
-  };
-
-  # System packages
-  environment.systemPackages = with pkgs; [
-    nats-cli
-    natscli
-    vim
-    htop
-  ];
-
-  # Create systemd service for initialization
-  systemd.services.nats-init = {
-    description = "Initialize NATS JetStream";
-    after = [ "nats.service" ];
-    requires = [ "nats.service" ];
-    wantedBy = [ "multi-user.target" ];
-    
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = pkgs.writeShellScript "nats-init" ''
-        # Wait for NATS to be ready
-        sleep 5
-        
-        # Create streams
-        ${pkgs.natscli}/bin/nats stream add EVENTS \
-          --subjects "event.>" \
-          --retention limits \
-          --max-msgs=1000000 \
-          --max-age=7d \
-          --storage file \
-          --replicas 1 \
-          --no-allow-rollup \
-          --discard old \
-          --dupe-window 2m
-          
-        ${pkgs.natscli}/bin/nats stream add COMMANDS \
-          --subjects "cmd.>" \
-          --retention interest \
-          --max-age=1h \
-          --storage memory \
-          --replicas 1
-          
-        echo "NATS JetStream initialized"
-      '';
-    };
-  };
-}
-```
-
-Build and run the VM:
 ```bash
-# Build the VM
-nix-build '<nixpkgs/nixos>' -A vm -I nixos-config=./nats-vm.nix
+# Initialize streams for your domains
+./scripts/init-streams.sh
 
-# Run the VM
-./result/bin/run-*-vm
-
-# SSH into VM (after it boots)
-ssh -p 2222 root@localhost
+# Or initialize specific domains
+./scripts/init-streams.sh sales inventory customer
 ```
 
-### Option 4: Local Development (10 minutes)
+### 3. Test Domain Events
 
-Using Nix:
 ```bash
-# Enter development shell
-nix develop
+# Run comprehensive event tests
+./scripts/test-domain-events.sh
 
-# Or install directly
-nix-env -iA nixpkgs.nats-server
-
-# Start NATS with JetStream
-nats-server -js -sd ./nats-data -m 8222
-
-# In another terminal, configure streams
-nats stream add EVENTS \
-  --subjects "event.>" \
-  --retention limits \
-  --max-msgs=1000000 \
-  --storage file
+# Monitor events in real-time
+nats sub "dev.domain.>"
 ```
 
-## 📊 Monitoring Dashboard
+## 🏗️ Architecture
 
-Access the monitoring dashboard at: http://localhost:8222
+### Streams Created
+
+1. **Domain Event Streams** - One per domain
+   - `DOMAIN_SALES_EVENTS` → `*.domain.sales.>`
+   - `DOMAIN_INVENTORY_EVENTS` → `*.domain.inventory.>`
+   - `DOMAIN_CUSTOMER_EVENTS` → `*.domain.customer.>`
+
+2. **Command Streams** - One per domain
+   - `DOMAIN_SALES_COMMANDS` → `*.command.sales.>`
+   - `DOMAIN_INVENTORY_COMMANDS` → `*.command.inventory.>`
+
+3. **Global Streams**
+   - `PROJECTIONS` → `*.projection.>`
+   - `SAGAS` → `*.saga.>`
+
+### Subject Patterns
+
+```bash
+# Domain Events (persistent, file storage)
+{env}.domain.{domain}.{aggregate}.{event}.{id}
+
+# Commands (ephemeral, memory storage) 
+{env}.command.{domain}.{aggregate}.{action}
+
+# Projections (read models)
+{env}.projection.{view}.{operation}
+
+# Sagas/Workflows
+{env}.saga.{process}.{event}
+
+# Snapshots
+{env}.snapshot.{domain}.{aggregate}.{id}
+```
+
+## 🛠️ Configuration
+
+### Environment Variables
+
+```bash
+# Set your environment
+export CIM_ENVIRONMENT=dev  # dev, staging, prod
+
+# Set NATS connection
+export NATS_URL=nats://localhost:4222
+```
+
+### Account Security
+
+The configuration includes three accounts:
+
+1. **DOMAIN** - For domain operations
+   - User: `domain_user` / Pass: `domain_pass`
+   - Can publish/subscribe to all domain subjects
+
+2. **QUERY** - For read-only access
+   - User: `query_user` / Pass: `query_pass`
+   - Read-only access to events and projections
+
+3. **SYS** - For system operations
+   - User: `system` / Pass: `system_pass`
+   - Administrative access
+
+## 📊 Monitoring
+
+### NATS Dashboard
+Access the monitoring dashboard: http://localhost:8222
 
 Key endpoints:
 - `/healthz` - Health check
-- `/varz` - General server info
-- `/jsz` - JetStream info
+- `/jsz` - JetStream information
+- `/varz` - Server variables
 - `/connz` - Connection details
-- `/routez` - Cluster routes
-- `/subsz` - Subscriptions
 
-## 🔧 JetStream Configuration
+### Prometheus Metrics
+Access Prometheus: http://localhost:9090
+- NATS metrics collected via nats-surveyor
+- Custom dashboards available in Grafana
 
-### Create Event Stream
-```bash
-nats stream add EVENTS \
-  --subjects "event.>" \
-  --retention limits \
-  --max-msgs=1000000 \
-  --max-age=7d \
-  --storage file \
-  --replicas 1 \
-  --discard old \
-  --dupe-window 2m
-```
-
-### Create Command Stream
-```bash
-nats stream add COMMANDS \
-  --subjects "cmd.>" \
-  --retention interest \
-  --max-age=1h \
-  --storage memory \
-  --replicas 1
-```
-
-### Create Projection Stream
-```bash
-nats stream add PROJECTIONS \
-  --subjects "projection.>" \
-  --retention limits \
-  --max-msgs-per-subject=1 \
-  --storage file \
-  --replicas 1 \
-  --allow-rollup
-```
-
-## 🔐 Security Configuration
-
-### Basic Authentication
-```yaml
-# nats.conf
-authorization {
-  users = [
-    {user: admin, password: $2a$11$W2zko751KUvVy59mUTWmpOdWjpEm5qhcCZRd05GjI/sSOT.xtiHyG}
-    {user: client, password: $2a$11$W2zko751KUvVy59mUTWmpOdWjpEm5qhcCZRd05GjI/sSOT.xtiHyG}
-  ]
-}
-```
-
-Generate password hash:
-```bash
-nats server passwd -p "your-password"
-```
-
-### TLS Configuration
-```yaml
-# nats.conf
-tls {
-  cert_file: "/etc/nats/certs/server.crt"
-  key_file: "/etc/nats/certs/server.key"
-  ca_file: "/etc/nats/certs/ca.crt"
-  verify: true
-}
-```
-
-## 🌐 Clustering Setup
-
-### 3-Node Cluster
-```yaml
-# Node 1 (nats1.conf)
-server_name: nats-1
-listen: 0.0.0.0:4222
-cluster {
-  name: cim-cluster
-  listen: 0.0.0.0:6222
-  routes = [
-    nats://nats2:6222
-    nats://nats3:6222
-  ]
-}
-
-# Node 2 (nats2.conf)
-server_name: nats-2
-listen: 0.0.0.0:4222
-cluster {
-  name: cim-cluster
-  listen: 0.0.0.0:6222
-  routes = [
-    nats://nats1:6222
-    nats://nats3:6222
-  ]
-}
-
-# Node 3 (nats3.conf)
-server_name: nats-3
-listen: 0.0.0.0:4222
-cluster {
-  name: cim-cluster
-  listen: 0.0.0.0:6222
-  routes = [
-    nats://nats1:6222
-    nats://nats2:6222
-  ]
-}
-```
+### Grafana Dashboards  
+Access Grafana: http://localhost:3000 (admin/admin)
+- Pre-configured NATS dashboards
+- Domain event visualization
+- Stream health monitoring
 
 ## 🧪 Testing Your Setup
 
-### Test Basic Connectivity
+### Manual Testing
+
 ```bash
-# Publish a test message
-nats pub test.subject "Hello NATS"
+# Test basic connectivity
+nats --server=nats://localhost:4222 server ping
 
-# Subscribe to test messages
-nats sub "test.>"
+# Publish a domain event
+nats pub "dev.domain.sales.order.created.$(uuidgen)" '{
+  "event_id": "'$(uuidgen)'",
+  "aggregate_id": "'$(uuidgen)'", 
+  "event_type": "OrderCreated",
+  "timestamp": "'$(date -Iseconds)'",
+  "data": {"customer_id": "123", "total": 99.99}
+}'
 
-# Request-Reply test
-nats reply test.service "I can help"
-nats request test.service "Help me" --timeout=1s
+# Subscribe to domain events
+nats sub "dev.domain.sales.>"
+
+# View stream contents
+nats stream view DOMAIN_SALES_EVENTS
 ```
 
-### Test JetStream
+### Automated Testing
+
 ```bash
-# Publish to stream
-nats pub event.test '{"type":"TestEvent","data":"test"}'
+# Run the complete test suite
+./scripts/test-domain-events.sh
 
-# Read from stream
-nats stream view EVENTS
+# Test specific environment
+CIM_ENVIRONMENT=staging ./scripts/test-domain-events.sh
+```
 
-# Create consumer
-nats consumer add EVENTS TEST \
-  --filter "event.test" \
+## 🔧 Stream Management
+
+### List All Streams
+```bash
+nats stream list
+```
+
+### Stream Information
+```bash
+nats stream info DOMAIN_SALES_EVENTS
+```
+
+### Create Consumer
+```bash
+nats consumer add DOMAIN_SALES_EVENTS ORDER_PROCESSOR \
+  --filter "*.domain.sales.order.>" \
   --ack explicit \
-  --deliver all \
-  --replay instant
+  --deliver all
 ```
 
-### Test with Your Application
-```rust
-use async_nats;
+### Backup/Restore
+```bash
+# Backup stream
+nats stream backup DOMAIN_SALES_EVENTS /backup/sales-events.tar.gz
 
-#[tokio::main]
-async fn main() -> Result<(), async_nats::Error> {
-    // Connect to NATS
-    let client = async_nats::connect("nats://localhost:4222").await?;
-    
-    // Get JetStream context
-    let jetstream = async_nats::jetstream::new(client);
-    
-    // Publish event
-    jetstream
-        .publish("event.order.created", r#"{"order_id":"123"}"#.into())
-        .await?;
-    
-    println!("Event published!");
-    Ok(())
-}
+# Restore stream
+nats stream restore /backup/sales-events.tar.gz
 ```
 
-## 📈 Performance Tuning
+## 🌍 Environment-Specific Configuration
 
-### Memory Settings
-```yaml
-jetstream {
-  max_memory_store: 1GB
-  max_file_store: 10GB
-}
+### Development
+- **Prefix**: `dev.`
+- **Retention**: 1 day
+- **Replication**: 1
+- **Storage**: Mixed (events=file, commands=memory)
+
+### Staging
+- **Prefix**: `staging.`
+- **Retention**: 7 days  
+- **Replication**: 1
+- **Storage**: File-based
+- **Monitoring**: Full observability stack
+
+### Production
+- **Prefix**: `prod.`
+- **Retention**: 30+ days
+- **Replication**: 3 (cluster mode)
+- **Storage**: File-based with backups
+- **Security**: TLS, authentication, authorization
+- **Monitoring**: Full observability + alerting
+
+## 🔐 Security Best Practices
+
+### Development
+```bash
+# Use provided accounts for development
+NATS_USER=domain_user NATS_PASS=domain_pass
 ```
 
-### Connection Limits
-```yaml
-max_connections: 10000
-max_payload: 1MB
-max_pending: 64MB
-max_control_line: 4KB
+### Production
+```bash
+# Use strong passwords and TLS
+# Update nats.conf with production credentials
+# Enable TLS encryption
+# Set up proper firewall rules
 ```
 
-### Write Performance
-```yaml
-jetstream {
-  sync_interval: 30s  # How often to sync to disk
-  sync_always: false  # Don't sync on every write
-}
-```
-
-## 🔍 Troubleshooting
+## 🚨 Troubleshooting
 
 ### Common Issues
 
-**Cannot connect to NATS**
-```bash
-# Check if NATS is running
-docker ps | grep nats
-ps aux | grep nats-server
-
-# Check ports
-netstat -tlnp | grep 4222
-
-# Test connection
-telnet localhost 4222
-```
-
-**JetStream not enabled**
-```bash
-# Check JetStream status
-nats server report jetstream
-
-# Enable JetStream
-nats-server -js
-```
-
 **Stream not found**
 ```bash
-# List streams
-nats stream list
+# Reinitialize streams
+./scripts/init-streams.sh
 
-# Create missing stream
-nats stream add EVENTS --subjects "event.>"
+# Check stream status
+nats stream list
 ```
 
 **Permission denied**
 ```bash
-# Check user permissions
-nats server report connections
+# Verify account permissions
+nats server report accounts
 
-# Update user permissions in config
+# Use correct credentials
+nats --user=domain_user --password=domain_pass pub test.subject "test"
 ```
 
-## 📚 Resources
+**High memory usage**
+```bash
+# Check JetStream usage
+nats server report jetstream
 
-- [NATS Documentation](https://docs.nats.io/)
-- [JetStream Documentation](https://docs.nats.io/jetstream)
-- [NATS CLI Cheat Sheet](https://docs.nats.io/using-nats/nats-tools/nats_cli)
-- [NATS by Example](https://natsbyexample.com/)
+# Purge old messages
+nats stream purge DOMAIN_SALES_EVENTS --keep 1000
+```
+
+## 📈 Scaling Considerations
+
+### Single Node (Development)
+- Use provided docker-compose.yml
+- File storage for persistence
+- Memory storage for commands
+
+### Cluster (Production)  
+- 3+ node NATS cluster
+- Replicated streams (R=3)
+- Load balancer for client connections
+- Separate monitoring infrastructure
+
+### Partitioning
+- Separate domains into different streams
+- Use aggregate ID for message ordering
+- Consider subject-based sharding for high volume
 
 ## 🎯 Next Steps
 
-1. ✅ NATS is running
-2. ✅ JetStream is enabled
-3. ✅ Streams are created
-4. → Start building your domain
-5. → Publish your first events
-6. → Create projections
-7. → Test end-to-end
+1. ✅ Start NATS environment: `docker-compose up -d`
+2. ✅ Initialize streams: `./scripts/init-streams.sh`
+3. ✅ Test setup: `./scripts/test-domain-events.sh`
+4. → Define your domain events in `/domains/your-domain/`
+5. → Start publishing events to your streams
+6. → Build projections and read models
+7. → Set up monitoring and alerting
+
+## 📚 Additional Resources
+
+- [Subject Algebra Documentation](../nats-config/subject-algebra.md)
+- [Domain Definition Guide](../domains/example-business/README.md)
+- [NATS JetStream Documentation](https://docs.nats.io/jetstream)
+- [CIM Architecture Guide](https://github.com/thecowboyai/cim)

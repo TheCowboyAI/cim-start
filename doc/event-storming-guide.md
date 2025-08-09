@@ -1,5 +1,7 @@
 # Event Storming Guide for Domain Discovery
 
+Copyright 2025 - Cowboy AI, LLC
+
 ## 🎯 What is Event Storming?
 
 Event Storming is a workshop technique to quickly discover your domain by focusing on **what happens** in your business. In 1-2 hours, you'll have a complete domain model!

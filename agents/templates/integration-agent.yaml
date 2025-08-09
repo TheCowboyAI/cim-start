@@ -1,0 +1,105 @@
+# Copyright 2025 - Cowboy AI, LLC
+# Integration Agent Configuration Template
+
+agent:
+  id: "integration-api-001"
+  name: "External API Connector"
+  type: "integration"
+  version: "1.0.0"
+  
+metadata:
+  description: "Connects domain events to external REST APIs"
+  owner: "integration-team"
+  environment: "production"
+  
+capabilities:
+  - name: "api-requests"
+    description: "Make HTTP requests to external APIs"
+    permissions:
+      - "external:api-access"
+      - "read:domain-events"
+  
+  - name: "data-transformation"
+    description: "Transform data between internal and external formats"
+    permissions:
+      - "read:transformation-rules"
+      - "write:transformed-data"
+  
+  - name: "retry-handling"
+    description: "Handle failed requests with retry logic"
+    permissions:
+      - "write:retry-events"
+      - "read:retry-policies"
+
+configuration:
+  runtime:
+    memory_limit: "256MB"
+    cpu_limit: "0.25"
+    restart_policy: "on-failure"
+    
+  nats:
+    subjects:
+      commands: "agent.integration.api.commands"
+      events: "agent.integration.api.events"
+      status: "agent.integration.api.status"
+  
+  external_api:
+    base_url: "${EXTERNAL_API_URL}"
+    authentication:
+      type: "bearer_token"
+      token: "${API_TOKEN}"
+    timeout: "30s"
+    retry_attempts: 3
+    retry_backoff: "exponential"
+    
+triggers:
+  - name: "customer-created"
+    type: "event"
+    event_pattern: "event.customer.created"
+    command: "SyncCustomerToExternal"
+  
+  - name: "order-updated"
+    type: "event" 
+    event_pattern: "event.order.updated"
+    command: "UpdateExternalOrder"
+  
+  - name: "retry-failed-request"
+    type: "event"
+    event_pattern: "integration.request.failed"
+    command: "RetryRequest"
+
+commands:
+  - name: "SyncCustomerToExternal"
+    description: "Sync customer data to external system"
+    handler: "customer_sync"
+    
+  - name: "UpdateExternalOrder"
+    description: "Update order in external system"
+    handler: "order_update"
+    
+  - name: "RetryRequest"
+    description: "Retry a failed API request"
+    handler: "request_retry"
+
+events:
+  - name: "CustomerSynced"
+    description: "Customer data synchronized to external system"
+    schema: "schemas/customer-synced.json"
+    
+  - name: "OrderUpdated"
+    description: "Order updated in external system"  
+    schema: "schemas/order-updated.json"
+    
+  - name: "RequestFailed"
+    description: "API request failed after retries"
+    schema: "schemas/request-failed.json"
+
+transformations:
+  customer_to_external:
+    mapping:
+      - source: "customer.id"
+        target: "external_customer_id"
+      - source: "customer.email"
+        target: "email_address"
+      - source: "customer.name.full"
+        target: "full_name"

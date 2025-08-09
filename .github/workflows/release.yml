@@ -1,0 +1,52 @@
+# Copyright 2025 - Cowboy AI, LLC
+# Release workflow for CIM-Start
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Install Nix
+      uses: cachix/install-nix-action@v23
+      with:
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Nix cache
+      uses: cachix/cachix-action@v12
+      with:
+        name: cowboy-ai
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+    
+    - name: Build release artifacts
+      run: |
+        nix build
+        nix build .#nats-vm
+    
+    - name: Generate changelog
+      id: changelog
+      uses: metcalfc/changelog-generator@v4.1.0
+      with:
+        myToken: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        body: ${{ steps.changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,10 @@
+# Copyright 2025 - Cowboy AI, LLC
+# YAML linting configuration
+
+extends: default
+
+rules:
+  line-length:
+    max: 120
+  comments:
+    min-spaces-from-content: 1

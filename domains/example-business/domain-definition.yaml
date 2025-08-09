@@ -1,3 +1,4 @@
+# Copyright 2025 - Cowboy AI, LLC
 domain:
   name: example-business
   description: E-commerce platform for online retail
@@ -277,3 +278,103 @@ workflows:
       - Delivered
       - Cancelled
       - Refunded
+
+# Agent Integration
+agents:
+  - id: "system-order-monitor"
+    name: "Order Processing Monitor"
+    type: "system"
+    description: "Monitors order processing pipeline health"
+    triggers:
+      - event: E004  # OrderPlaced
+        command: "StartOrderMonitoring"
+    capabilities:
+      - "pipeline-monitoring"
+      - "sla-tracking"
+    
+  - id: "integration-payment-gateway"
+    name: "Payment Gateway Connector"
+    type: "integration"
+    description: "Processes payments through external gateway"
+    triggers:
+      - event: E004  # OrderPlaced
+        command: "InitiatePayment"
+    capabilities:
+      - "payment-processing"
+      - "fraud-detection"
+    external_systems:
+      - "payment-gateway"
+    
+  - id: "ai-fraud-detector"
+    name: "Order Fraud Analyzer"
+    type: "ai"
+    description: "Analyzes orders for fraud using ML models"
+    triggers:
+      - event: E004  # OrderPlaced
+        command: "AnalyzeOrderFraud"
+    capabilities:
+      - "fraud-analysis"
+      - "risk-scoring"
+    
+  - id: "user-order-notifier"
+    name: "Order Notification Manager"
+    type: "user"
+    description: "Manages customer notifications"
+    triggers:
+      - event: E004  # OrderPlaced
+        command: "SendOrderConfirmation"
+      - event: E005  # PaymentProcessed
+        command: "SendPaymentConfirmation"
+      - event: E006  # OrderShipped
+        command: "SendShippingNotification"
+    capabilities:
+      - "notification-delivery"
+      - "communication-management"
+    external_systems:
+      - "email-service"
+    
+  - id: "integration-inventory-sync"
+    name: "Inventory System Connector"
+    type: "integration"
+    description: "Syncs inventory data with external systems"
+    triggers:
+      - event: E007  # StockReserved
+        command: "UpdateExternalInventory"
+      - event: E008  # StockDepleted
+        command: "NotifyStockDepletion"
+    capabilities:
+      - "inventory-synchronization"
+      - "supplier-notification"
+    external_systems:
+      - "inventory-supplier"
+
+# Agent Event Flows
+agent_workflows:
+  order_processing_with_agents:
+    name: "Order Processing with Agent Support"
+    trigger: E004  # OrderPlaced
+    agent_flow:
+      - step: 1
+        agent: "ai-fraud-detector"
+        action: "AnalyzeOrderFraud"
+        condition: "order.placed"
+        
+      - step: 2
+        agent: "integration-payment-gateway"
+        action: "InitiatePayment"
+        condition: "fraud.approved || fraud.low_risk"
+        
+      - step: 3
+        agent: "system-order-monitor"
+        action: "StartOrderMonitoring"
+        condition: "payment.initiated"
+        
+      - step: 4
+        agent: "user-order-notifier"
+        action: "SendOrderConfirmation"
+        condition: "order.confirmed"
+        
+      - step: 5
+        agent: "integration-inventory-sync"
+        action: "UpdateExternalInventory"
+        condition: "stock.reserved"

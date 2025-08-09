@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CIM Agent Metadata Schema",
+  "description": "Schema for CIM agent metadata and configuration",
+  "type": "object",
+  "properties": {
+    "agent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Unique agent identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable agent name"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["system", "integration", "ai", "user"],
+          "description": "Agent type category"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version"
+        }
+      },
+      "required": ["id", "name", "type", "version"]
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Agent purpose and functionality"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Team or individual responsible"
+        },
+        "environment": {
+          "type": "string",
+          "enum": ["development", "staging", "production"],
+          "description": "Target environment"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Searchable tags"
+        }
+      },
+      "required": ["description", "owner", "environment"]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Capability identifier"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this capability does"
+          },
+          "permissions": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Required permissions"
+          }
+        },
+        "required": ["name", "description", "permissions"]
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "runtime": {
+          "type": "object",
+          "properties": {
+            "memory_limit": { "type": "string" },
+            "cpu_limit": { "type": "string" },
+            "restart_policy": { 
+              "type": "string",
+              "enum": ["always", "on-failure", "never"]
+            }
+          }
+        },
+        "nats": {
+          "type": "object",
+          "properties": {
+            "subjects": {
+              "type": "object",
+              "properties": {
+                "commands": { "type": "string" },
+                "events": { "type": "string" },
+                "status": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { 
+            "type": "string",
+            "enum": ["event", "schedule", "command"]
+          },
+          "event_pattern": { "type": "string" },
+          "schedule": { "type": "string" },
+          "command": { "type": "string" }
+        },
+        "required": ["name", "type", "command"]
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "handler": { "type": "string" },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["name", "description", "handler"]
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "schema": { "type": "string" }
+        },
+        "required": ["name", "description"]
+      }
+    }
+  },
+  "required": ["agent", "metadata", "capabilities", "configuration"]
+}

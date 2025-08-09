@@ -1,0 +1,69 @@
+# Copyright 2025 - Cowboy AI, LLC
+# CI/CD Pipeline for CIM-Start
+
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install Nix
+      uses: cachix/install-nix-action@v23
+      with:
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Nix cache
+      uses: cachix/cachix-action@v12
+      with:
+        name: cowboy-ai
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+    
+    - name: Check flake
+      run: nix flake check
+    
+    - name: Build
+      run: nix build
+    
+    - name: Test NATS setup
+      run: |
+        docker-compose up -d
+        sleep 10
+        docker-compose ps
+        docker-compose down
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check YAML files
+      uses: ibiqlik/action-yamllint@v3
+      with:
+        file_or_dir: .
+        config_file: .yamllint.yml
+    
+    - name: Check Markdown files
+      uses: DavidAnson/markdownlint-cli2-action@v13
+      with:
+        globs: '**/*.md'
+
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run security audit
+      uses: securecodewarrior/github-action-add-sarif@v1
+      with:
+        sarif-file: 'security-audit.sarif'

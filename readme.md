@@ -1,66 +1,86 @@
 # CIM-Start: Domain-Driven Development Starter Kit
 
+Copyright 2025 - Cowboy AI, LLC
+
 ## 🚀 Purpose
 
 CIM-Start is your starting point for building a new domain-specific Composable Information Machine (CIM). It provides:
 
-- Domain discovery templates and guides
-- NATS JetStream infrastructure setup
-- Claude AI integration for guided development
-- Event-driven architecture patterns
-- Assembly-first module composition
+- **Production-ready NATS JetStream environment** for domain event storage
+- **Comprehensive subject algebra** for organizing events, commands, and projections  
+- **Domain discovery templates and guides** for event storming and modeling
+- **Complete monitoring stack** with Prometheus and Grafana dashboards
+- **Event-driven architecture patterns** with stream management tools
+- **Domain-specific agent framework** for intelligent automation
 
 ## 📁 Project Structure
 
 ```
 cim-start/
-├── .claude/           # Claude AI instructions and agents
-├── doc/              # Domain documentation and guides
+├── .github/          # GitHub workflows and templates
+├── agents/           # CIM agent configurations
+│   ├── system/       # System agents (monitoring, ops)
+│   ├── integration/  # Integration agents (APIs, sync)
+│   ├── ai/          # AI agents (NLP, ML, decision making)  
+│   ├── user/        # User agents (workflows, notifications)
+│   ├── templates/   # Agent configuration templates
+│   ├── examples/    # Complete agent integration examples
+│   └── schemas/     # JSON schemas for agent validation
+├── doc/             # Domain documentation and guides
 │   ├── quick-start.md
 │   ├── event-storming-guide.md
-│   └── domain-templates/
-├── domains/          # Your domain definitions
+│   ├── nats-setup.md
+│   └── agents-guide.md
+├── domains/         # Your domain definitions
 │   └── example-business/
-├── nix/              # NixOS configurations
-│   ├── containers/   # Docker/Podman containers
-│   └── vms/         # Virtual machine configs
-└── scripts/         # Automation scripts
+└── docker-compose.yml  # NATS infrastructure
 ```
 
 ## 🎯 Quick Start
 
-### 1. Define Your Domain (15 minutes)
+### 1. Deploy NATS JetStream Environment (2 minutes)
 
 ```bash
-# Start with the quick template
-cat doc/quick-start.md
+# Start the complete CIM NATS environment
+make dev
 
-# Or use event storming for discovery
-cat doc/event-storming-guide.md
-```
-
-### 2. Start NATS JetStream
-
-```bash
-# Using Docker
+# Or manually:
 docker-compose up -d
-
-# Using Nix
-nix run .#nats-server
-
-# Using VM
-nix run .#nats-vm
+./scripts/init-streams.sh
 ```
 
-### 3. Generate Your Domain
+### 2. Test Domain Event Storage (1 minute)
 
 ```bash
-# Use Claude to help build your domain
-# Claude will guide you through:
-# - Event definition
-# - Aggregate modeling  
-# - Command handlers
-# - Projection design
+# Test the event infrastructure
+make test-events
+
+# Watch events in real-time
+make watch-events
+```
+
+### 3. Start Defining Your Domain (15 minutes)
+
+```bash
+# Create your domain definition
+cp domains/example-business/domain-definition.yaml domains/my-domain/
+
+# Use event storming guide
+cat doc/event-storming-guide.md
+
+# Or use the quick template
+cat doc/quick-start.md
+```
+
+### 4. Monitor Your Environment
+
+```bash
+# Open monitoring dashboards
+make monitor
+
+# NATS Dashboard: http://localhost:8222
+# Prometheus: http://localhost:9090  
+# Grafana: http://localhost:3000 (admin/admin)
 ```
 
 ## 🏗️ Building Your Domain
@@ -125,20 +145,35 @@ nats-server -js
 
 - `/doc/quick-start.md` - 15-minute domain starter
 - `/doc/event-storming-guide.md` - Collaborative discovery process
-- `/doc/domain-templates/` - YAML/JSON templates
 - `/doc/nats-setup.md` - NATS infrastructure guide
-- `/.claude/README.md` - AI assistance instructions
+- `/doc/agents-guide.md` - Complete agent integration guide
+- `/agents/README.md` - Agent architecture overview
 
-## 🤖 Claude Integration
+## 🤖 CIM Agents
 
-This project includes Claude AI instructions to help you:
-- Design your domain model
-- Generate event definitions
-- Create aggregate implementations
-- Build projections
-- Set up infrastructure
+CIM-Start includes a complete agent framework with four agent types:
 
-Just ask Claude to help with any aspect of your domain development!
+### System Agents
+- Infrastructure monitoring and health checks
+- Resource management and auto-scaling
+- Operational automation
+
+### Integration Agents  
+- External API connections and data sync
+- Protocol translation and service orchestration
+- Third-party system integration
+
+### AI Agents
+- Natural language processing and conversation management
+- Fraud detection and risk analysis
+- Pattern recognition and decision making
+
+### User Agents
+- Workflow automation and task management
+- Notification delivery and communication
+- User interface automation
+
+Agents integrate seamlessly with your domain events and participate in business workflows through NATS messaging.
 
 ## 🔧 Available Modules
 

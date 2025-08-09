@@ -1,0 +1,13 @@
+# Copyright 2025 - Cowboy AI, LLC
+# Grafana dashboard provisioning configuration
+
+apiVersion: 1
+
+providers:
+  - name: 'default'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards

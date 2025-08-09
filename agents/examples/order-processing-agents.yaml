@@ -1,0 +1,169 @@
+# Copyright 2025 - Cowboy AI, LLC
+# Example: Order Processing with Multiple Agent Types
+
+# System Agent - Order Monitor
+---
+agent:
+  id: "system-order-monitor"
+  name: "Order Processing Monitor"
+  type: "system"
+  version: "1.0.0"
+
+metadata:
+  description: "Monitors order processing pipeline health and performance"
+  owner: "operations-team"
+  environment: "production"
+
+capabilities:
+  - name: "pipeline-monitoring"
+    description: "Monitor order processing pipeline"
+    permissions:
+      - "read:order-events"
+      - "write:monitoring-events"
+
+triggers:
+  - name: "order-created"
+    type: "event"
+    event_pattern: "event.order.created"
+    command: "StartMonitoring"
+
+commands:
+  - name: "StartMonitoring"
+    description: "Begin monitoring an order's processing"
+    handler: "order_monitor"
+
+# Integration Agent - Payment Gateway
+---
+agent:
+  id: "integration-payment-gateway"
+  name: "Payment Gateway Connector"
+  type: "integration" 
+  version: "1.0.0"
+
+metadata:
+  description: "Connects orders to external payment processing"
+  owner: "payment-team"
+  environment: "production"
+
+capabilities:
+  - name: "payment-processing"
+    description: "Process payments through external gateway"
+    permissions:
+      - "external:payment-api"
+      - "read:order-data"
+
+triggers:
+  - name: "payment-requested"
+    type: "event"
+    event_pattern: "event.payment.requested"
+    command: "ProcessPayment"
+
+commands:
+  - name: "ProcessPayment"
+    description: "Process payment through external gateway"
+    handler: "payment_processor"
+
+configuration:
+  external_api:
+    base_url: "${PAYMENT_GATEWAY_URL}"
+    api_key: "${PAYMENT_API_KEY}"
+    timeout: "30s"
+
+# AI Agent - Fraud Detection
+---
+agent:
+  id: "ai-fraud-detector"
+  name: "Order Fraud Detector"
+  type: "ai"
+  version: "1.0.0"
+
+metadata:
+  description: "Analyzes orders for potential fraud using ML models"
+  owner: "security-team"
+  environment: "production"
+
+capabilities:
+  - name: "fraud-analysis"
+    description: "Analyze orders for fraud patterns"
+    permissions:
+      - "read:order-data"
+      - "read:customer-history"
+      - "write:fraud-alerts"
+
+triggers:
+  - name: "order-received"
+    type: "event"
+    event_pattern: "event.order.received"
+    command: "AnalyzeFraud"
+
+commands:
+  - name: "AnalyzeFraud"
+    description: "Analyze order for fraud indicators"
+    handler: "fraud_analyzer"
+
+configuration:
+  ai_models:
+    fraud_model: "${FRAUD_MODEL_PATH}"
+  thresholds:
+    high_risk: 0.8
+    medium_risk: 0.5
+
+# User Agent - Order Notifications
+---
+agent:
+  id: "user-order-notifier"
+  name: "Order Notification Manager"
+  type: "user"
+  version: "1.0.0"
+
+metadata:
+  description: "Manages customer notifications throughout order lifecycle"
+  owner: "customer-experience-team"
+  environment: "production"
+
+capabilities:
+  - name: "notification-delivery"
+    description: "Send notifications to customers"
+    permissions:
+      - "write:notifications"
+      - "read:customer-preferences"
+
+triggers:
+  - name: "order-status-changed"
+    type: "event"
+    event_pattern: "event.order.status.changed"
+    command: "SendNotification"
+
+commands:
+  - name: "SendNotification"
+    description: "Send order status notification to customer"
+    handler: "notification_sender"
+
+configuration:
+  notification_channels:
+    - "email"
+    - "sms"
+    - "push"
+
+# Agent Orchestration
+---
+orchestration:
+  name: "order-processing-workflow"
+  description: "Coordinates agents during order processing"
+  
+  workflow:
+    - step: "fraud-check"
+      agent: "ai-fraud-detector"
+      condition: "order.received"
+      
+    - step: "payment-processing"  
+      agent: "integration-payment-gateway"
+      condition: "fraud.approved"
+      
+    - step: "monitoring"
+      agent: "system-order-monitor"
+      condition: "payment.initiated"
+      
+    - step: "notifications"
+      agent: "user-order-notifier" 
+      condition: "order.status.changed"

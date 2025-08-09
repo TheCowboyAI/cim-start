@@ -1,0 +1,65 @@
+# Copyright 2025 - Cowboy AI, LLC
+
+name: Documentation Issue
+description: Report missing, incorrect, or unclear documentation
+title: "[Docs]: "
+labels: ["documentation", "triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve CIM-Start documentation!
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation needs attention?
+      options:
+        - README
+        - API Documentation
+        - Getting Started Guide
+        - Domain Modeling Guide
+        - Infrastructure Setup
+        - Examples
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's the issue?
+      description: Describe what's missing, incorrect, or unclear in the documentation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Where is the documentation?
+      description: Provide file paths or URLs where the documentation exists or should exist.
+      placeholder: e.g., /doc/quick-start.md, line 42
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: How would you improve this documentation?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is the primary audience for this documentation?
+      options:
+        - Beginners
+        - Intermediate Users
+        - Advanced Users
+        - Contributors
+        - All Users
+    validations:
+      required: true

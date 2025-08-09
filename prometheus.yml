@@ -1,0 +1,36 @@
+# Copyright 2025 - Cowboy AI, LLC
+# Prometheus configuration for CIM NATS monitoring
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # NATS monitoring via nats-surveyor
+  - job_name: 'nats-surveyor'
+    static_configs:
+      - targets: ['nats-surveyor:7777']
+    metrics_path: /metrics
+    scrape_interval: 10s
+    
+  # NATS server direct monitoring (if enabled)
+  - job_name: 'nats-server'
+    static_configs:
+      - targets: ['nats:8222']
+    metrics_path: /varz
+    scrape_interval: 30s
+    
+  # Self monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093

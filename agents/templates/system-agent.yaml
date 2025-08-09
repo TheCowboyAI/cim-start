@@ -1,0 +1,93 @@
+# Copyright 2025 - Cowboy AI, LLC
+# System Agent Configuration Template
+
+agent:
+  id: "system-monitor-001"
+  name: "Infrastructure Monitor"
+  type: "system"
+  version: "1.0.0"
+  
+metadata:
+  description: "Monitors system health and performance metrics"
+  owner: "infrastructure-team"
+  environment: "production"
+  
+capabilities:
+  - name: "metrics-collection"
+    description: "Collect system and application metrics"
+    permissions:
+      - "read:system-metrics"
+      - "read:application-logs"
+  
+  - name: "alerting"
+    description: "Send alerts on threshold breaches"
+    permissions:
+      - "write:notifications"
+      - "write:alert-events"
+  
+  - name: "auto-scaling"
+    description: "Automatically scale resources based on load"
+    permissions:
+      - "write:scaling-commands"
+      - "read:resource-metrics"
+
+configuration:
+  runtime:
+    memory_limit: "512MB"
+    cpu_limit: "0.5"
+    restart_policy: "always"
+    
+  nats:
+    subjects:
+      commands: "agent.system.monitor.commands"
+      events: "agent.system.monitor.events"
+      status: "agent.system.monitor.status"
+  
+  monitoring:
+    check_interval: "30s"
+    alert_thresholds:
+      cpu_usage: 80
+      memory_usage: 85
+      disk_usage: 90
+    
+triggers:
+  - name: "scheduled-check"
+    type: "schedule"
+    schedule: "*/30 * * * * *"  # Every 30 seconds
+    command: "CollectMetrics"
+  
+  - name: "threshold-breach"
+    type: "event"
+    event_pattern: "metric.threshold.exceeded"
+    command: "SendAlert"
+  
+  - name: "scaling-required"
+    type: "event"
+    event_pattern: "resource.scaling.required"
+    command: "ScaleResource"
+
+commands:
+  - name: "CollectMetrics"
+    description: "Collect current system metrics"
+    handler: "metrics_collector"
+    
+  - name: "SendAlert"  
+    description: "Send alert notification"
+    handler: "alert_sender"
+    
+  - name: "ScaleResource"
+    description: "Scale system resources"
+    handler: "resource_scaler"
+
+events:
+  - name: "MetricsCollected"
+    description: "System metrics have been collected"
+    schema: "schemas/metrics-collected.json"
+    
+  - name: "AlertSent"
+    description: "Alert notification sent"
+    schema: "schemas/alert-sent.json"
+    
+  - name: "ResourceScaled" 
+    description: "System resources have been scaled"
+    schema: "schemas/resource-scaled.json"

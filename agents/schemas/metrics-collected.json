@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Metrics Collected Event Schema",
+  "description": "Schema for system metrics collection events",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique event identifier"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "ID of the agent that collected metrics"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When metrics were collected"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "object",
+          "properties": {
+            "cpu_usage_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "memory_usage_percent": {
+              "type": "number", 
+              "minimum": 0,
+              "maximum": 100
+            },
+            "disk_usage_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "load_average": {
+              "type": "array",
+              "items": { "type": "number" },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        },
+        "application": {
+          "type": "object",
+          "properties": {
+            "response_time_ms": {
+              "type": "number",
+              "minimum": 0
+            },
+            "requests_per_second": {
+              "type": "number",
+              "minimum": 0
+            },
+            "error_rate_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "active_connections": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "custom": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean"]
+          }
+        }
+      }
+    },
+    "host": {
+      "type": "object",
+      "properties": {
+        "hostname": { "type": "string" },
+        "ip_address": { "type": "string" },
+        "environment": { "type": "string" }
+      }
+    }
+  },
+  "required": ["event_id", "agent_id", "timestamp", "metrics", "host"]
+}

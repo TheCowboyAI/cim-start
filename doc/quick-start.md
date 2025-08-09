@@ -1,5 +1,7 @@
 # CIM Domain Quick Start Guide
 
+Copyright 2025 - Cowboy AI, LLC
+
 ## 🚀 15-Minute Domain Template
 
 Fill in this template to create your domain in 15 minutes!

@@ -1,0 +1,116 @@
+# Copyright 2025 - Cowboy AI, LLC
+# AI Agent Configuration Template
+
+agent:
+  id: "ai-nlp-001"
+  name: "Natural Language Processor" 
+  type: "ai"
+  version: "1.0.0"
+  
+metadata:
+  description: "Processes natural language inputs and extracts meaning"
+  owner: "ai-team"
+  environment: "production"
+  
+capabilities:
+  - name: "text-analysis"
+    description: "Analyze text for sentiment, entities, and intent"
+    permissions:
+      - "read:text-inputs"
+      - "write:analysis-results"
+  
+  - name: "language-generation"
+    description: "Generate natural language responses"
+    permissions:
+      - "read:context-data"
+      - "write:generated-text"
+  
+  - name: "entity-extraction"
+    description: "Extract named entities from text"
+    permissions:
+      - "read:entity-models"
+      - "write:extracted-entities"
+
+configuration:
+  runtime:
+    memory_limit: "1GB"
+    cpu_limit: "1.0"
+    restart_policy: "always"
+    
+  nats:
+    subjects:
+      commands: "agent.ai.nlp.commands"
+      events: "agent.ai.nlp.events"
+      status: "agent.ai.nlp.status"
+  
+  ai_models:
+    sentiment_model: "${SENTIMENT_MODEL_PATH}"
+    entity_model: "${ENTITY_MODEL_PATH}"
+    language_model: "${LANGUAGE_MODEL_PATH}"
+    
+  processing:
+    max_text_length: 10000
+    batch_size: 32
+    confidence_threshold: 0.8
+    
+triggers:
+  - name: "text-received"
+    type: "event"
+    event_pattern: "event.text.received"
+    command: "ProcessText"
+  
+  - name: "conversation-started"
+    type: "event"
+    event_pattern: "event.conversation.started"
+    command: "InitializeConversation"
+  
+  - name: "generate-response"
+    type: "command"
+    command_pattern: "cmd.generate.response"
+    command: "GenerateResponse"
+
+commands:
+  - name: "ProcessText"
+    description: "Analyze incoming text for sentiment and entities"
+    handler: "text_processor"
+    
+  - name: "InitializeConversation"
+    description: "Set up conversation context"
+    handler: "conversation_initializer"
+    
+  - name: "GenerateResponse"
+    description: "Generate contextual response text"
+    handler: "response_generator"
+
+events:
+  - name: "TextAnalyzed"
+    description: "Text has been analyzed for sentiment and entities"
+    schema: "schemas/text-analyzed.json"
+    
+  - name: "ConversationInitialized"
+    description: "Conversation context established"
+    schema: "schemas/conversation-initialized.json"
+    
+  - name: "ResponseGenerated"
+    description: "Natural language response generated"
+    schema: "schemas/response-generated.json"
+
+ai_config:
+  sentiment_analysis:
+    enabled: true
+    output_scores: true
+    
+  entity_extraction:
+    enabled: true
+    entity_types:
+      - "PERSON"
+      - "ORGANIZATION" 
+      - "LOCATION"
+      - "DATE"
+      - "MONEY"
+      
+  language_generation:
+    enabled: true
+    max_tokens: 500
+    temperature: 0.7
+    top_p: 0.9

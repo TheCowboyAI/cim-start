@@ -1,0 +1,228 @@
+# Copyright 2025 - Cowboy AI, LLC
+# Example: Customer Service with AI and User Agents
+
+# AI Agent - Conversation Handler
+---
+agent:
+  id: "ai-conversation-handler"
+  name: "Customer Service Chat Bot"
+  type: "ai"
+  version: "1.0.0"
+
+metadata:
+  description: "Handles customer service conversations and routes to human agents"
+  owner: "customer-service-team"
+  environment: "production"
+
+capabilities:
+  - name: "conversation-management"
+    description: "Manage multi-turn customer conversations"
+    permissions:
+      - "read:customer-messages"
+      - "write:chat-responses"
+      - "read:knowledge-base"
+
+  - name: "intent-classification"
+    description: "Classify customer intents and route appropriately"
+    permissions:
+      - "read:conversation-history"
+      - "write:routing-decisions"
+
+triggers:
+  - name: "customer-message-received"
+    type: "event"
+    event_pattern: "event.chat.message.received"
+    command: "ProcessMessage"
+
+  - name: "conversation-escalated"
+    type: "event"
+    event_pattern: "event.conversation.escalate"
+    command: "RouteToHuman"
+
+commands:
+  - name: "ProcessMessage"
+    description: "Process incoming customer message"
+    handler: "message_processor"
+
+  - name: "RouteToHuman"
+    description: "Route conversation to human agent"
+    handler: "human_router"
+
+configuration:
+  ai_models:
+    intent_classifier: "${INTENT_MODEL_PATH}"
+    response_generator: "${RESPONSE_MODEL_PATH}"
+    sentiment_analyzer: "${SENTIMENT_MODEL_PATH}"
+  
+  conversation:
+    max_bot_turns: 5
+    escalation_triggers:
+      - "negative_sentiment"
+      - "complex_request"
+      - "payment_issue"
+    
+  knowledge_base:
+    faq_collection: "customer_service_faq"
+    policy_collection: "company_policies"
+
+# User Agent - Human Agent Workflow
+---
+agent:
+  id: "user-agent-workflow"
+  name: "Human Agent Workflow Manager"
+  type: "user"
+  version: "1.0.0"
+
+metadata:
+  description: "Manages human agent workflows and task assignment"
+  owner: "customer-service-team"
+  environment: "production"
+
+capabilities:
+  - name: "agent-assignment"
+    description: "Assign conversations to available human agents"
+    permissions:
+      - "read:agent-availability"
+      - "write:task-assignments"
+
+  - name: "workload-balancing"
+    description: "Balance workload across human agents"
+    permissions:
+      - "read:agent-metrics"
+      - "write:load-balancing-events"
+
+triggers:
+  - name: "conversation-routed"
+    type: "event"
+    event_pattern: "event.conversation.routed.human"
+    command: "AssignToAgent"
+
+  - name: "agent-status-changed"
+    type: "event"
+    event_pattern: "event.agent.status.changed"
+    command: "RebalanceWorkload"
+
+commands:
+  - name: "AssignToAgent"
+    description: "Assign conversation to available human agent"
+    handler: "agent_assigner"
+
+  - name: "RebalanceWorkload"
+    description: "Rebalance conversations across agents"
+    handler: "workload_balancer"
+
+configuration:
+  assignment_strategy: "round_robin"
+  max_conversations_per_agent: 3
+  agent_skills_matching: true
+
+# Integration Agent - CRM Sync
+---
+agent:
+  id: "integration-crm-sync"
+  name: "CRM Data Synchronizer"
+  type: "integration"
+  version: "1.0.0"
+
+metadata:
+  description: "Synchronizes customer service interactions with CRM system"
+  owner: "customer-data-team"
+  environment: "production"
+
+capabilities:
+  - name: "conversation-logging"
+    description: "Log conversations to CRM system"
+    permissions:
+      - "external:crm-api"
+      - "read:conversation-data"
+
+  - name: "customer-data-sync"
+    description: "Sync customer data with CRM"
+    permissions:
+      - "read:customer-profiles"
+      - "write:crm-updates"
+
+triggers:
+  - name: "conversation-completed"
+    type: "event"
+    event_pattern: "event.conversation.completed"
+    command: "LogToCRM"
+
+  - name: "customer-updated"
+    type: "event"
+    event_pattern: "event.customer.updated"
+    command: "SyncToCRM"
+
+commands:
+  - name: "LogToCRM"
+    description: "Log conversation details to CRM"
+    handler: "crm_logger"
+
+  - name: "SyncToCRM"
+    description: "Sync customer data to CRM"
+    handler: "crm_syncer"
+
+configuration:
+  external_api:
+    crm_base_url: "${CRM_API_URL}"
+    api_token: "${CRM_API_TOKEN}"
+    sync_batch_size: 50
+
+# System Agent - Service Monitor
+---
+agent:
+  id: "system-service-monitor"
+  name: "Customer Service Monitor"
+  type: "system"
+  version: "1.0.0"
+
+metadata:
+  description: "Monitors customer service metrics and SLA compliance"
+  owner: "operations-team"
+  environment: "production"
+
+capabilities:
+  - name: "sla-monitoring"
+    description: "Monitor response time and resolution SLAs"
+    permissions:
+      - "read:service-metrics"
+      - "write:sla-alerts"
+
+  - name: "performance-tracking"
+    description: "Track agent and system performance"
+    permissions:
+      - "read:performance-data"
+      - "write:performance-reports"
+
+triggers:
+  - name: "conversation-metrics"
+    type: "schedule"
+    schedule: "*/5 * * * *"  # Every 5 minutes
+    command: "CheckSLAs"
+
+  - name: "daily-report"
+    type: "schedule"
+    schedule: "0 9 * * *"  # Daily at 9 AM
+    command: "GenerateReport"
+
+commands:
+  - name: "CheckSLAs"
+    description: "Check SLA compliance for active conversations"
+    handler: "sla_checker"
+
+  - name: "GenerateReport"
+    description: "Generate daily performance report"
+    handler: "report_generator"
+
+configuration:
+  sla_thresholds:
+    first_response: "2m"
+    resolution_time: "30m"
+    escalation_time: "15m"
+  
+  reporting:
+    metrics:
+      - "response_times"
+      - "resolution_rates"
+      - "customer_satisfaction"
+      - "agent_utilization"
