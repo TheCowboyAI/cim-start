@@ -1,0 +1,266 @@
+# Copyright 2025 - Cowboy AI, LLC
+# Interactive Domain Collection Agent Configuration
+# 
+# This agent provides an interactive interface for collecting Domain information
+# during the initial setup of a CIM system. It guides users through the process
+# of defining the foundational Domain entity with its required components.
+
+agent:
+  id: "user-domain-collection-001"
+  name: "Interactive Domain Collection Agent"
+  type: "user"
+  version: "1.0.0"
+  
+metadata:
+  description: "Guides users through interactive Domain creation and assignment in CIM-Start"
+  owner: "cim-infrastructure-team"
+  environment: "development"
+  purpose: "Foundational domain establishment for CIM systems"
+  
+capabilities:
+  - name: "domain-collection"
+    description: "Interactive collection of Domain information from users"
+    permissions:
+      - "write:domain-events"
+      - "read:domain-definitions"
+  
+  - name: "domain-validation"
+    description: "Validate Domain components against CIM invariants"
+    permissions:
+      - "read:cim-schemas"
+      - "validate:domain-structure"
+  
+  - name: "cim-graph-generation"
+    description: "Generate cim-graph structure from collected Domain data"
+    permissions:
+      - "write:cim-graphs"
+      - "read:graph-templates"
+
+  - name: "nats-integration"
+    description: "Publish domain events to NATS JetStream"
+    permissions:
+      - "publish:domain-events"
+      - "subscribe:command-responses"
+
+configuration:
+  runtime:
+    memory_limit: "256MB"
+    cpu_limit: "0.3"
+    restart_policy: "on-failure"
+    
+  nats:
+    subjects:
+      commands: "agent.user.domain-collection.commands"
+      events: "agent.user.domain-collection.events" 
+      status: "agent.user.domain-collection.status"
+  
+  domain_collection:
+    interactive_mode: true
+    validation_enabled: true
+    auto_stream_creation: true
+    output_formats:
+      - "cim-graph"
+      - "yaml"
+      - "json"
+    
+  validation:
+    required_components:
+      - "name"
+      - "purpose"
+    name_constraints:
+      - "no_spaces"
+      - "lowercase_with_hyphens"
+      - "min_length: 3"
+      - "max_length: 50"
+    purpose_constraints:
+      - "min_length: 10"
+      - "max_length: 500"
+    
+triggers:
+  - name: "start-domain-collection"
+    type: "command"
+    command_pattern: "agent.user.domain-collection.commands.start"
+    handler: "start_interactive_collection"
+  
+  - name: "validate-domain-input"
+    type: "command"
+    command_pattern: "agent.user.domain-collection.commands.validate"
+    handler: "validate_domain_components"
+  
+  - name: "generate-cim-graph"
+    type: "command"
+    command_pattern: "agent.user.domain-collection.commands.generate"
+    handler: "generate_cim_graph"
+
+commands:
+  - name: "StartDomainCollection"
+    description: "Begin interactive domain collection session"
+    handler: "start_interactive_collection"
+    
+  - name: "ValidateDomainInput"
+    description: "Validate collected domain information against CIM invariants"
+    handler: "validate_domain_components"
+    
+  - name: "GenerateCimGraph"
+    description: "Generate cim-graph from validated domain information"
+    handler: "generate_cim_graph"
+
+  - name: "CreateDomainStreams"
+    description: "Initialize NATS streams for the new domain"
+    handler: "create_domain_streams"
+
+events:
+  - name: "DomainCollectionStarted"
+    description: "Interactive domain collection session has started"
+    schema: "schemas/domain-collection-started.json"
+    
+  - name: "DomainComponentCollected"
+    description: "Individual domain component has been collected and validated"
+    schema: "schemas/domain-component-collected.json"
+    
+  - name: "DomainValidated"
+    description: "Complete domain information has been validated"
+    schema: "schemas/domain-validated.json"
+    
+  - name: "CimGraphGenerated"
+    description: "CIM graph has been generated from domain information"
+    schema: "schemas/cim-graph-generated.json"
+
+  - name: "DomainCreated"
+    description: "New domain has been successfully created and initialized"
+    schema: "schemas/domain-created.json"
+
+workflows:
+  interactive_domain_creation:
+    name: "Interactive Domain Creation Process"
+    description: "Complete workflow for collecting and creating a new domain"
+    steps:
+      - name: "start_session"
+        description: "Initialize interactive collection session"
+        timeout: "1m"
+        
+      - name: "collect_name"
+        description: "Collect and validate domain name"
+        timeout: "10m"
+        validation:
+          - "required"
+          - "format_check"
+          - "uniqueness_check"
+        
+      - name: "collect_purpose"
+        description: "Collect and validate domain purpose"
+        timeout: "15m"
+        validation:
+          - "required"
+          - "length_check"
+          - "clarity_check"
+        
+      - name: "validate_domain"
+        description: "Perform complete domain validation"
+        timeout: "2m"
+        
+      - name: "generate_cim_graph"
+        description: "Generate cim-graph structure"
+        timeout: "1m"
+        
+      - name: "create_streams"
+        description: "Initialize NATS streams for domain"
+        timeout: "2m"
+        
+      - name: "finalize_domain"
+        description: "Complete domain creation process"
+        timeout: "1m"
+
+# Interactive prompts and messages
+interaction_config:
+  welcome_message: |
+    Welcome to the CIM Domain Collection Agent!
+    
+    This agent will guide you through creating a new Domain for your CIM system.
+    A Domain establishes a "Domain of Reasoning" - a contextual boundary for your
+    business logic, organization, or individual use case.
+    
+    We'll collect two required components:
+    1. Domain Name (required) - A unique identifier for your domain
+    2. Domain Purpose (required) - A clear description of what this domain represents
+    
+    Let's begin!
+    
+  prompts:
+    domain_name:
+      question: "What is the name of your domain?"
+      help_text: |
+        The domain name should:
+        - Be unique within your CIM system
+        - Use lowercase letters and hyphens only
+        - Be descriptive but concise (3-50 characters)
+        - Examples: 'e-commerce', 'customer-service', 'inventory-management'
+      validation_messages:
+        required: "Domain name is required."
+        format: "Domain name must use lowercase letters and hyphens only."
+        length: "Domain name must be 3-50 characters long."
+        uniqueness: "This domain name already exists. Please choose another."
+    
+    domain_purpose:
+      question: "What is the purpose of this domain?"
+      help_text: |
+        The domain purpose should clearly describe:
+        - What business capability or area this domain represents
+        - The primary responsibilities and scope
+        - Why this domain boundary exists
+        - Minimum 10 characters, maximum 500 characters
+        - Example: 'Manages customer orders, inventory allocation, and fulfillment processes for our e-commerce platform'
+      validation_messages:
+        required: "Domain purpose is required."
+        length: "Domain purpose must be 10-500 characters long."
+        clarity: "Please provide a clear and descriptive purpose statement."
+
+# CIM Graph template structure
+cim_graph_template:
+  format_version: "1.0.0"
+  domain:
+    entity_type: "Domain"
+    components:
+      name:
+        component_type: "DomainName"
+        data_type: "string"
+        required: true
+        constraints:
+          - "unique_within_cim"
+          - "valid_identifier_format"
+      purpose:
+        component_type: "DomainPurpose"
+        data_type: "string"
+        required: true
+        constraints:
+          - "meaningful_description"
+          - "appropriate_length"
+    
+    relationships:
+      - type: "establishes"
+        target: "DomainOfReasoning"
+        cardinality: "one-to-one"
+      
+      - type: "contains"
+        target: "BoundedContext"
+        cardinality: "one-to-many"
+        
+      - type: "manages"
+        target: "DomainEvents"
+        cardinality: "one-to-many"
+
+# Integration with existing CIM-Start infrastructure
+integration:
+  nats_streams:
+    domain_events: "DOMAIN_{DOMAIN_NAME}_EVENTS"
+    commands: "DOMAIN_{DOMAIN_NAME}_COMMANDS"
+    snapshots: "DOMAIN_{DOMAIN_NAME}_SNAPSHOTS"
+    
+  file_outputs:
+    domain_definition: "domains/{domain_name}/domain-definition.yaml"
+    cim_graph: "domains/{domain_name}/domain.cim-graph.yaml"
+    
+  event_subjects:
+    domain_created: "dev.domain.{domain_name}.domain.created.{id}"
+    collection_started: "dev.agent.domain-collection.session.started.{id}"
+    collection_completed: "dev.agent.domain-collection.session.completed.{id}"

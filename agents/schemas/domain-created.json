@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.cim.ai/events/domain-created.json",
+  "title": "Domain Created Event Schema", 
+  "description": "Schema for the DomainCreated event published when a new domain is successfully created",
+  "type": "object",
+  "required": [
+    "event_type",
+    "timestamp", 
+    "agent_id",
+    "session_id",
+    "domain",
+    "version"
+  ],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "const": "DomainCreated",
+      "description": "Fixed event type identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the domain was created"
+    },
+    "agent_id": {
+      "type": "string", 
+      "description": "Unique identifier of the domain collection agent"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Unique identifier for the collection session that created this domain"
+    },
+    "domain": {
+      "type": "object",
+      "required": ["name", "purpose", "cim_graph_path", "environment"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,50}$",
+          "description": "Unique domain name following CIM naming conventions"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 500,
+          "description": "Clear description of the domain's purpose and scope"
+        },
+        "cim_graph_path": {
+          "type": "string",
+          "description": "File path to the generated CIM graph for this domain"
+        },
+        "environment": {
+          "type": "string",
+          "enum": ["dev", "staging", "prod"],
+          "description": "CIM environment where the domain was created"
+        },
+        "domain_definition_path": {
+          "type": "string",
+          "description": "File path to the domain definition YAML file"
+        },
+        "nats_streams": {
+          "type": "object",
+          "properties": {
+            "events": {"type": "string"},
+            "commands": {"type": "string"},
+            "snapshots": {"type": "string"}
+          },
+          "description": "NATS JetStream streams created for this domain"
+        }
+      },
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Version of the domain collection agent"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the domain creation",
+      "properties": {
+        "validation_results": {
+          "type": "object",
+          "properties": {
+            "name_valid": {"type": "boolean"},
+            "purpose_valid": {"type": "boolean"},
+            "cim_compliant": {"type": "boolean"}
+          }
+        },
+        "files_created": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "List of files created for this domain"
+        },
+        "streams_initialized": {
+          "type": "boolean",
+          "description": "Whether NATS streams were successfully initialized"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

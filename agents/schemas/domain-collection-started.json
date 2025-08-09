@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.cim.ai/events/domain-collection-started.json",
+  "title": "Domain Collection Started Event Schema",
+  "description": "Schema for the DomainCollectionStarted event published when an interactive domain collection session begins",
+  "type": "object",
+  "required": [
+    "event_type",
+    "timestamp",
+    "agent_id",
+    "session_id",
+    "environment",
+    "version"
+  ],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "const": "DomainCollectionStarted",
+      "description": "Fixed event type identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the collection session started"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "Unique identifier of the domain collection agent"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Unique identifier for this collection session"
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["dev", "staging", "prod"],
+      "description": "CIM environment where the collection is taking place"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Version of the domain collection agent"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the collection session",
+      "properties": {
+        "user_info": {
+          "type": "object",
+          "properties": {
+            "user_id": {"type": "string"},
+            "user_name": {"type": "string"}
+          }
+        },
+        "collection_config": {
+          "type": "object",
+          "properties": {
+            "interactive_mode": {"type": "boolean"},
+            "validation_enabled": {"type": "boolean"}
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

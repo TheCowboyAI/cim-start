@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.cim.ai/events/cim-graph-generated.json",
+  "title": "CIM Graph Generated Event Schema",
+  "description": "Schema for the CimGraphGenerated event published when a CIM graph is generated from domain information",
+  "type": "object",
+  "required": [
+    "event_type",
+    "timestamp",
+    "agent_id", 
+    "session_id",
+    "cim_graph",
+    "version"
+  ],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "const": "CimGraphGenerated",
+      "description": "Fixed event type identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the CIM graph was generated"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "Unique identifier of the domain collection agent"
+    },
+    "session_id": {
+      "type": "string", 
+      "description": "Unique identifier for the collection session"
+    },
+    "cim_graph": {
+      "type": "object",
+      "required": ["graph_id", "domain_name", "file_path", "format_version"],
+      "properties": {
+        "graph_id": {
+          "type": "string",
+          "description": "Unique identifier for the generated CIM graph"
+        },
+        "domain_name": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{3,50}$",
+          "description": "Name of the domain this graph represents"
+        },
+        "file_path": {
+          "type": "string",
+          "description": "File system path where the CIM graph is stored"
+        },
+        "format_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Version of the CIM graph format used"
+        },
+        "entity_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of entities in the generated graph"
+        },
+        "component_count": {
+          "type": "integer", 
+          "minimum": 0,
+          "description": "Number of components in the generated graph"
+        },
+        "relationship_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of relationships in the generated graph"
+        },
+        "complexity_score": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Assessed complexity level of the domain graph"
+        }
+      },
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Version of the domain collection agent"
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "cim_compliant": {
+          "type": "boolean",
+          "description": "Whether the graph adheres to CIM standards"
+        },
+        "invariants_satisfied": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "List of CIM invariants that are satisfied"
+        },
+        "validation_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When validation was performed"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
