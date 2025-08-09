@@ -36,85 +36,94 @@ cim-start/
 └── docker-compose.yml  # NATS infrastructure
 ```
 
-## 🎯 Quick Start
+## 🚀 Getting Started
 
-### 1. Deploy NATS JetStream Environment (2 minutes)
+### Step 1: Create Your CIM Project from Template
+
+**Use this repository as a GitHub template** (don't clone directly):
+
+1. Click "Use this template" → "Create a new repository" on GitHub
+2. Name your new repository (e.g., `my-ecommerce-cim`)
+3. Clone your new repository:
 
 ```bash
-# Start the complete CIM NATS environment
+git clone https://github.com/your-username/my-ecommerce-cim.git
+cd my-ecommerce-cim
+```
+
+### Step 2: Initialize Claude Code
+
+**Set up Claude Code with CIM-Start agents:**
+
+```bash
+# Initialize Claude Code in your project
+claude init
+
+# Verify agents are available
+claude --help
+# You should see @cim-expert and @domain-expert listed
+```
+
+### Step 3: Start Your Domain Creation
+
+**Choose your path:**
+
+**Option A - Get CIM Architecture Guidance:**
+```bash
+claude "@cim-expert Explain how the Object Store works with NATS"
+```
+
+**Option B - Create Your First Domain:**
+```bash
+claude "@domain-expert Help me create a customer service domain"
+```
+
+**Option C - Traditional Setup (if you prefer manual approach):**
+```bash
+# Start NATS infrastructure
 make dev
 
-# Or manually:
-docker-compose up -d
-./scripts/init-streams.sh
-```
-
-### 2. Test Domain Event Storage (1 minute)
-
-```bash
-# Test the event infrastructure
+# Test the system
 make test-events
-
-# Watch events in real-time
-make watch-events
 ```
 
-### 3. Start Defining Your Domain (15 minutes)
+## 🏗️ Working with CIM-Start
 
-```bash
-# Create your domain definition
-cp domains/example-business/domain-definition.yaml domains/my-domain/
+### The Claude Code Workflow
 
-# Use event storming guide
-cat doc/event-storming-guide.md
+Once you've initialized Claude Code, you have access to two specialized agents:
 
-# Or use the quick template
-cat doc/quick-start.md
-```
+**🤖 @cim-expert - Your CIM Architecture Guide**
+- Explains mathematical foundations (Category Theory, Graph Theory, IPLD)
+- Guides Object Store usage and CID patterns
+- Troubleshoots NATS patterns and subject algebra
+- Provides structure-preserving propagation guidance
 
-### 4. Monitor Your Environment
+**🏗️ @domain-expert - Your Domain Creation Specialist**  
+- Interactive domain discovery sessions
+- Converts business requirements into mathematically sound CIM domains
+- Generates complete `domain.cim-graph.yaml` files
+- Creates cim-graph library compatible events
 
-```bash
-# Open monitoring dashboards
-make monitor
+### Recommended Workflow
 
-# NATS Dashboard: http://localhost:8222
-# Prometheus: http://localhost:9090  
-# Grafana: http://localhost:3000 (admin/admin)
-```
+1. **Start with Architecture Understanding:**
+   ```bash
+   claude "@cim-expert What are the benefits of content-addressed storage?"
+   ```
 
-## 🏗️ Building Your Domain
+2. **Create Your Domain:**
+   ```bash
+   claude "@domain-expert I need to build an e-commerce domain"
+   ```
 
-### Step 1: Discovery
-Start by identifying the key events in your business domain:
-- What happens in your business?
-- Who initiates these actions?
-- What are the outcomes?
+3. **Get Implementation Guidance:**
+   ```bash
+   claude "@cim-expert How do I set up NATS streams for my domain?"
+   ```
 
-### Step 2: Model
-Define your domain using the provided templates:
-- Events (past-tense facts)
-- Commands (user intentions)
-- Aggregates (consistency boundaries)
-- Policies (automated rules)
-
-### Step 3: Assemble
-Use existing CIM modules instead of building from scratch:
-- `cim-events` - Event sourcing
-- `cim-projections` - CQRS views
-- `cim-domain-identity` - Authentication
-- `cim-security` - Authorization
-- `cim-workflow` - Business processes
-
-### Step 4: Implement
-Follow event-driven patterns:
-```rust
-// Commands trigger events
-Command::CreateOrder { ... } 
-  → OrderCreated { ... }
-  → StockReserved { ... }
-  → PaymentRequested { ... }
-```
+4. **Iterate and Refine:**
+   Continue the conversation with either agent as you develop your domain.
 
 ## 🐳 NATS JetStream Setup
 
@@ -149,40 +158,36 @@ nats-server -js
 - `/doc/structure-preserving-propagation.md` - How mathematical structures propagate
 - `/agents/README.md` - Agent architecture overview
 
-## 🤖 Claude Code Agents
+## 🤖 Claude Code Integration
 
-CIM-Start provides specialized Claude Code agents to guide development:
+CIM-Start is designed to work seamlessly with Claude Code:
 
-### CIM Expert Agent (`@cim-expert`)
-- Explains mathematical foundations (Category Theory, Graph Theory, IPLD)
-- Guides Object Store usage and CID patterns  
-- Troubleshoots CIM architecture questions
-- Provides NATS patterns and subject algebra guidance
+### Why Use Claude Code with CIM-Start?
 
-### Domain Expert Agent (`@domain-expert`) 
-- Interactive domain creation sessions
-- Converts business requirements into CIM domains
-- Generates complete `domain.cim-graph.yaml` files
-- Validates mathematical domain structures
+1. **Template-Based Setup**: Use this repo as a GitHub template, then run `claude init`
+2. **Expert Agents**: Get specialized guidance from `@cim-expert` and `@domain-expert`
+3. **Interactive Domain Creation**: Convert business requirements into mathematical CIM structures
+4. **Architecture Guidance**: Understand Category Theory, Graph Theory, and IPLD foundations
+5. **Schema-Compliant Output**: Generate cim-graph library compatible events automatically
 
-### Using the Agents
+### The Agents Available After `claude init`
 
-**Activate agents with `@` mentions:**
+**🤖 @cim-expert** - Architecture and mathematical foundations guidance
+**🏗️ @domain-expert** - Interactive domain creation with structured output
+
+### Getting Started is Simple
+
 ```bash
-# Ask the CIM Expert about architecture
-"@cim-expert How does content-addressed storage prevent data corruption?"
+# 1. Use as GitHub template (don't clone)
+# 2. Clone your new repository
+# 3. Initialize Claude Code
+claude init
 
-# Get domain creation guidance  
-"@domain-expert Help me create a customer service domain"
+# 4. Start working immediately
+claude "@domain-expert I need to create a billing domain for my SaaS"
 ```
 
-**Agents automatically activate when you:**
-- Ask about CIM concepts or mathematical foundations
-- Mention domain creation or bounded contexts
-- Need help with Object Store patterns or NATS flows
-- Discuss Category Theory, Graph Theory, or IPLD concepts
-
-These agents have access to all CIM-Start documentation and provide contextual, expert guidance for your specific development needs.
+No complex setup, no configuration files to edit - the agents guide you through everything.
 
 ## 🔧 Available Modules
 
@@ -221,12 +226,12 @@ See `/domains/example-business/` for a complete e-commerce domain with:
 
 ## 🚦 Next Steps
 
-1. Clone this repository
-2. Define your first events
-3. Start NATS JetStream
-4. Implement your aggregates
-5. Build projections
-6. Test with real scenarios
+1. **Use this repo as a GitHub template** (don't clone directly)
+2. **Run `claude init`** in your new project directory
+3. **Start with `@domain-expert`** to create your first domain
+4. **Use `@cim-expert`** for architecture questions
+5. **Follow the agents' guidance** for NATS setup and implementation
+6. **Iterate** with the agents as you build your CIM
 
 ## 📝 License
 
