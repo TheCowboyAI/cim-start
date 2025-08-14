@@ -2,6 +2,29 @@
 
 This file defines custom slash commands for easy access to CIM experts and common operations.
 
+## Primary Interface
+
+### /sage
+**Description**: The master orchestrator for all CIM creation tasks - your single entry point for building Composable Information Machines
+**Usage**: `/sage [your_cim_request]`
+**Examples**:
+- `/sage I want to build a CIM for my e-commerce business`
+- `/sage Help my team understand our order processing domain`
+- `/sage Set up complete CIM infrastructure from scratch`
+- `/sage Integrate my existing microservices into CIM architecture`
+- `/sage What's the next step in my CIM development?`
+
+**Implementation**:
+```
+Invoke @sage with the user's request. SAGE will:
+- Analyze your intent and current CIM development stage
+- Route requests to appropriate specialist agents
+- Coordinate multi-agent workflows for complex tasks
+- Orchestrate the complete CIM development journey
+- Provide unified guidance synthesized from all experts
+- Manage collaborative sessions between multiple agents
+```
+
 ## Expert Commands
 
 ### /cim
@@ -22,6 +45,89 @@ Invoke @cim-expert with the user's question. The CIM Expert will provide detaile
 - NATS JetStream patterns and subject algebra
 - Structure-preserving propagation
 - Domain-driven event patterns and CQRS implementation
+```
+
+### /ddd
+**Description**: Analyze domain knowledge, define boundaries and behaviors, design aggregates with state machines using CIM DDD principles
+**Usage**: `/ddd [analysis_type]`
+**Examples**:
+- `/ddd` (general DDD analysis guidance)
+- `/ddd analyze these event storming results`
+- `/ddd define aggregate boundaries for order processing`
+- `/ddd design state machine for Order aggregate`
+- `/ddd identify value objects and invariants`
+
+**Implementation**:
+```
+Invoke @ddd-expert with the user's request. The DDD Expert will:
+- Extract domain knowledge and define natural boundaries
+- Design aggregates with state machines and business rules
+- Identify value objects as invariant groups
+- Create entities with proper identity and lifecycle
+- Analyze event storming results for boundary definition
+- Validate domain models with business experts
+```
+
+### /eventstorming
+**Description**: Lead collaborative domain discovery sessions with multiple domain experts to identify events, commands, and boundaries
+**Usage**: `/eventstorming [domain_scope]`
+**Examples**:
+- `/eventstorming` (start general domain discovery)
+- `/eventstorming order processing and fulfillment`
+- `/eventstorming customer onboarding workflow`
+- `/eventstorming inventory management system`
+
+**Implementation**:
+```
+Invoke @event-storming-expert with the domain scope. The Event Storming Expert will:
+- Facilitate structured 5-phase Event Storming sessions
+- Guide multiple domain experts through collaborative discovery
+- Capture domain events, commands, policies, and hotspots
+- Identify natural boundaries and bounded contexts
+- Generate structured results for DDD analysis
+- Hand off findings to @ddd-expert for boundary analysis
+```
+
+### /nix
+**Description**: Generate Nix configurations from domain context using cim-domain-nix for system and application design
+**Usage**: `/nix [operation]`
+**Examples**:
+- `/nix` (general Nix configuration guidance)
+- `/nix generate system config from domain events`
+- `/nix create flake for my domain`
+- `/nix project network topology to NixOS config`
+- `/nix validate configuration security`
+
+**Implementation**:
+```
+Invoke @nix-expert with the user's request. The Nix Expert will:
+- Transform domain events into declarative Nix configurations
+- Generate NixOS configurations from network topology events
+- Create domain-specific flakes with cim-domain-nix integration
+- Implement event-driven infrastructure generation
+- Validate configuration security and performance
+- Manage cross-domain dependencies in Nix
+```
+
+### /nats
+**Description**: Configure NATS infrastructure including Message Bus, IPLD Object Store, KV Store, and NSC security
+**Usage**: `/nats [operation]`
+**Examples**:
+- `/nats` (general NATS setup guidance)
+- `/nats setup streams for my domain`
+- `/nats configure object store with IPLD`
+- `/nats set up NSC security accounts`
+- `/nats partition channels for multi-domain`
+
+**Implementation**:
+```
+Invoke @nats-expert with the user's request. The NATS Expert will:
+- Configure JetStream streams for domain events and objects
+- Set up IPLD Object Store with content-addressed storage
+- Initialize KV Store for domain metadata
+- Implement NSC security with account isolation
+- Design subject algebra and channel partitioning
+- Configure cross-domain communication controls
 ```
 
 ### /network
@@ -198,7 +304,12 @@ Display current project information:
 
 For convenience, provide these shorter aliases:
 
+- `/sage` → `/sage` (primary interface)
 - `/c` → `/cim`
+- `/ddd` → `/ddd`
+- `/es` → `/eventstorming`
+- `/nix` → `/nix`
+- `/nats` → `/nats`
 - `/n` → `/network`
 - `/d` → `/domain` 
 - `/arch` → `/architecture`
@@ -207,10 +318,16 @@ For convenience, provide these shorter aliases:
 
 ## Usage Notes
 
-1. **Expert Integration**: All expert commands automatically invoke the appropriate agent (@cim-expert, @network-expert, or @domain-expert)
-2. **Context Aware**: Commands adapt to the current project state and available files
-3. **Documentation Access**: Commands can read and reference all project documentation
-4. **Interactive**: Domain commands can start multi-turn conversations
-5. **Validation**: Commands validate inputs against project schemas when appropriate
+1. **SAGE Orchestration**: `/sage` is the recommended entry point that intelligently routes to appropriate experts and coordinates multi-agent workflows
+2. **Expert Integration**: Direct expert commands (@cim-expert, @sage, @ddd-expert, @event-storming-expert, @nix-expert, @nats-expert, @network-expert, or @domain-expert) are available for specific needs
+3. **Context Aware**: Commands adapt to the current project state and available files
+4. **Documentation Access**: Commands can read and reference all project documentation
+5. **Interactive**: Domain commands can start multi-turn conversations
+6. **Validation**: Commands validate inputs against project schemas when appropriate
 
-These commands make CIM-Start expertise immediately accessible through simple slash commands while leveraging the full power of the specialized agents.
+**Recommended Usage Pattern:**
+- Start with `/sage` for any CIM-related task
+- Use direct expert commands when you know exactly which expert you need
+- SAGE will coordinate multiple experts automatically for complex workflows
+
+These commands make CIM-Start expertise immediately accessible through simple slash commands while leveraging the full power of the specialized agents under SAGE's intelligent orchestration.

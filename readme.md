@@ -1,21 +1,38 @@
-# CIM-Start: Domain-Driven Development Starter Kit
+# CIM-Start: Agent-Powered CIM Development Kit
 
 Copyright 2025 - Cowboy AI, LLC
 
+## 🤖 Meet SAGE - Your CIM Creation Guide
+
+CIM-Start uses an intelligent agent system orchestrated by **SAGE** - your single entry point for building Composable Information Machines. SAGE coordinates seven specialized experts to guide you through complete CIM development.
+
+**🎯 Simply ask SAGE anything:**
+```bash
+/sage I want to build a CIM for my e-commerce business
+/sage Help my team understand our order processing domain
+/sage Set up complete CIM infrastructure from scratch
+```
+
+**SAGE automatically:**
+- **Analyzes** your needs and current situation
+- **Routes** requests to appropriate specialist agents
+- **Coordinates** multi-agent workflows for complex tasks
+- **Synthesizes** guidance from all experts into unified direction
+- **Manages** the complete CIM development journey
+
 ## 🚀 Purpose
 
-CIM-Start configures and launches a JetStream container for your domain development. You're already in git - this repo IS your domain. The JetStream container provides:
+CIM-Start provides intelligent, agent-driven CIM development where SAGE orchestrates everything you need:
 
-- **More Events Than Commits** - Fine-grained events beyond git commit granularity
-- **Live Domain Construction** - Build domains through events and graphs in JetStream  
-- **Event-Based Development** - Every domain change captured as events in real-time
-- **Git + Events** - Git commits serve as major events, JetStream captures detailed events
-- **Graph-based Construction** - Using cim-graph to build domain through Events
-- **Development Projections** - Real-time views of domain construction progress
+- **Expert-Guided Development** - SAGE coordinates 7 specialized agents for complete CIM creation
+- **Collaborative Domain Discovery** - Event Storming sessions with multiple domain experts
+- **Infrastructure Automation** - NATS, network topology, and system configuration
+- **Mathematical Foundations** - Category Theory, Graph Theory, and IPLD integration
+- **Event-Driven Architecture** - Complete event sourcing with real-time projections
 
-## 🎯 First Task: Configure and Launch NATS
+## 🎯 First Task: Talk to SAGE
 
-Simple: Configure and launch your JetStream container to capture the detailed events of domain construction:
+Simple: Ask SAGE to guide you through complete CIM development - no complex setup required:
 
 ```mermaid
 graph TB
@@ -269,51 +286,57 @@ make test-events
 
 ## 🏗️ Working with CIM-Start
 
-### The Claude Code Workflow
+### The SAGE Agent System
 
-Once you've initialized Claude Code, you have access to three specialized agents:
+**🧙‍♂️ SAGE - Your Master CIM Orchestrator**
+- Single entry point for all CIM development tasks
+- Analyzes your needs and coordinates appropriate experts
+- Manages multi-agent workflows for complex CIM creation
+- Provides unified guidance synthesized from all specialists
 
-**🤖 @cim-expert - Your CIM Architecture Guide**
-- Explains mathematical foundations (Category Theory, Graph Theory, IPLD)
-- Guides Object Store usage and CID patterns
-- Troubleshoots NATS patterns and subject algebra
-- Provides structure-preserving propagation guidance
+**The Expert Team (SAGE coordinates these automatically):**
 
-**🌐 @network-expert - Your Network Topology Specialist**
-- Invokes cim-network MCP to design network topology
-- Builds infrastructure foundation after NATS launch
-- Configures secure pathways for domain operations and replication
+**🤖 @cim-expert** - CIM architecture and mathematical foundations
+**🧩 @ddd-expert** - Domain boundaries and aggregate design
+**🎯 @event-storming-expert** - Collaborative domain discovery
+**❄️ @nix-expert** - Declarative system configuration
+**⚡ @nats-expert** - NATS infrastructure and security
+**🌐 @network-expert** - Network topology design
+**🏗️ @domain-expert** - Final domain creation and validation
 
-**🏗️ @domain-expert - Your Domain Creation Specialist**  
-- Interactive domain discovery sessions
-- Converts business requirements into mathematically sound CIM domains
-- Generates complete `domain.cim-graph.yaml` files
-- Creates cim-graph library compatible events
+### SAGE-Orchestrated Workflow
 
-### Recommended Workflow
+**🎯 Primary Approach: Let SAGE Guide Everything**
+```bash
+# Single command that coordinates all experts automatically
+/sage I want to build a CIM for my [business domain]
 
-1. **Launch Infrastructure:**
-   ```bash
-   make dev  # Launch NATS JetStream
-   ```
+# Examples:
+/sage I want to build a CIM for my e-commerce business
+/sage Help my team understand our order processing domain  
+/sage Set up complete CIM infrastructure for logistics
+/sage Convert my existing microservices to CIM architecture
+```
 
-2. **Build Network Topology:**
-   ```bash
-   claude "@network-expert Set up network topology with cim-network MCP"
-   ```
+**🔧 Advanced: Direct Expert Access (when you know exactly what you need)**
+```bash
+# Domain discovery and analysis
+/eventstorming order processing and fulfillment
+/ddd analyze these event storming results
 
-3. **Create Your Domain:**
-   ```bash
-   claude "@domain-expert I need to build an e-commerce domain"
-   ```
+# Infrastructure configuration
+/nats configure streams and security for my domain
+/network set up topology with cim-network MCP  
+/nix generate system configuration from events
 
-4. **Get Architecture Guidance:**
-   ```bash
-   claude "@cim-expert How do events flow through the network topology?"
-   ```
+# Final domain creation
+/domain create complete cim-graph structure
+```
 
-5. **Iterate and Refine:**
-   Continue conversations with agents as your CIM domain evolves.
+**⚙️ Manual Setup (legacy approach, not recommended)**
+- Manual infrastructure setup with make dev
+- Manual agent coordination
+- Manual workflow management
 
 ## 🐳 NATS JetStream Setup
 
@@ -363,6 +386,11 @@ CIM-Start is designed to work seamlessly with Claude Code:
 ### The Agents Available After `claude init`
 
 **🤖 @cim-expert** - Architecture and mathematical foundations guidance
+**🧩 @ddd-expert** - Domain boundary analysis and aggregate design
+**🎯 @event-storming-expert** - Collaborative domain discovery facilitation
+**❄️ @nix-expert** - Declarative system configuration from domain context
+**⚡ @nats-expert** - NATS infrastructure configuration and security
+**🌐 @network-expert** - Network topology design using cim-network MCP
 **🏗️ @domain-expert** - Interactive domain creation with structured output
 
 ### Getting Started is Simple
@@ -416,11 +444,19 @@ See `/domains/example-business/` for a complete e-commerce domain with:
 ## 🚦 Next Steps
 
 1. **Use this repo as a GitHub template** (don't clone directly)
-2. **Run `claude init`** in your new project directory
-3. **Start with `@domain-expert`** to create your first domain
-4. **Use `@cim-expert`** for architecture questions
-5. **Follow the agents' guidance** for NATS setup and implementation
-6. **Iterate** with the agents as you build your CIM
+2. **Run `claude init`** in your new project directory  
+3. **Start with SAGE** - your single entry point for all CIM development
+4. **Let SAGE coordinate all experts** for complete CIM creation
+5. **Follow SAGE's guidance** for infrastructure, domain discovery, and implementation
+6. **Iterate with SAGE** as it orchestrates your complete CIM development journey
+
+### Quick Start Examples
+```bash
+# After claude init, simply ask SAGE:
+/sage I want to build a CIM for my restaurant ordering system
+/sage Help me convert my existing API to event-driven CIM architecture  
+/sage My team needs to discover our complex business domain
+```
 
 ## 📝 License
 

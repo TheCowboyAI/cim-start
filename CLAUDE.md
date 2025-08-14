@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-CIM-Start is a domain-driven development starter kit for building Composable Information Machines (CIM). It provides a production-ready NATS JetStream environment with comprehensive tooling for event-driven architecture, domain modeling, and intelligent agent integration.
+CIM-Start is a domain-driven development starter kit for building Composable Information Machines (CIM). It provides a comprehensive agent-based system for CIM development, orchestrated by SAGE (the master agent) and supported by seven specialized expert agents.
+
+**Agent-Based Architecture:**
+- SAGE: Master orchestrator for all CIM creation tasks
+- 7 Specialized Expert Agents for different domains of expertise
+- Collaborative workflows for complex CIM development
+- Intelligent routing and multi-agent coordination
 
 **Key Technologies:**
 - NATS JetStream for event streaming and persistence
@@ -13,11 +19,52 @@ CIM-Start is a domain-driven development starter kit for building Composable Inf
 - Domain-driven design patterns and event sourcing
 - Agent-based automation framework
 
-## Common Commands
+## Getting Started with SAGE
+
+### Primary Interface - The SAGE Agent System
+CIM-Start uses an agent-based architecture where SAGE orchestrates all CIM development tasks:
+
+```bash
+# Primary entry point for ALL CIM tasks
+/sage I want to build a CIM for my business domain
+
+# SAGE automatically coordinates the right experts:
+# - Routes to appropriate specialist agents
+# - Orchestrates multi-agent workflows
+# - Provides unified, coherent guidance
+# - Manages complex CIM development journeys
+```
+
+### The Expert Agent Team
+SAGE coordinates these 7 specialized agents:
+
+**🤖 @cim-expert**: CIM architecture and mathematical foundations
+**🧩 @ddd-expert**: Domain boundaries and aggregate design
+**🎯 @event-storming-expert**: Collaborative domain discovery
+**❄️ @nix-expert**: Declarative system configuration
+**⚡ @nats-expert**: NATS infrastructure and security
+**🌐 @network-expert**: Network topology design
+**🏗️ @domain-expert**: Final domain creation and validation
+
+### Agent-Based Workflow
+Instead of manual setup, use SAGE to orchestrate everything:
+
+```bash
+# Complete CIM setup (SAGE coordinates all agents)
+/sage Set up complete CIM infrastructure for my logistics domain
+
+# Domain discovery (SAGE coordinates event-storming + DDD experts)
+/sage Help my team understand our order processing domain
+
+# Infrastructure only (SAGE coordinates infrastructure experts)
+/sage Configure NATS and network topology for development
+```
+
+## Traditional Commands (Still Available)
 
 ### Development Environment
 ```bash
-# Start complete development environment (recommended)
+# Manual development environment setup
 make dev
 
 # Alternative Docker commands
@@ -149,8 +196,30 @@ Use the Domain Expert Agent to create a fully operational CIM domain with live i
 4. **Provision Infrastructure** → Live JetStream container/VM with monitoring
 5. **Validate Operations** → Test event flows, provide admin access, document procedures
 
+## SAGE-Orchestrated CIM Development
+
+### Complete CIM Creation Journey
+SAGE manages the entire process through intelligent agent coordination:
+
+```bash
+# Single entry point for any CIM development need
+/sage [describe what you want to build]
+
+# Examples:
+/sage I want to build a CIM for my e-commerce business
+/sage Help my team understand our order processing domain  
+/sage Set up complete CIM infrastructure from scratch
+/sage Convert my microservices to CIM architecture
+```
+
+**SAGE automatically coordinates:**
+- **Domain Discovery** (@event-storming-expert → @ddd-expert)
+- **Infrastructure Setup** (@nats-expert → @network-expert → @nix-expert)
+- **Domain Creation** (@domain-expert with validation)
+- **Architecture Guidance** (@cim-expert for mathematical foundations)
+
 **Domain Category Requirements:**
-A Domain is a Category in Category Theory terms, with complete operational context:
+When SAGE guides domain creation, it ensures proper Category Theory structure:
 - **Name** (required): Unique identifier for the Domain Category (kebab-case, 3-50 chars)
 - **Organization** (required): Owning organization for governance and management
 - **Administrator** (required): Primary administrator for infrastructure and access control
@@ -180,23 +249,33 @@ A Domain is a Category in Category Theory terms, with complete operational conte
   - **READ Models Planned**: Query and reporting features will come later as Projections from the Event Store
   - **Separation Benefits**: Optimized for fast, consistent writes now; optimized reads added when needed
 
-The boundary agent will:
-- Guide you through collecting the required Domain Category components
-- Validate that both Name and Purpose properly define the Category boundary
-- Generate a cim-graph structure representing the Domain Category with Objects and Arrows
-- Invoke NATS JetStream within the Domain Category scope
-- Establish subject algebra for communication within the Category boundary
-- Set up Claude communication hooks for the Category
-- Create all necessary domain files and configurations following Category Theory principles
+**SAGE orchestrates the complete process:**
+- **Assessment**: Analyzes your requirements and current situation
+- **Expert Routing**: Invokes appropriate specialists in proper sequence
+- **Domain Discovery**: Facilitates Event Storming and boundary analysis
+- **Infrastructure**: Configures NATS, network topology, and system configuration
+- **Domain Creation**: Generates cim-graph structure with mathematical validation
+- **Integration**: Ensures all components work together seamlessly
 
-### 2. Domain Model Extension  
-After Domain creation, extend the domain model in `domains/{domain-name}/domain-definition.yaml`:
-- Events (past-tense facts)
-- Commands (user intentions) 
-- Aggregates (consistency boundaries)
-- Policies (automated rules)
-- External systems integration
-- Agent workflows
+### Agent-Based vs Manual Workflows
+
+**Recommended: SAGE-Orchestrated Workflow**
+```bash
+# Everything coordinated automatically
+/sage Build a complete CIM for my inventory management system
+```
+
+**Advanced: Direct Expert Access (when you know exactly what you need)**
+```bash
+/ddd Analyze these event storming results
+/nats Configure JetStream for multi-domain isolation
+/nix Generate system configuration from domain events
+```
+
+**Legacy: Manual Setup (not recommended)**
+- Manual domain model extension
+- Manual stream initialization  
+- Manual infrastructure setup
 
 ### 3. Stream Initialization
 ```bash
