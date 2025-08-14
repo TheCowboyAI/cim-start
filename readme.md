@@ -241,17 +241,24 @@ claude --help
 
 **Choose your path:**
 
-**Option A - Get CIM Architecture Guidance:**
+**Option A - Complete Guided Setup:**
 ```bash
-claude "@cim-expert Explain how the Object Store works with NATS"
-```
+# 1. Launch NATS JetStream
+make dev
 
-**Option B - Create Your First Domain:**
-```bash
+# 2. Build network topology with cim-network MCP
+claude "@network-expert Set up network topology for this domain"
+
+# 3. Create your domain
 claude "@domain-expert Help me create a customer service domain"
 ```
 
-**Option C - Just Launch NATS (simplest approach):**
+**Option B - Get Architecture Guidance:**
+```bash
+claude "@cim-expert Explain how the DEV channel works with JetStream"
+```
+
+**Option C - Just Launch NATS (minimal start):**
 ```bash
 # Configure and launch JetStream container
 make dev
@@ -264,13 +271,18 @@ make test-events
 
 ### The Claude Code Workflow
 
-Once you've initialized Claude Code, you have access to two specialized agents:
+Once you've initialized Claude Code, you have access to three specialized agents:
 
 **🤖 @cim-expert - Your CIM Architecture Guide**
 - Explains mathematical foundations (Category Theory, Graph Theory, IPLD)
 - Guides Object Store usage and CID patterns
 - Troubleshoots NATS patterns and subject algebra
 - Provides structure-preserving propagation guidance
+
+**🌐 @network-expert - Your Network Topology Specialist**
+- Invokes cim-network MCP to design network topology
+- Builds infrastructure foundation after NATS launch
+- Configures secure pathways for domain operations and replication
 
 **🏗️ @domain-expert - Your Domain Creation Specialist**  
 - Interactive domain discovery sessions
@@ -280,23 +292,28 @@ Once you've initialized Claude Code, you have access to two specialized agents:
 
 ### Recommended Workflow
 
-1. **Start with Architecture Understanding:**
+1. **Launch Infrastructure:**
    ```bash
-   claude "@cim-expert What are the benefits of content-addressed storage?"
+   make dev  # Launch NATS JetStream
    ```
 
-2. **Create Your Domain:**
+2. **Build Network Topology:**
+   ```bash
+   claude "@network-expert Set up network topology with cim-network MCP"
+   ```
+
+3. **Create Your Domain:**
    ```bash
    claude "@domain-expert I need to build an e-commerce domain"
    ```
 
-3. **Get Implementation Guidance:**
+4. **Get Architecture Guidance:**
    ```bash
-   claude "@cim-expert How do I set up NATS streams for my domain?"
+   claude "@cim-expert How do events flow through the network topology?"
    ```
 
-4. **Iterate and Refine:**
-   Continue the conversation with either agent as you develop your domain.
+5. **Iterate and Refine:**
+   Continue conversations with agents as your CIM domain evolves.
 
 ## 🐳 NATS JetStream Setup
 

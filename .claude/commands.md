@@ -24,6 +24,26 @@ Invoke @cim-expert with the user's question. The CIM Expert will provide detaile
 - Domain-driven event patterns and CQRS implementation
 ```
 
+### /network
+**Description**: Set up network topology using cim-network MCP after NATS launch
+**Usage**: `/network [requirements]`
+**Examples**:
+- `/network` (basic topology setup)
+- `/network set up secure development environment`
+- `/network configure replication pathways`
+- `/network what network policies are active?`
+
+**Implementation**:
+```
+Invoke @network-expert with the user's request. The Network Expert will:
+- Connect to cim-network MCP services
+- Design network topology based on domain requirements
+- Configure network security and access controls
+- Set up monitoring and health check endpoints
+- Validate connectivity and replication pathways
+- Apply generated network configurations to CIM-Start environment
+```
+
 ### /domain
 **Description**: Start interactive domain creation or get domain-related guidance  
 **Usage**: `/domain [description]`  
@@ -179,6 +199,7 @@ Display current project information:
 For convenience, provide these shorter aliases:
 
 - `/c` → `/cim`
+- `/n` → `/network`
 - `/d` → `/domain` 
 - `/arch` → `/architecture`
 - `/ex` → `/examples`
@@ -186,7 +207,7 @@ For convenience, provide these shorter aliases:
 
 ## Usage Notes
 
-1. **Expert Integration**: All expert commands automatically invoke the appropriate agent (@cim-expert or @domain-expert)
+1. **Expert Integration**: All expert commands automatically invoke the appropriate agent (@cim-expert, @network-expert, or @domain-expert)
 2. **Context Aware**: Commands adapt to the current project state and available files
 3. **Documentation Access**: Commands can read and reference all project documentation
 4. **Interactive**: Domain commands can start multi-turn conversations

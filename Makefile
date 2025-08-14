@@ -1,7 +1,7 @@
 # Copyright 2025 - Cowboy AI, LLC
 # CIM-Start Makefile
 
-.PHONY: help start stop restart status init-streams test-events clean logs monitor shell
+.PHONY: help start stop restart status init-streams test-events clean logs monitor shell create-domain test-domain-collection
 
 # Default environment
 ENV ?= dev
@@ -102,6 +102,20 @@ staging: ## Start staging environment
 prod: ## Start production environment (use with caution)
 	@make ENV=prod start
 	@make ENV=prod init-streams
+
+# Domain management targets
+create-domain: ## Create a new domain interactively using the Domain Collection Agent
+	@echo "Starting Interactive Domain Collection Agent..."
+	@./agents/user/domain-collection-agent.sh
+	@echo ""
+	@echo "Domain creation completed. Next steps:"
+	@echo "   make init-streams    # Ensure streams are initialized"
+	@echo "   make test-events     # Test domain events"
+	@echo "   make monitor         # Open monitoring dashboards"
+
+test-domain-collection: ## Test the Domain Collection Agent integration
+	@echo "Testing Domain Collection Agent integration..."
+	@CIM_ENVIRONMENT=$(ENV) NATS_URL=$(NATS_URL) ./scripts/test-domain-collection.sh
 
 # Quick development commands
 quick-test: ## Quick test with a simple event

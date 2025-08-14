@@ -1,0 +1,9 @@
+---
+description: Copyright Enforcement
+globs: *.rs, *.md, *.mdc, *.txt, *.nix
+alwaysApply: false
+---
+ALWAYS CONFIRM AND DEMAND A COPYRIGHT IN THESE FILES
+
+"Copyright 2025 - Cowboy AI, LLC."
+

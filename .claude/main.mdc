@@ -12,6 +12,7 @@ alwaysApply: true
 - This applies to ALL file types: `.rs`, `.md`, `.toml`, `.json`, etc.
 - NO EXCEPTIONS - even for traditional uppercase files like README
 
+ALL Files must have Copyright according to `./copyright.mdc`
 ---
 
 ** PRIMARY DIRECTIVE **

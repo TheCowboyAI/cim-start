@@ -36,6 +36,12 @@
             natscli
             nats-top
             
+            # MCP tools
+            nodejs
+            python3
+            python3Packages.pip
+            git
+            
             # Development tools
             just
             watchexec
@@ -56,6 +62,8 @@
             fd
             bat
             eza
+            pgrep
+            netstat
           ];
           
           shellHook = ''
@@ -91,6 +99,65 @@
           echo "Monitoring at http://localhost:8222"
         '';
         
+        # MCP service manager
+        packages.mcp-manager = pkgs.writeShellScriptBin "mcp-manager" ''
+          # Check if MCP processes are already running
+          check_mcp_running() {
+            local name="$1"
+            if pgrep -f "$name" > /dev/null; then
+              echo "✓ $name MCP already running"
+              return 0
+            else
+              return 1
+            fi
+          }
+          
+          # Start MCP server if not running
+          start_mcp() {
+            local name="$1"
+            local command="$2"
+            if ! check_mcp_running "$name"; then
+              echo "🚀 Starting $name MCP..."
+              nohup $command > "mcp-$name.log" 2>&1 &
+              echo "  Started with PID $!"
+              echo "  Logs: mcp-$name.log"
+            fi
+          }
+          
+          case "$1" in
+            start)
+              echo "🔧 Starting MCP servers..."
+              start_mcp "nixmcp" "python -m mcp_nixos.server"
+              start_mcp "sequential-thinking" "npx mcp-server-sequential-thinking"
+              start_mcp "github" "npx mcp-server-github"
+              start_mcp "cim-network" "python3 -m cim_network_mcp"
+              ;;
+            stop)
+              echo "🛑 Stopping MCP servers..."
+              pkill -f "mcp_nixos.server" || true
+              pkill -f "mcp-server-sequential-thinking" || true  
+              pkill -f "mcp-server-github" || true
+              pkill -f "cim_network_mcp" || true
+              ;;
+            status)
+              echo "📊 MCP Server Status:"
+              check_mcp_running "mcp_nixos.server" || echo "❌ nixmcp not running"
+              check_mcp_running "mcp-server-sequential-thinking" || echo "❌ sequential-thinking not running"
+              check_mcp_running "mcp-server-github" || echo "❌ github not running"
+              check_mcp_running "cim_network_mcp" || echo "❌ cim-network not running"
+              ;;
+            *)
+              echo "Usage: mcp-manager {start|stop|status}"
+              echo ""
+              echo "Available MCP servers:"
+              echo "  - nixmcp: System configuration MCP"
+              echo "  - sequential-thinking: Reasoning MCP"
+              echo "  - github: GitHub integration MCP"
+              echo "  - cim-network: Network topology builder MCP"
+              ;;
+          esac
+        '';
+
         # Domain generator
         packages.generate-domain = pkgs.writeShellScriptBin "generate-domain" ''
           DOMAIN_NAME=$1
@@ -110,12 +177,60 @@
           echo "  2. Define your events"
           echo "  3. cargo build"
         '';
+
+        # CIM-Start orchestrator
+        packages.cim-start = pkgs.writeShellScriptBin "cim-start" ''
+          echo "🚀 CIM-Start Orchestrator"
+          echo ""
+          
+          # Check prerequisites
+          echo "📋 Checking prerequisites..."
+          
+          # Check if NATS is running
+          if netstat -tln 2>/dev/null | grep -q ":4222 "; then
+            echo "✓ NATS JetStream running on port 4222"
+            NATS_RUNNING=true
+          else
+            echo "❌ NATS not running - starting NATS..."
+            ${pkgs.docker-compose}/bin/docker-compose up -d nats
+            sleep 3
+            NATS_RUNNING=false
+          fi
+          
+          # Check and start MCP servers
+          echo ""
+          echo "🔧 Managing MCP servers..."
+          ${self.packages.${system}.mcp-manager}/bin/mcp-manager status
+          ${self.packages.${system}.mcp-manager}/bin/mcp-manager start
+          
+          echo ""
+          echo "✅ CIM-Start Environment Ready!"
+          echo ""
+          echo "Next steps:"
+          echo "  1. claude '@network-expert Set up network topology'"
+          echo "  2. claude '@domain-expert Create my domain'"
+          echo "  3. Start building with events and graphs"
+          echo ""
+          echo "Monitoring:"
+          echo "  - NATS: http://localhost:8222"
+          echo "  - MCP Logs: mcp-*.log files"
+        '';
         
         # Apps for nix run
         apps = {
           default = {
             type = "app";
-            program = "${self.packages.${system}.nats-server}/bin/cim-nats";
+            program = "${self.packages.${system}.cim-start}/bin/cim-start";
+          };
+          
+          start = {
+            type = "app";
+            program = "${self.packages.${system}.cim-start}/bin/cim-start";
+          };
+          
+          mcp = {
+            type = "app";
+            program = "${self.packages.${system}.mcp-manager}/bin/mcp-manager";
           };
           
           nats = {

@@ -129,27 +129,33 @@ Global streams:
 
 ## Domain Boundary Creation Workflow
 
-### 1. Establish Domain Boundary (Primary Entry Point)
-Use the Domain Boundary Agent to establish your Domain of Reasoning with communication capability:
+### 1. Complete Domain Creation (Primary Entry Point)
+Use the Domain Expert Agent to create a fully operational CIM domain with live infrastructure:
 
 ```bash
-# Invoke the Domain Boundary Agent via Claude Code sub-agent
-# This follows a systematic 3-phase approach:
-# Phase 1: Establish boundary (Domain Name + Purpose)  
-# Phase 2: Invoke NATS with subject algebra
-# Phase 3: Set up Claude communication hooks
+# Invoke the Domain Expert Agent via Claude Code sub-agent
+# This follows a comprehensive 5-phase approach:
+# Phase 1: Essential Information Collection (Domain Name + Organization + Administrator + Purpose)
+# Phase 2: Network Topology Design (using cim-network)
+# Phase 3: Mathematical Foundation Application (Category Theory, Graph Theory, IPLD)
+# Phase 4: Infrastructure Provisioning (JetStream container/VM)
+# Phase 5: Domain Integration and Validation (live testing)
 ```
 
-**Boundary-First Architecture:**
-1. **Create Boundary** → Define Domain with Name + Purpose (invariant components)
-2. **Enable Communication** → Invoke NATS JetStream with Domain-specific subject algebra
-3. **Connect Claude** → Set up Claude-NATS communication hooks within the boundary
+**Complete Domain Architecture:**
+1. **Collect Essentials** → Domain Name + Organization + Administrator + Purpose (all required)
+2. **Design Topology** → Use cim-network for infrastructure planning and network design
+3. **Apply Mathematics** → Category Theory, Graph Theory, IPLD foundations
+4. **Provision Infrastructure** → Live JetStream container/VM with monitoring
+5. **Validate Operations** → Test event flows, provide admin access, document procedures
 
 **Domain Category Requirements:**
-A Domain is a Category in Category Theory terms, containing Objects and Arrows:
-- **Name** (required): Unique identifier for the Domain Category
-- **Purpose** (required): Clear description of the Category's scope and reasoning context  
-- Both components are invariant and must be provided for any valid Domain Category
+A Domain is a Category in Category Theory terms, with complete operational context:
+- **Name** (required): Unique identifier for the Domain Category (kebab-case, 3-50 chars)
+- **Organization** (required): Owning organization for governance and management
+- **Administrator** (required): Primary administrator for infrastructure and access control
+- **Purpose** (required): Clear description of the Category's scope and reasoning context
+- All components are required for a valid, operational Domain Category
 
 **Mathematical Structure:**
 - **DATA STRUCTURE**: Graph Theory / Network Theory is the foundational data structure

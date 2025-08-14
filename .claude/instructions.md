@@ -242,6 +242,7 @@ When helping users assemble their domain, ensure they:
    - [ ] cim-domain for domain definitions and event schemas
    - [ ] cim-projections for read models
    - [ ] cim-graph for knowledge graphs and workflow modeling
+   - [ ] cim-network for network topology and infrastructure provisioning
    - [ ] cim-domain-identity for auth (if needed)
    - [ ] cim-security for authorization (if needed)
 

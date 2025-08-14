@@ -58,16 +58,28 @@
       "description": "Clarified CIM-Start as DEV channel providing more events than git commits",
       "completion_date": "2025-01-15",
       "files": ["readme.md", "scripts/provision-jetstream.sh"]
+    },
+    {
+      "feature": "Network Expert Agent",
+      "description": "Created @network-expert agent to invoke cim-network MCP for topology after NATS launch",
+      "completion_date": "2025-01-15",
+      "files": [".claude/agents/network-expert.md", ".claude/commands.md", "readme.md"]
+    },
+    {
+      "feature": "MCP Server Integration",
+      "description": "Added MCP server management to flake.nix with conditional enabling and process detection for 4 MCP servers",
+      "completion_date": "2025-01-15",
+      "files": ["flake.nix"]
     }
   ],
   
   "current_focus": {
-    "phase": "Infrastructure Foundation",
-    "description": "Establishing JetStream DEV channel for domain construction with event capture beyond git granularity",
+    "phase": "Network Infrastructure Integration",
+    "description": "Adding network topology layer using cim-network MCP after NATS launch",
     "priority_tasks": [
       "Launch JetStream container for development events",
-      "Test event capture and projection workflows", 
-      "Validate domain expert agent integration with JetStream"
+      "Invoke cim-network MCP through network expert agent",
+      "Test network topology and domain expert integration"
     ]
   },
   
@@ -129,11 +141,12 @@
   ],
   
   "metrics": {
-    "total_files_created": 15,
-    "total_files_modified": 8,
+    "total_files_created": 16,
+    "total_files_modified": 11,
     "documentation_pages": 6,
-    "agent_definitions": 2,
-    "custom_commands": 8,
-    "infrastructure_scripts": 1
+    "agent_definitions": 3,
+    "custom_commands": 9,
+    "infrastructure_scripts": 1,
+    "mcp_integrations": 4
   }
 }
