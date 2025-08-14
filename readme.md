@@ -4,171 +4,187 @@ Copyright 2025 - Cowboy AI, LLC
 
 ## 🚀 Purpose
 
-CIM-Start is your starting point for building a new domain-specific Composable Information Machine (CIM). It provides:
+CIM-Start configures and launches a JetStream container for your domain development. You're already in git - this repo IS your domain. The JetStream container provides:
 
-- **Production-ready NATS JetStream environment** for domain event storage
-- **Comprehensive subject algebra** for organizing events, commands, and projections  
-- **Domain discovery templates and guides** for event storming and modeling
-- **Complete monitoring stack** with Prometheus and Grafana dashboards
-- **Event-driven architecture patterns** with stream management tools
-- **Domain-specific agent framework** for intelligent automation
+- **More Events Than Commits** - Fine-grained events beyond git commit granularity
+- **Live Domain Construction** - Build domains through events and graphs in JetStream  
+- **Event-Based Development** - Every domain change captured as events in real-time
+- **Git + Events** - Git commits serve as major events, JetStream captures detailed events
+- **Graph-based Construction** - Using cim-graph to build domain through Events
+- **Development Projections** - Real-time views of domain construction progress
 
-## 🎯 Our Objective: Self-Composing Linked Stores
+## 🎯 First Task: Configure and Launch NATS
 
-CIM-Start creates domains where all activity is stored in mathematically linked event and object stores that compose themselves automatically:
+Simple: Configure and launch your JetStream container to capture the detailed events of domain construction:
 
 ```mermaid
 graph TB
-    subgraph "Domain Boundary"
-        subgraph "Event Store - Sequential Activities"
-            Events[Domain Events]
-            Systems[System Events]
-            Commands[Commands]
+    subgraph "DEV Channel - JetStream Container"
+        subgraph "Development Event Capture"
+            DevEvents[Development Events<br/>- Design Decisions<br/>- Code Changes<br/>- Build Steps]
+            DevCommands[Development Commands<br/>- Create Domain<br/>- Add Entity<br/>- Deploy Component]
+            DevGraphs[Graph Construction<br/>- Domain Models<br/>- System Architecture<br/>- Event Flows]
         end
         
-        subgraph "Object Store - Content Addressed"
-            LargePayloads[Large Payloads]
-            Documents[Documents]
-            Files[Files]
+        subgraph "Development Projections"
+            BuildState[Build State View]
+            SystemProgress[System Progress View]
+            ArchitectureView[Architecture View]
         end
         
-        subgraph "Self-Composing Links"
-            Events -->|CID References| LargePayloads
-            Systems -->|CID References| Documents
-            Commands -->|CID References| Files
-            
-            LargePayloads -->|Auto-Combine| CompositeObjects[Composite Objects]
-            Documents -->|Auto-Combine| CompositeObjects
-            Files -->|Auto-Combine| CompositeObjects
+        DevEvents --> BuildState
+        DevCommands --> SystemProgress
+        DevGraphs --> ArchitectureView
+    end
+    
+    subgraph "Live CIM System - Production"
+        subgraph "Production Events"
+            ProdEvents[Production Events]
+            ProdCommands[Production Commands]
+            ProdData[Production Data]
         end
+        
+        subgraph "Production Projections"
+            LiveViews[Live System Views]
+            BusinessMetrics[Business Metrics]
+            OperationalData[Operational Data]
+        end
+        
+        ProdEvents --> LiveViews
+        ProdCommands --> BusinessMetrics
+        ProdData --> OperationalData
     end
     
-    subgraph "Mathematical Foundations"
-        CategoryTheory[Category Theory<br/>Domain = Category<br/>Objects = Entities<br/>Arrows = Systems]
-        GraphTheory[Graph Theory<br/>Nodes = Entities<br/>Edges = Relationships<br/>Paths = Workflows]
-        IPLD[Content Addressing<br/>CID = hash(content)<br/>Automatic Deduplication<br/>Referential Integrity]
+    subgraph "Replication Flow"
+        ReplicationEngine[JetStream Replication<br/>DEV → PROD]
     end
     
-    Events --> CategoryTheory
-    LargePayloads --> IPLD
-    CompositeObjects --> GraphTheory
+    DevEvents -->|Replicate Up| ReplicationEngine
+    DevCommands -->|Replicate Up| ReplicationEngine
+    DevGraphs -->|Replicate Up| ReplicationEngine
     
-    style Events fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style Systems fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style Commands fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style LargePayloads fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style Documents fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style Files fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style CompositeObjects fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
-    style CategoryTheory fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
-    style GraphTheory fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
-    style IPLD fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    ReplicationEngine -->|System Comes Online| ProdEvents
+    ReplicationEngine -->|System Comes Online| ProdCommands
+    ReplicationEngine -->|System Comes Online| ProdData
+    
+    style DevEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style DevCommands fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style DevGraphs fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style BuildState fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style SystemProgress fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style ArchitectureView fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style ReplicationEngine fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+    style ProdEvents fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
+    style ProdCommands fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
+    style ProdData fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
 ```
 
-### How Self-Composition Works
+### Development Workflow: DEV Channel to Production
 
 ```mermaid
 graph LR
-    subgraph "Business Activity"
-        CustomerOrder[Customer Places Order]
-        PaymentInfo[Payment Information]
-        ProductCatalog[Product Catalog]
+    subgraph "Development Phase"
+        Developer[Developer Creates<br/>Domain Model]
+        DomainExpert[Domain Expert Agent<br/>Guides Process]
+        CimGraph[cim-graph<br/>Construction Events]
     end
     
-    subgraph "Event Store"
-        OrderEvent[OrderPlaced Event<br/>Small metadata only]
+    subgraph "DEV Channel JetStream"
+        DevEvents[Development Events<br/>- DomainCreated<br/>- EntityAdded<br/>- GraphUpdated]
     end
     
-    subgraph "Object Store" 
-        CustomerCID[Customer Data<br/>CID: bafk...abc]
-        PaymentCID[Payment Data<br/>CID: bafk...def]
-        ProductCID[Product Data<br/>CID: bafk...ghi]
+    subgraph "Development Projections" 
+        BuildProgress[Build Progress View]
+        SystemState[System State View]
+        ArchDiagram[Architecture Diagram]
     end
     
-    subgraph "Automatic Composition"
-        OrderPackageCID[Complete Order Package<br/>CID: bafk...xyz<br/>Contains: Customer + Payment + Products]
+    subgraph "Production System (When Online)"
+        ProdJetStream[Production JetStream<br/>Receives replicated events]
+        LiveSystem[Live CIM System<br/>Built from DEV events]
     end
     
-    CustomerOrder --> OrderEvent
-    CustomerOrder --> CustomerCID
-    PaymentInfo --> PaymentCID
-    ProductCatalog --> ProductCID
+    Developer --> DomainExpert
+    DomainExpert --> CimGraph
+    CimGraph --> DevEvents
     
-    OrderEvent -->|References| CustomerCID
-    OrderEvent -->|References| PaymentCID
-    OrderEvent -->|References| ProductCID
+    DevEvents --> BuildProgress
+    DevEvents --> SystemState
+    DevEvents --> ArchDiagram
     
-    CustomerCID --> OrderPackageCID
-    PaymentCID --> OrderPackageCID
-    ProductCID --> OrderPackageCID
+    DevEvents -->|JetStream Replication| ProdJetStream
+    ProdJetStream -->|Event Replay| LiveSystem
     
-    style CustomerOrder fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
-    style PaymentInfo fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
-    style ProductCatalog fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
-    style OrderEvent fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style CustomerCID fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style PaymentCID fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style ProductCID fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style OrderPackageCID fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+    style Developer fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style DomainExpert fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style CimGraph fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
+    style DevEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style BuildProgress fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style SystemState fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style ArchDiagram fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style ProdJetStream fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
+    style LiveSystem fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
 ```
 
-### Cross-Domain Composition and Distribution
+### DEV Channel Architecture: Pure JetStream Interface
 
 ```mermaid
 graph TB
-    subgraph "Sales Domain"
-        SalesEvents[Sales Events]
-        SalesObjects[Sales Object Store]
-        SalesEvents -->|CID Refs| SalesObjects
+    subgraph "DEV Channel - JetStream Container"
+        subgraph "Pure JetStream Interface"
+            JSInterface[JetStream Interface<br/>- Simple event publishing<br/>- No complex logic<br/>- Pure message streams]
+        end
+        
+        subgraph "Development Streams"
+            DevStream[DEV Stream<br/>All development events]
+            GraphStream[Graph Stream<br/>cim-graph construction]  
+            BuildStream[Build Stream<br/>System assembly events]
+        end
+        
+        JSInterface --> DevStream
+        JSInterface --> GraphStream
+        JSInterface --> BuildStream
     end
     
-    subgraph "Fulfillment Domain"
-        FulfillmentEvents[Fulfillment Events]
-        FulfillmentObjects[Fulfillment Object Store]
-        FulfillmentEvents -->|CID Refs| FulfillmentObjects
+    subgraph "Development Tools"
+        Claude[Claude Code<br/>Domain Expert]
+        CimGraph[cim-graph<br/>Library]
+        Developer[Developer<br/>Commands]
     end
     
-    subgraph "Analytics Domain"
-        AnalyticsEvents[Analytics Events]
-        AnalyticsObjects[Analytics Object Store]
-        AnalyticsEvents -->|CID Refs| AnalyticsObjects
+    subgraph "Production Replication Target"
+        ProdCluster[Production CIM<br/>Full system cluster]
+        ReplicationFlow[JetStream<br/>Replication]
     end
     
-    subgraph "Shared Object Network"
-        CustomerData[Customer Data<br/>CID: bafk...customer]
-        OrderData[Order Data<br/>CID: bafk...order]
-        SharedComposite[Multi-Domain Package<br/>CID: bafk...combined]
-    end
+    Claude -->|Publish Events| JSInterface
+    CimGraph -->|Graph Events| JSInterface
+    Developer -->|Dev Commands| JSInterface
     
-    SalesObjects -->|Shares| CustomerData
-    FulfillmentObjects -->|Shares| OrderData
-    AnalyticsObjects -->|References| CustomerData
-    AnalyticsObjects -->|References| OrderData
+    DevStream -->|Replicate| ReplicationFlow
+    GraphStream -->|Replicate| ReplicationFlow  
+    BuildStream -->|Replicate| ReplicationFlow
     
-    CustomerData -->|Auto-Compose| SharedComposite
-    OrderData -->|Auto-Compose| SharedComposite
+    ReplicationFlow -->|System Online| ProdCluster
     
-    SharedComposite -->|Available to| SalesObjects
-    SharedComposite -->|Available to| FulfillmentObjects
-    SharedComposite -->|Available to| AnalyticsObjects
-    
-    style SalesEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style FulfillmentEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style AnalyticsEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style SalesObjects fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style FulfillmentObjects fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style AnalyticsObjects fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style CustomerData fill:#95E1D3,stroke:#63C7B8,stroke-width:2px,color:#000
-    style OrderData fill:#95E1D3,stroke:#63C7B8,stroke-width:2px,color:#000
-    style SharedComposite fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+    style JSInterface fill:#4ECDC4,stroke:#2B8A89,stroke-width:4px,color:#FFF
+    style DevStream fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style GraphStream fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style BuildStream fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style Claude fill:#95E1D3,stroke:#63C7B8,stroke-width:2px,color:#000
+    style CimGraph fill:#95E1D3,stroke:#63C7B8,stroke-width:2px,color:#000
+    style Developer fill:#95E1D3,stroke:#63C7B8,stroke-width:2px,color:#000
+    style ReplicationFlow fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+    style ProdCluster fill:#2D3436,stroke:#000,stroke-width:3px,color:#FFF
 ```
 
-**Key Benefits:**
-- **No Data Duplication**: Same customer data referenced across all domains
-- **Automatic Composition**: Related data combines into logical packages  
-- **Mathematical Consistency**: Category Theory ensures valid relationships
-- **Content Integrity**: IPLD guarantees data hasn't been corrupted
-- **Efficient Distribution**: Only unique content is stored and shared
+**Key Benefits of DEV Channel Architecture:**
+- **Pure JetStream Interface**: Simple, lightweight development environment
+- **Complete Development Capture**: Every build step recorded as events
+- **Seamless Replication**: DEV channel events flow directly to production
+- **No Development Overhead**: Just publish events, JetStream handles the rest
+- **Event-Driven Construction**: Use cim-graph to build CIM through events
+- **Live Production Ready**: Development events become production system memory
 
 ## 📁 Project Structure
 
@@ -235,12 +251,12 @@ claude "@cim-expert Explain how the Object Store works with NATS"
 claude "@domain-expert Help me create a customer service domain"
 ```
 
-**Option C - Traditional Setup (if you prefer manual approach):**
+**Option C - Just Launch NATS (simplest approach):**
 ```bash
-# Start NATS infrastructure
+# Configure and launch JetStream container
 make dev
 
-# Test the system
+# Start capturing events
 make test-events
 ```
 
@@ -360,7 +376,7 @@ CIM provides 38+ modules you can assemble:
 - `cim-domain-policy` - Business rules
 
 ### Infrastructure  
-- `cim-network` - Network topology
+- `cim-network` - Network topology and infrastructure provisioning
 - `cim-flashstor` - Object storage
 - `cim-security` - Authorization
 
