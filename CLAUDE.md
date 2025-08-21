@@ -1,16 +1,29 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to SAGE when working with code in this repository.
 
 ## Project Overview
 
-CIM-Start is a domain-driven development starter kit for building Composable Information Machines (CIM). It provides a comprehensive agent-based system for CIM development, orchestrated by SAGE (the master agent) and supported by seven specialized expert agents.
+**IMPORTANT: CIM-Start is a TEMPLATE REPOSITORY, not a CIM itself.**
 
-**Agent-Based Architecture:**
-- SAGE: Master orchestrator for all CIM creation tasks
-- 7 Specialized Expert Agents for different domains of expertise
-- Collaborative workflows for complex CIM development
-- Intelligent routing and multi-agent coordination
+CIM-Start is a **template** for creating Composable Information Machines (CIMs). When you use this template to create a new repository, THAT repository becomes your CIM project. This template provides the agent-based development system and scaffolding needed to build actual CIMs.
+
+**What this template provides:**
+- 17 specialized expert agents coordinated by SAGE
+- CIM development workflows and methodologies  
+- Infrastructure templates and configuration
+- Domain creation and validation tools
+
+**What this template is NOT:**
+- Not an actual CIM implementation
+- Not a specific business domain solution
+- Not a production system
+
+**Template Architecture:**
+- SAGE: Master orchestrator template for guiding CIM creation
+- 17 Specialized Expert Agent templates for different domains of expertise  
+- Template workflows for CIM development processes
+- Agent coordination patterns for CIM projects created from this template
 
 **Key Technologies:**
 - NATS JetStream for event streaming and persistence
@@ -21,30 +34,53 @@ CIM-Start is a domain-driven development starter kit for building Composable Inf
 
 ## Getting Started with SAGE
 
-### Primary Interface - The SAGE Agent System
-CIM-Start uses an agent-based architecture where SAGE orchestrates all CIM development tasks:
+### Primary Interface - SAGE Initialization Process
+CIM-Start provides SAGE which transforms from template to active CIM orchestrator:
 
 ```bash
-# Primary entry point for ALL CIM tasks
-/sage I want to build a CIM for my business domain
+# The CIM-Start initialization process:
+# 1. User clones cim-start as their project: git clone cim-start MyCIM
+# 2. User runs: claude init (in MyCIM directory)
+# 3. SAGE detects git repo name "MyCIM" and initializes real domain
+# 4. SAGE removes template determination and establishes domain based on repo name
+# 5. SAGE becomes active orchestrator for the specific CIM project: @sage
 
-# SAGE automatically coordinates the right experts:
-# - Routes to appropriate specialist agents
-# - Orchestrates multi-agent workflows
-# - Provides unified, coherent guidance
-# - Manages complex CIM development journeys
+# SAGE transformation process:
+# - Template status removed: No longer template, now active CIM project
+# - Domain established: Uses git repository name as domain foundation
+# - Real orchestration begins: Coordinates experts for actual CIM development
+# - Project-specific guidance: Tailored to the user's domain and repo name
 ```
 
-### The Expert Agent Team
-SAGE coordinates these 7 specialized agents:
+### The Expert Agent System
+After SAGE initialization, these **17 specialized expert agents** become active for the specific CIM project:
 
-**🤖 @cim-expert**: CIM architecture and mathematical foundations
-**🧩 @ddd-expert**: Domain boundaries and aggregate design
-**🎯 @event-storming-expert**: Collaborative domain discovery
-**❄️ @nix-expert**: Declarative system configuration
-**⚡ @nats-expert**: NATS infrastructure and security
-**🌐 @network-expert**: Network topology design
-**🏗️ @domain-expert**: Final domain creation and validation
+**🎭 Master Orchestrator:**
+**@sage** - Coordinates all expert agents and provides unified CIM development guidance
+
+**🏗️ Domain Expert Agents:**
+**@cim-expert** - CIM architecture, mathematical foundations, Category Theory, Graph Theory, IPLD
+**@cim-domain-expert** - CIM domain-specific architecture, integration strategies, ecosystem planning
+**@ddd-expert** - Domain-driven design, aggregate boundaries, state machines, business rules  
+**@event-storming-expert** - Collaborative domain discovery, event identification, team facilitation
+**@domain-expert** - Domain creation, cim-graph generation, mathematical validation
+
+**🧪 Development Expert Agents:**
+**@bdd-expert** - Behavior-Driven Development, Gherkin syntax, User Stories with Context Graphs
+**@tdd-expert** - Test-Driven Development, creating Unit Tests IN ADVANCE, bug reproduction
+**@qa-expert** - Quality assurance, compliance analysis, rule violation documentation
+
+**🌐 Infrastructure Expert Agents:**
+**@nats-expert** - NATS messaging, JetStream, Object Store, KV Store, NSC security
+**@network-expert** - Network topology, infrastructure planning, secure pathways
+**@nix-expert** - Nix configuration, system design, infrastructure as code
+**@git-expert** - Git and GitHub operations, repository management, CI/CD workflows
+**@subject-expert** - CIM subject algebra, routing patterns, mathematical subject hierarchies
+
+**🎨 UI/UX Expert Agents:**
+**@iced-ui-expert** - Iced GUI framework, desktop application development
+**@elm-architecture-expert** - Elm Architecture patterns, functional UI design
+**@cim-tea-ecs-expert** - TEA (The Elm Architecture) + ECS integration patterns
 
 ### Agent-Based Workflow
 Instead of manual setup, use SAGE to orchestrate everything:
@@ -212,19 +248,21 @@ SAGE manages the entire process through intelligent agent coordination:
 /sage Convert my microservices to CIM architecture
 ```
 
-**SAGE automatically coordinates:**
-- **Domain Discovery** (@event-storming-expert → @ddd-expert)
-- **Infrastructure Setup** (@nats-expert → @network-expert → @nix-expert)
-- **Domain Creation** (@domain-expert with validation)
-- **Architecture Guidance** (@cim-expert for mathematical foundations)
+**@sage automatically coordinates experts for the specific CIM project:**
+- **Domain Discovery** (@event-storming-expert → @ddd-expert → @domain-expert)
+- **Infrastructure Setup** (@nats-expert → @network-expert → @nix-expert → @subject-expert)
+- **Development Workflow** (@bdd-expert → @tdd-expert → @git-expert → @qa-expert)
+- **Architecture Guidance** (@cim-expert → @cim-domain-expert for mathematical foundations)
+- **UI/UX Implementation** (@iced-ui-expert, @elm-architecture-expert, @cim-tea-ecs-expert as needed)
+- **Quality Assurance** (@qa-expert for continuous compliance validation)
 
-**Domain Category Requirements:**
-When SAGE guides domain creation, it ensures proper Category Theory structure:
-- **Name** (required): Unique identifier for the Domain Category (kebab-case, 3-50 chars)
-- **Organization** (required): Owning organization for governance and management
-- **Administrator** (required): Primary administrator for infrastructure and access control
-- **Purpose** (required): Clear description of the Category's scope and reasoning context
-- All components are required for a valid, operational Domain Category
+**Domain Category Initialization:**
+When SAGE initializes from the cloned repository, it automatically establishes the domain:
+- **Name** (auto-detected): Uses git repository name as Domain Category identifier
+- **Organization** (prompt user): Owning organization for governance and management
+- **Administrator** (auto-detected): Git user or prompt for primary administrator
+- **Purpose** (prompt user): Clear description of the Category's scope and reasoning context
+- SAGE removes template status and becomes active orchestrator for this specific domain
 
 **Mathematical Structure:**
 - **DATA STRUCTURE**: Graph Theory / Network Theory is the foundational data structure
@@ -267,9 +305,25 @@ When SAGE guides domain creation, it ensures proper Category Theory structure:
 
 **Advanced: Direct Expert Access (when you know exactly what you need)**
 ```bash
-/ddd Analyze these event storming results
-/nats Configure JetStream for multi-domain isolation
-/nix Generate system configuration from domain events
+# Simply ask @sage - it coordinates everything automatically
+@sage I want to build a CIM for order processing
+@sage Help me set up NATS infrastructure
+@sage Create BDD scenarios for my domain
+@sage Audit my project for CIM compliance
+
+# Direct expert access also available for specific needs
+@cim-expert Explain Category Theory foundations  
+@ddd-expert Analyze these event storming results
+@event-storming-expert Lead domain discovery session
+@nats-expert Configure JetStream streams
+@network-expert Design network topology
+@nix-expert Generate system configuration
+@subject-expert Design NATS subject patterns
+@bdd-expert Create Gherkin scenarios
+@tdd-expert Generate functional tests
+@git-expert Set up repository workflows
+@qa-expert Audit for compliance
+@domain-expert Create cim-graph structure
 ```
 
 **Legacy: Manual Setup (not recommended)**

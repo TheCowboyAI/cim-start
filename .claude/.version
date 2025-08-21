@@ -1,0 +1,6 @@
+# DO NOT EDIT - Auto-generated
+# This file tracks the version of .claude instructions
+# Used to detect when modules need to update their copy
+COMMIT=$(git rev-parse HEAD)
+DATE=$(date -I)
+VERSION=1.0.0

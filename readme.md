@@ -1,38 +1,62 @@
-# CIM-Start: Agent-Powered CIM Development Kit
+# CIM-Start: Agent-Powered CIM Development Template
 
 Copyright 2025 - Cowboy AI, LLC
 
-## 🤖 Meet SAGE - Your CIM Creation Guide
+## 🎯 **This is a TEMPLATE Repository**
 
-CIM-Start uses an intelligent agent system orchestrated by **SAGE** - your single entry point for building Composable Information Machines. SAGE coordinates seven specialized experts to guide you through complete CIM development.
+**CIM-Start is a GitHub template for creating CIM projects - it is NOT a CIM itself.**
 
-**🎯 Simply ask SAGE anything:**
+When you use this template:
+1. **Use as GitHub Template** → Creates your new CIM project repository  
+2. **Your new repo** becomes the actual CIM you're building
+3. **This template** provides the agent system to guide your CIM development
+
+## 🤖 Meet SAGE - Your CIM Creation Guide Template
+
+CIM-Start provides an intelligent agent system template orchestrated by **SAGE** - the template for guiding CIM creation. SAGE coordinates 17 specialized expert agent templates to help users build their actual CIMs.
+
+**🎯 After initialization, users work with active SAGE:**
 ```bash
-/sage I want to build a CIM for my e-commerce business
-/sage Help my team understand our order processing domain
-/sage Set up complete CIM infrastructure from scratch
+# SAGE is now active and domain-aware for the specific project:
+@sage I want to build a CIM for my MyCIM domain
+@sage Help my team understand our order processing domain  
+@sage Set up complete CIM infrastructure for this project
 ```
 
-**SAGE automatically:**
-- **Analyzes** your needs and current situation
-- **Routes** requests to appropriate specialist agents
-- **Coordinates** multi-agent workflows for complex tasks
-- **Synthesizes** guidance from all experts into unified direction
-- **Manages** the complete CIM development journey
+**Active SAGE automatically:**
+- **Knows the domain**: Based on git repository name and user initialization
+- **Routes** requests to appropriate specialist agents for this specific CIM
+- **Coordinates** workflows for actual CIM development
+- **Synthesizes** guidance from all experts into unified direction  
+- **Manages** the complete development journey for this domain
 
-## 🚀 Purpose
+## 🚀 Template Purpose
 
-CIM-Start provides intelligent, agent-driven CIM development where SAGE orchestrates everything you need:
+CIM-Start provides a **template** for intelligent, agent-driven CIM development:
 
-- **Expert-Guided Development** - SAGE coordinates 7 specialized agents for complete CIM creation
-- **Collaborative Domain Discovery** - Event Storming sessions with multiple domain experts
-- **Infrastructure Automation** - NATS, network topology, and system configuration
-- **Mathematical Foundations** - Category Theory, Graph Theory, and IPLD integration
-- **Event-Driven Architecture** - Complete event sourcing with real-time projections
+- **Expert-Guided Development Templates** - SAGE coordinates 17 specialized agent templates for CIM creation guidance
+- **Collaborative Domain Discovery Templates** - Event Storming session templates with multiple domain expert guidance
+- **Infrastructure Automation Templates** - NATS, network topology, and system configuration templates
+- **Mathematical Foundation Templates** - Category Theory, Graph Theory, and IPLD integration patterns
+- **Event-Driven Architecture Templates** - Complete event sourcing templates with real-time projection patterns
 
-## 🎯 First Task: Talk to SAGE
+## 🎯 How to Create Your CIM Project
 
-Simple: Ask SAGE to guide you through complete CIM development - no complex setup required:
+**Step 1: Clone CIM-Start as Your Project**
+```bash
+git clone https://github.com/TheCowboyAI/cim-start.git MyCIM
+cd MyCIM
+```
+
+**Step 2: Initialize SAGE for Your Domain**
+```bash
+claude init
+# SAGE detects repo name "MyCIM" and initializes domain
+# SAGE removes template status and becomes active for your CIM
+```
+
+**Step 3: Ask SAGE to Guide Your CIM Development**
+SAGE is now active and domain-aware:
 
 ```mermaid
 graph TB
@@ -441,22 +465,34 @@ See `/domains/example-business/` for a complete e-commerce domain with:
 - Inventory tracking
 - Fulfillment workflow
 
-## 🚦 Next Steps
+## 🚦 Quick Start Process
 
-1. **Use this repo as a GitHub template** (don't clone directly)
-2. **Run `claude init`** in your new project directory  
-3. **Start with SAGE** - your single entry point for all CIM development
-4. **Let SAGE coordinate all experts** for complete CIM creation
-5. **Follow SAGE's guidance** for infrastructure, domain discovery, and implementation
-6. **Iterate with SAGE** as it orchestrates your complete CIM development journey
+1. **Clone CIM-Start as your project:**
+   ```bash
+   git clone https://github.com/TheCowboyAI/cim-start.git MyCIM
+   cd MyCIM
+   ```
 
-### Quick Start Examples
-```bash
-# After claude init, simply ask SAGE:
-/sage I want to build a CIM for my restaurant ordering system
-/sage Help me convert my existing API to event-driven CIM architecture  
-/sage My team needs to discover our complex business domain
-```
+2. **Initialize SAGE for your domain:**
+   ```bash
+   claude init
+   # SAGE detects "MyCIM" repo name and initializes as your domain
+   # Template status removed - SAGE becomes active for your CIM
+   ```
+
+3. **Start building with SAGE:**
+   ```bash
+   # SAGE is now domain-aware and ready to orchestrate your CIM development
+   @sage I want to build a CIM for my restaurant ordering system
+   @sage Help me convert my existing API to event-driven CIM architecture  
+   @sage My team needs to discover our complex business domain
+   ```
+
+4. **SAGE orchestrates everything:**
+   - Domain discovery and boundary analysis
+   - Infrastructure setup and configuration  
+   - Development workflow and quality assurance
+   - Complete CIM development journey
 
 ## 📝 License
 
