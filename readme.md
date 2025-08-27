@@ -13,7 +13,7 @@ When you use this template:
 
 ## 🤖 Meet SAGE - Your CIM Creation Guide Template
 
-CIM-Start provides an intelligent agent system template orchestrated by **SAGE** - the template for guiding CIM creation. SAGE coordinates 17 specialized expert agent templates to help users build their actual CIMs.
+CIM-Start provides an intelligent agent system template orchestrated by **SAGE** - the template for guiding CIM creation. SAGE coordinates 25 specialized expert agent templates to help users build their actual CIMs.
 
 **🎯 After initialization, users work with active SAGE:**
 ```bash
@@ -34,11 +34,12 @@ CIM-Start provides an intelligent agent system template orchestrated by **SAGE**
 
 CIM-Start provides a **template** for intelligent, agent-driven CIM development:
 
-- **Expert-Guided Development Templates** - SAGE coordinates 17 specialized agent templates for CIM creation guidance
+- **Expert-Guided Development Templates** - SAGE coordinates 25 specialized agent templates for CIM creation guidance
 - **Collaborative Domain Discovery Templates** - Event Storming session templates with multiple domain expert guidance
 - **Infrastructure Automation Templates** - NATS, network topology, and system configuration templates
-- **Mathematical Foundation Templates** - Category Theory, Graph Theory, and IPLD integration patterns
+- **Mathematical Foundation Templates** - Category Theory, Graph Theory, Conceptual Spaces, and IPLD integration patterns
 - **Event-Driven Architecture Templates** - Complete event sourcing templates with real-time projection patterns
+- **Knowledge Representation Templates** - Ontologies, semantic spaces, and graph-based knowledge structures
 
 ## 🎯 How to Create Your CIM Project
 
@@ -316,17 +317,45 @@ make test-events
 - Single entry point for all CIM development tasks
 - Analyzes your needs and coordinates appropriate experts
 - Manages multi-agent workflows for complex CIM creation
-- Provides unified guidance synthesized from all specialists
+- Provides unified guidance synthesized from 25 specialized experts
 
-**The Expert Team (SAGE coordinates these automatically):**
+**The Complete Expert Team (SAGE coordinates these automatically):**
 
-**🤖 @cim-expert** - CIM architecture and mathematical foundations
-**🧩 @ddd-expert** - Domain boundaries and aggregate design
-**🎯 @event-storming-expert** - Collaborative domain discovery
-**❄️ @nix-expert** - Declarative system configuration
-**⚡ @nats-expert** - NATS infrastructure and security
-**🌐 @network-expert** - Network topology design
-**🏗️ @domain-expert** - Final domain creation and validation
+**🏗️ Domain & Architecture Experts:**
+- **@cim-expert** - CIM architecture and mathematical foundations
+- **@cim-domain-expert** - CIM domain-specific architecture and integration
+- **@ddd-expert** - Domain boundaries and aggregate design
+- **@event-storming-expert** - Collaborative domain discovery
+- **@domain-expert** - Final domain creation and validation
+- **@domain-ontologist-researcher** - Domain ontologies and knowledge structures
+
+**🧪 Development & Testing Experts:**
+- **@bdd-expert** - Behavior-Driven Development and Gherkin scenarios
+- **@tdd-expert** - Test-Driven Development and unit testing
+- **@qa-expert** - Quality assurance and compliance validation
+
+**🌐 Infrastructure & Systems Experts:**
+- **@nats-expert** - NATS infrastructure and security
+- **@network-expert** - Network topology design
+- **@nix-expert** - Declarative system configuration
+- **@git-expert** - Git operations and CI/CD workflows
+- **@subject-expert** - CIM subject algebra and routing patterns
+
+**🎨 UI/UX & Visualization Experts:**
+- **@iced-ui-expert** - Iced GUI framework for desktop apps
+- **@elm-architecture-expert** - Elm Architecture patterns
+- **@cim-tea-ecs-expert** - TEA + ECS integration patterns
+- **@ricing-expert** - System customization and theming
+
+**🧠 Knowledge & Semantic Experts:**
+- **@conceptual-spaces-expert** - Gärdenfors' geometric semantic spaces
+- **@graph-expert** - Graph theory and network analysis
+- **@language-expert** - Natural language processing and linguistics
+
+**👥 Organization & Context Experts:**
+- **@people-expert** - User modeling and personas
+- **@org-expert** - Organizational structures and workflows
+- **@location-expert** - Spatial and geographic modeling
 
 ### SAGE-Orchestrated Workflow
 
@@ -407,15 +436,17 @@ CIM-Start is designed to work seamlessly with Claude Code:
 4. **Architecture Guidance**: Understand Category Theory, Graph Theory, and IPLD foundations
 5. **Schema-Compliant Output**: Generate cim-graph library compatible events automatically
 
-### The Agents Available After `claude init`
+### The 25 Expert Agents Available After `claude init`
 
-**🤖 @cim-expert** - Architecture and mathematical foundations guidance
-**🧩 @ddd-expert** - Domain boundary analysis and aggregate design
-**🎯 @event-storming-expert** - Collaborative domain discovery facilitation
-**❄️ @nix-expert** - Declarative system configuration from domain context
-**⚡ @nats-expert** - NATS infrastructure configuration and security
-**🌐 @network-expert** - Network topology design using cim-network MCP
-**🏗️ @domain-expert** - Interactive domain creation with structured output
+SAGE orchestrates a comprehensive team of 25 specialized experts:
+
+**Domain & Architecture** (6 experts): CIM architecture, domain design, event storming, ontologies
+**Development & Testing** (3 experts): BDD, TDD, quality assurance
+**Infrastructure** (5 experts): NATS, networking, Nix, Git, subject algebra
+**UI/UX** (4 experts): Iced, Elm, TEA+ECS, theming
+**Knowledge & Semantics** (3 experts): Conceptual spaces, graphs, language
+**Organization** (3 experts): People, organizations, locations
+**Orchestration** (1 expert): SAGE master coordinator
 
 ### Getting Started is Simple
 

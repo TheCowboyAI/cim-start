@@ -2,9 +2,27 @@
 
 Copyright 2025 - Cowboy AI, LLC
 
-## 🚀 15-Minute Domain Template
+## 🚀 The SAGE-Powered Quick Start
 
-Fill in this template to create your domain in 15 minutes!
+**NEW: Let SAGE and 25 expert agents guide you through domain creation!**
+
+Instead of filling out templates manually, simply ask SAGE to orchestrate your domain creation:
+
+```bash
+# After cloning CIM-Start and running 'claude init':
+@sage Create a complete CIM domain for my [business area]
+```
+
+SAGE will coordinate all 25 expert agents to:
+- Conduct event storming sessions
+- Design your domain boundaries
+- Create mathematical foundations
+- Set up infrastructure
+- Generate all necessary code and configuration
+
+## 📋 Manual 15-Minute Domain Template
+
+(Or if you prefer the manual approach, fill in this template to create your domain in 15 minutes)
 
 ## Step 1: Name Your Domain
 
@@ -216,8 +234,26 @@ dependencies:
 
 ## Need Help?
 
-Ask Claude:
-- "Help me identify events for my [business type] domain"
-- "What aggregates make sense for [industry]?"
-- "Generate the Rust code for my domain events"
-- "Create command handlers for my aggregates"
+**Recommended: Use SAGE for Complete Orchestration**
+```bash
+@sage Help me create a complete [business type] domain
+@sage Guide me through event storming for [industry]
+@sage Set up all infrastructure for my domain
+```
+
+**Or Ask Specific Experts Directly:**
+- `@event-storming-expert` - "Help me identify events for my [business type] domain"
+- `@ddd-expert` - "What aggregates make sense for [industry]?"
+- `@domain-expert` - "Generate the cim-graph structure for my domain"
+- `@tdd-expert` - "Create test-driven command handlers for my aggregates"
+- `@conceptual-spaces-expert` - "Design semantic spaces for my domain concepts"
+- `@graph-expert` - "Model relationships in my domain as a graph"
+
+**SAGE Coordinates All 25 Experts Including:**
+- Domain & Architecture (6 experts)
+- Development & Testing (3 experts)
+- Infrastructure (5 experts)
+- UI/UX (4 experts)
+- Knowledge & Semantics (3 experts)
+- Organization & Context (3 experts)
+- Master Orchestration (SAGE)

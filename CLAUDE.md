@@ -21,7 +21,7 @@ CIM-Start is a **template** for creating Composable Information Machines (CIMs).
 
 **Template Architecture:**
 - SAGE: Master orchestrator template for guiding CIM creation
-- 17 Specialized Expert Agent templates for different domains of expertise  
+- 25 Specialized Expert Agent templates for different domains of expertise  
 - Template workflows for CIM development processes
 - Agent coordination patterns for CIM projects created from this template
 
@@ -53,34 +53,46 @@ CIM-Start provides SAGE which transforms from template to active CIM orchestrato
 ```
 
 ### The Expert Agent System
-After SAGE initialization, these **17 specialized expert agents** become active for the specific CIM project:
+After SAGE initialization, these **25 specialized expert agents** become active for the specific CIM project:
 
 **🎭 Master Orchestrator:**
 **@sage** - Coordinates all expert agents and provides unified CIM development guidance
 
-**🏗️ Domain Expert Agents:**
+**🏗️ Domain Expert Agents (6):**
 **@cim-expert** - CIM architecture, mathematical foundations, Category Theory, Graph Theory, IPLD
 **@cim-domain-expert** - CIM domain-specific architecture, integration strategies, ecosystem planning
 **@ddd-expert** - Domain-driven design, aggregate boundaries, state machines, business rules  
 **@event-storming-expert** - Collaborative domain discovery, event identification, team facilitation
 **@domain-expert** - Domain creation, cim-graph generation, mathematical validation
+**@domain-ontologist-researcher** - Domain ontologies, knowledge structures, semantic relationships
 
-**🧪 Development Expert Agents:**
+**🧪 Development Expert Agents (3):**
 **@bdd-expert** - Behavior-Driven Development, Gherkin syntax, User Stories with Context Graphs
 **@tdd-expert** - Test-Driven Development, creating Unit Tests IN ADVANCE, bug reproduction
 **@qa-expert** - Quality assurance, compliance analysis, rule violation documentation
 
-**🌐 Infrastructure Expert Agents:**
+**🌐 Infrastructure Expert Agents (5):**
 **@nats-expert** - NATS messaging, JetStream, Object Store, KV Store, NSC security
 **@network-expert** - Network topology, infrastructure planning, secure pathways
 **@nix-expert** - Nix configuration, system design, infrastructure as code
 **@git-expert** - Git and GitHub operations, repository management, CI/CD workflows
 **@subject-expert** - CIM subject algebra, routing patterns, mathematical subject hierarchies
 
-**🎨 UI/UX Expert Agents:**
+**🎨 UI/UX Expert Agents (4):**
 **@iced-ui-expert** - Iced GUI framework, desktop application development
 **@elm-architecture-expert** - Elm Architecture patterns, functional UI design
 **@cim-tea-ecs-expert** - TEA (The Elm Architecture) + ECS integration patterns
+**@ricing-expert** - System customization, theming, visual configuration
+
+**🧠 Knowledge & Semantic Expert Agents (3):**
+**@conceptual-spaces-expert** - Gärdenfors' geometric semantic spaces, prototype theory
+**@graph-expert** - Graph theory, network analysis, graph algorithms
+**@language-expert** - Natural language processing, linguistics, semantic analysis
+
+**👥 Organization & Context Expert Agents (3):**
+**@people-expert** - User modeling, personas, human factors
+**@org-expert** - Organizational structures, workflows, business processes
+**@location-expert** - Spatial modeling, geographic information, location services
 
 ### Agent-Based Workflow
 Instead of manual setup, use SAGE to orchestrate everything:
@@ -248,13 +260,15 @@ SAGE manages the entire process through intelligent agent coordination:
 /sage Convert my microservices to CIM architecture
 ```
 
-**@sage automatically coordinates experts for the specific CIM project:**
-- **Domain Discovery** (@event-storming-expert → @ddd-expert → @domain-expert)
-- **Infrastructure Setup** (@nats-expert → @network-expert → @nix-expert → @subject-expert)
-- **Development Workflow** (@bdd-expert → @tdd-expert → @git-expert → @qa-expert)
-- **Architecture Guidance** (@cim-expert → @cim-domain-expert for mathematical foundations)
-- **UI/UX Implementation** (@iced-ui-expert, @elm-architecture-expert, @cim-tea-ecs-expert as needed)
-- **Quality Assurance** (@qa-expert for continuous compliance validation)
+**@sage automatically coordinates all 25 experts for the specific CIM project:**
+- **Domain Discovery** (@event-storming-expert → @ddd-expert → @domain-expert → @domain-ontologist-researcher)
+- **Infrastructure Setup** (@nats-expert → @network-expert → @nix-expert → @subject-expert → @git-expert)
+- **Development Workflow** (@bdd-expert → @tdd-expert → @qa-expert)
+- **Architecture Guidance** (@cim-expert → @cim-domain-expert → @graph-expert for mathematical foundations)
+- **Knowledge Modeling** (@conceptual-spaces-expert → @language-expert for semantic structures)
+- **Context Design** (@people-expert → @org-expert → @location-expert for organizational context)
+- **UI/UX Implementation** (@iced-ui-expert → @elm-architecture-expert → @cim-tea-ecs-expert → @ricing-expert)
+- **Quality Assurance** (@qa-expert for continuous compliance validation across all 25 expert domains)
 
 **Domain Category Initialization:**
 When SAGE initializes from the cloned repository, it automatically establishes the domain:

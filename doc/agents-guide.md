@@ -2,18 +2,38 @@
 
 Copyright 2025 - Cowboy AI, LLC
 
+## 🎭 SAGE Orchestration System
+
+**NEW: CIM-Start now includes SAGE - a master orchestrator coordinating 25 specialized expert agents!**
+
+SAGE (Strategic Agent Guidance Engine) provides intelligent orchestration of all CIM development activities through a unified interface. Instead of manually coordinating agents, SAGE analyzes your requirements and automatically engages the right experts in the optimal sequence.
+
+### The 25 Expert Agents
+
+SAGE coordinates these specialized experts:
+
+**Domain & Architecture (6)**: cim-expert, cim-domain-expert, ddd-expert, event-storming-expert, domain-expert, domain-ontologist-researcher
+**Development & Testing (3)**: bdd-expert, tdd-expert, qa-expert
+**Infrastructure (5)**: nats-expert, network-expert, nix-expert, git-expert, subject-expert
+**UI/UX (4)**: iced-ui-expert, elm-architecture-expert, cim-tea-ecs-expert, ricing-expert
+**Knowledge & Semantics (3)**: conceptual-spaces-expert, graph-expert, language-expert
+**Organization & Context (3)**: people-expert, org-expert, location-expert
+**Orchestration (1)**: sage (master coordinator)
+
 ## Overview
 
-CIM agents are composable, event-driven modules that enhance domain workflows with intelligent automation. Unlike traditional subagent hierarchies, CIM agents operate as autonomous domain participants that respond to events and execute commands within your business context.
+CIM agents are composable, event-driven modules that enhance domain workflows with intelligent automation. With SAGE orchestration, these agents work together seamlessly as a unified system rather than isolated components.
 
 ## Agent Architecture
 
 ### Core Principles
 
-1. **Event-Driven**: Agents respond to domain events through NATS messaging
-2. **Composable**: Mix and match agents based on domain needs
-3. **Autonomous**: Each agent operates independently within defined boundaries
-4. **Domain-Aware**: Agents understand and participate in business workflows
+1. **SAGE-Orchestrated**: All agents coordinate through SAGE for optimal workflows
+2. **Event-Driven**: Agents respond to domain events through NATS messaging
+3. **Composable**: Mix and match agents based on domain needs
+4. **Autonomous**: Each agent operates independently within defined boundaries
+5. **Domain-Aware**: Agents understand and participate in business workflows
+6. **Expert-Specialized**: Each of the 25 agents brings deep expertise in their domain
 
 ### Agent Types
 
@@ -45,9 +65,27 @@ Automate user-facing processes:
 - Notification delivery
 - Interface automation
 
-## Getting Started
+## Getting Started with SAGE
 
-### 1. Choose Agent Templates
+### The SAGE-First Approach (Recommended)
+
+```bash
+# Simply ask SAGE to handle everything
+@sage Create a complete agent system for my [domain]
+@sage Set up monitoring agents for production
+@sage Design an AI-powered customer service workflow
+```
+
+SAGE will:
+1. Analyze your requirements
+2. Engage relevant experts from the 25-agent team
+3. Coordinate multi-agent workflows
+4. Generate all necessary configurations
+5. Validate the complete system
+
+### Manual Agent Configuration (Advanced)
+
+#### 1. Choose Agent Templates
 
 Start with pre-built templates from `/agents/templates/`:
 
@@ -285,10 +323,34 @@ nats req "agent.my-agent.config" ""
 
 ## Next Steps
 
+### With SAGE Orchestration (Recommended)
+
+1. **Ask SAGE for complete solutions**: `@sage Build a complete monitoring system`
+2. **Let SAGE coordinate experts**: `@sage Integrate with external payment systems`
+3. **Request complex workflows**: `@sage Create an AI-powered decision system`
+4. **Get architectural guidance**: `@sage Review and optimize my agent architecture`
+
+### Manual Approach (Advanced)
+
 1. Start with system agents for monitoring
 2. Add integration agents for external systems
 3. Implement AI agents for intelligent decision making
 4. Create user agents for workflow automation
 5. Compose agents into complex workflows
+
+## The 25 Expert Agents in Detail
+
+Each expert agent brings specialized knowledge:
+
+- **conceptual-spaces-expert**: Implements Gärdenfors' geometric theory of meaning
+- **domain-ontologist-researcher**: Creates formal ontologies and knowledge structures
+- **graph-expert**: Applies graph theory to domain modeling
+- **language-expert**: Natural language processing and semantic analysis
+- **location-expert**: Spatial and geographic modeling
+- **org-expert**: Organizational structures and business processes
+- **people-expert**: User modeling and human factors
+- **ricing-expert**: System customization and visual theming
+
+...plus the 17 core experts for CIM development.
 
 For more advanced topics, see the CIM domain modules documentation and explore the full CIM ecosystem at https://github.com/thecowboyai/cim.
