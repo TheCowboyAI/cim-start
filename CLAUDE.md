@@ -53,7 +53,7 @@ CIM-Start provides SAGE which transforms from template to active CIM orchestrato
 ```
 
 ### The Expert Agent System
-After SAGE initialization, these **25 specialized expert agents** become active for the specific CIM project:
+After SAGE initialization, these **26 specialized expert agents** become active for the specific CIM project:
 
 **🎭 Master Orchestrator:**
 **@sage** - Coordinates all expert agents and provides unified CIM development guidance
@@ -89,10 +89,11 @@ After SAGE initialization, these **25 specialized expert agents** become active 
 **@graph-expert** - Graph theory, network analysis, graph algorithms
 **@language-expert** - Natural language processing, linguistics, semantic analysis
 
-**👥 Organization & Context Expert Agents (3):**
+**👥 Organization & Context Expert Agents (4):**
 **@people-expert** - User modeling, personas, human factors
 **@org-expert** - Organizational structures, workflows, business processes
 **@location-expert** - Spatial modeling, geographic information, location services
+**@resource-expert** - Resource abstraction, inventory management, "Things that can be used"
 
 ### Agent-Based Workflow
 Instead of manual setup, use SAGE to orchestrate everything:
@@ -260,7 +261,7 @@ SAGE manages the entire process through intelligent agent coordination:
 /sage Convert my microservices to CIM architecture
 ```
 
-**@sage automatically coordinates all 25 experts for the specific CIM project:**
+**@sage automatically coordinates all 26 experts for the specific CIM project:**
 - **Domain Discovery** (@event-storming-expert → @ddd-expert → @domain-expert → @domain-ontologist-researcher)
 - **Infrastructure Setup** (@nats-expert → @network-expert → @nix-expert → @subject-expert → @git-expert)
 - **Development Workflow** (@bdd-expert → @tdd-expert → @qa-expert)

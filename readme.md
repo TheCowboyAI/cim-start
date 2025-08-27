@@ -14,7 +14,7 @@ Starting from this repository, you will:
 
 ## 🤖 Meet SAGE - Your Configuration Orchestrator
 
-CIM-Start provides **SAGE**, an intelligent agent system that guides you through CIM configuration. SAGE coordinates 25 specialized experts to help you configure, assemble, and deploy your CIM.
+CIM-Start provides **SAGE**, an intelligent agent system that guides you through CIM configuration. SAGE coordinates 26 specialized experts to help you configure, assemble, and deploy your CIM.
 
 **🎯 Working with SAGE - Context First:**
 ```bash
@@ -423,6 +423,7 @@ Every CIM starts with a `domain.json` file containing:
 - **@people-expert** - User modeling and personas
 - **@org-expert** - Organizational structures and workflows
 - **@location-expert** - Spatial and geographic modeling
+- **@resource-expert** - Resource abstraction and inventory management
 
 ### Configuration-First Workflow with SAGE
 
@@ -510,16 +511,16 @@ CIM-Start is designed to work seamlessly with Claude Code:
 4. **Architecture Guidance**: Understand Category Theory, Graph Theory, and IPLD foundations
 5. **Schema-Compliant Output**: Generate cim-graph library compatible events automatically
 
-### The 25 Expert Agents Available After `claude init`
+### The 26 Expert Agents Available After `claude init`
 
-SAGE orchestrates a comprehensive team of 25 specialized experts:
+SAGE orchestrates a comprehensive team of 26 specialized experts:
 
 **Domain & Architecture** (6 experts): CIM architecture, domain design, event storming, ontologies
 **Development & Testing** (3 experts): BDD, TDD, quality assurance
 **Infrastructure** (5 experts): NATS, networking, Nix, Git, subject algebra
 **UI/UX** (4 experts): Iced, Elm, TEA+ECS, theming
 **Knowledge & Semantics** (3 experts): Conceptual spaces, graphs, language
-**Organization** (3 experts): People, organizations, locations
+**Organization & Resources** (4 experts): People, organizations, locations, resources
 **Orchestration** (1 expert): SAGE master coordinator
 
 ### Getting Started is Simple

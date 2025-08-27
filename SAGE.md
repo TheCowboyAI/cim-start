@@ -4,9 +4,9 @@ Copyright 2025 - Cowboy AI, LLC
 
 ## 🎭 Master Orchestrator for CIM Development
 
-SAGE is the intelligent orchestration system that coordinates 25 specialized expert agents to guide you through complete CIM (Composable Information Machine) development. Instead of manually managing multiple tools and processes, SAGE analyzes your requirements and automatically engages the right experts in the optimal sequence.
+SAGE is the intelligent orchestration system that coordinates 26 specialized expert agents to guide you through complete CIM (Composable Information Machine) development. Instead of manually managing multiple tools and processes, SAGE analyzes your requirements and automatically engages the right experts in the optimal sequence.
 
-## The 25-Agent Expert System
+## The 26-Agent Expert System
 
 SAGE orchestrates a comprehensive team of domain experts, each bringing deep specialized knowledge:
 
@@ -46,15 +46,16 @@ SAGE orchestrates a comprehensive team of domain experts, each bringing deep spe
 - **@graph-expert** - Graph theory, network analysis, relationship modeling
 - **@language-expert** - Natural language processing, linguistics, semantic analysis
 
-### 👥 Organization & Context Experts (3)
+### 👥 Organization & Context Experts (4)
 
 - **@people-expert** - User modeling, personas, human factors engineering
 - **@org-expert** - Organizational structures, workflows, business process modeling
 - **@location-expert** - Spatial modeling, geographic information, location-based services
+- **@resource-expert** - Resource abstraction, inventory management, "Things that can be used"
 
 ### 🎭 Master Orchestrator (1)
 
-- **@sage** - Strategic coordination of all 25 experts, workflow optimization, unified guidance
+- **@sage** - Strategic coordination of all 26 experts, workflow optimization, unified guidance
 
 ## How SAGE Works
 

@@ -26,6 +26,16 @@
       }
     ],
     "resources": {
+      "inventory": [
+        {
+          "id": "res-example-1",
+          "domain_type": "hardware.computer|furniture.desk|building.office",
+          "value": 0,
+          "status": "available|in-use|maintenance|retired",
+          "location_ref": "",
+          "owner_ref": "org-1"
+        }
+      ],
       "infrastructure": {
         "deployment_target": "local|vm|container|metal|cloud",
         "nats": {
