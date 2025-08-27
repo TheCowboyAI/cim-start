@@ -1,0 +1,68 @@
+{
+  "domain": {
+    "name": "${REPO_NAME}",
+    "purpose": "",
+    "created": "",
+    "version": "1.0.0"
+  },
+  "context": {
+    "people": [
+      {
+        "id": "person-1",
+        "name": "",
+        "role": "Domain Administrator",
+        "email": "",
+        "github": ""
+      }
+    ],
+    "organizations": [
+      {
+        "id": "org-1",
+        "name": "",
+        "type": "primary",
+        "role": "Domain Owner",
+        "website": "",
+        "github": ""
+      }
+    ],
+    "resources": {
+      "infrastructure": {
+        "deployment_target": "local|vm|container|metal|cloud",
+        "nats": {
+          "location": "local|remote",
+          "host": "",
+          "port": 4222,
+          "cluster": false,
+          "jetstream": true
+        },
+        "compute": {
+          "provider": "",
+          "region": "",
+          "resources": {
+            "cpu": "",
+            "memory": "",
+            "storage": ""
+          }
+        }
+      },
+      "network": {
+        "topology": "",
+        "security": {
+          "tls": false,
+          "authentication": ""
+        }
+      }
+    }
+  },
+  "capabilities": {
+    "event_sourcing": true,
+    "cqrs": true,
+    "projections": false,
+    "object_store": false
+  },
+  "metadata": {
+    "cim_version": "1.0.0",
+    "template_version": "1.0.0",
+    "sage_agents": 25
+  }
+}

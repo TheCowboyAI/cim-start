@@ -1,3 +1,5 @@
+<!-- Copyright (c) 2025 - Cowboy AI, LLC. -->
+
 # CIM Agent Claude - Unified Conversation Model
 
 ## CRITICAL: Date Handling Rules - TOP PRIORITY

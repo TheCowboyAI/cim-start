@@ -1,3 +1,5 @@
+<!-- Copyright (c) 2025 - Cowboy AI, LLC. -->
+
 # CIM-Start Template Initialization
 
 This file contains instructions for Claude Code to customize the CIM-Start template for the user's specific project during `claude init`.

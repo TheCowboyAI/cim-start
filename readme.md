@@ -1,127 +1,157 @@
-# CIM-Start: Agent-Powered CIM Development Template
+# CIM-Start: Configuration-Driven CIM Development Platform
 
 Copyright 2025 - Cowboy AI, LLC
 
-## 🎯 **This is a TEMPLATE Repository**
+## 🎯 **Build Your CIM Through Configuration**
 
-**CIM-Start is a GitHub template for creating CIM projects - it is NOT a CIM itself.**
+**CIM-Start is a configuration platform for creating Composable Information Machines - you define your CIM through configuration, not code.**
 
-When you use this template:
-1. **Use as GitHub Template** → Creates your new CIM project repository  
-2. **Your new repo** becomes the actual CIM you're building
-3. **This template** provides the agent system to guide your CIM development
+Starting from this repository, you will:
+1. **Configure your domain** → Define your CIM structure and boundaries
+2. **Add infrastructure configuration** → NATS JetStream, network topology, security
+3. **Assemble cim-* modules** → Use 38+ pre-built modules (not build from scratch)
+4. **Deploy your configured CIM** → Event-driven system emerges from configuration
 
-## 🤖 Meet SAGE - Your CIM Creation Guide Template
+## 🤖 Meet SAGE - Your Configuration Orchestrator
 
-CIM-Start provides an intelligent agent system template orchestrated by **SAGE** - the template for guiding CIM creation. SAGE coordinates 25 specialized expert agent templates to help users build their actual CIMs.
+CIM-Start provides **SAGE**, an intelligent agent system that guides you through CIM configuration. SAGE coordinates 25 specialized experts to help you configure, assemble, and deploy your CIM.
 
-**🎯 After initialization, users work with active SAGE:**
+**🎯 Working with SAGE - Context First:**
 ```bash
-# SAGE is now active and domain-aware for the specific project:
-@sage I want to build a CIM for my MyCIM domain
-@sage Help my team understand our order processing domain  
-@sage Set up complete CIM infrastructure for this project
+# After cloning with your domain name:
+@sage Initialize domain context for order-processing
+@sage Create domain.json with my organization's details
+@sage Configure infrastructure based on our resources
+@sage Define domain boundaries after context is established
+@sage Assemble the right cim-* modules for my domain
 ```
 
-**Active SAGE automatically:**
-- **Knows the domain**: Based on git repository name and user initialization
-- **Routes** requests to appropriate specialist agents for this specific CIM
-- **Coordinates** workflows for actual CIM development
-- **Synthesizes** guidance from all experts into unified direction  
-- **Manages** the complete development journey for this domain
+**SAGE automatically:**
+- **Guides configuration** → Creates domain objects, graphs, and workflows
+- **Sets up infrastructure** → Configures NATS JetStream, network topology
+- **Assembles modules** → Selects and integrates cim-* ecosystem components
+- **Validates architecture** → Ensures proper event-driven patterns
+- **Manages the complete configuration journey** → From empty repo to running CIM
 
-## 🚀 Template Purpose
+## 🚀 Domain-First, Configuration-Driven Development
 
-CIM-Start provides a **template** for intelligent, agent-driven CIM development:
+CIM-Start provides **domain-context-first, configuration-driven CIM development**:
 
-- **Expert-Guided Development Templates** - SAGE coordinates 25 specialized agent templates for CIM creation guidance
-- **Collaborative Domain Discovery Templates** - Event Storming session templates with multiple domain expert guidance
-- **Infrastructure Automation Templates** - NATS, network topology, and system configuration templates
-- **Mathematical Foundation Templates** - Category Theory, Graph Theory, Conceptual Spaces, and IPLD integration patterns
-- **Event-Driven Architecture Templates** - Complete event sourcing templates with real-time projection patterns
-- **Knowledge Representation Templates** - Ontologies, semantic spaces, and graph-based knowledge structures
+- **Domain Context Data** - Establish People, Organizations, and Resources BEFORE infrastructure
+- **Domain Configuration** - Define your CIM structure through YAML/JSON configuration
+- **Infrastructure as Configuration** - NATS, network topology, security configured based on context  
+- **Module Assembly Configuration** - Select and configure pre-built cim-* modules
+- **Event Flow Configuration** - Define event streams, projections, and workflows
+- **Mathematical Foundation** - Category Theory, Graph Theory, and IPLD built-in
+- **Context-Aware Deployment** - Infrastructure adapts to your resource specifications
 
-## 🎯 How to Create Your CIM Project
+## 🎯 How to Configure Your CIM - Domain Context First!
 
-**Step 1: Clone CIM-Start as Your Project**
+**Step 1: Clone and Name Your Domain**
 ```bash
-git clone https://github.com/TheCowboyAI/cim-start.git MyCIM
-cd MyCIM
+# Clone the repository with YOUR domain name
+git clone https://github.com/TheCowboyAI/cim-start.git inventory-management
+cd inventory-management
+# Your repo name "inventory-management" becomes your Domain name
 ```
 
-**Step 2: Initialize SAGE for Your Domain**
+**Step 2: Initialize SAGE Configuration System**
 ```bash
+# Initialize Claude Code with SAGE and all expert agents
 claude init
-# SAGE detects repo name "MyCIM" and initializes domain
-# SAGE removes template status and becomes active for your CIM
+# SAGE detects "inventory-management" as your domain name
 ```
 
-**Step 3: Ask SAGE to Guide Your CIM Development**
-SAGE is now active and domain-aware:
+**Step 3: CRITICAL - Create Domain Context Data First**
+```bash
+# Before ANY infrastructure, establish Domain context!
+@sage Create domain context for inventory-management
+
+# You MUST provide:
+# 1. Domain Purpose: Clear description of what this CIM does
+# 2. People: Who will administer and use the system
+# 3. Organizations: Who owns/operates the domain
+# 4. Resources: Where to deploy (local/VM/container/metal/cloud)
+```
+
+This creates `domains/inventory-management/domain.json` with essential context.
+
+**Step 4: Infrastructure Based on Context**
+```bash
+# Only AFTER domain.json exists:
+@sage Configure infrastructure based on my domain context
+
+# SAGE reads your context and:
+# - Creates appropriate Nix flake if deployment_target != "local"
+# - Configures NATS based on resource specifications
+# - Sets up networking according to your organization's needs
+```
+
+**Step 5: Configure Your Domain with SAGE**
+Now you can start actual CIM configuration:
 
 ```mermaid
 graph TB
-    subgraph "DEV Channel - JetStream Container"
-        subgraph "Development Event Capture"
-            DevEvents[Development Events<br/>- Design Decisions<br/>- Code Changes<br/>- Build Steps]
-            DevCommands[Development Commands<br/>- Create Domain<br/>- Add Entity<br/>- Deploy Component]
-            DevGraphs[Graph Construction<br/>- Domain Models<br/>- System Architecture<br/>- Event Flows]
+    subgraph "Configuration Phase - In This Repository"
+        subgraph "Domain Configuration Files"
+            DomainYAML[domain.yaml<br/>- Domain boundaries<br/>- Business context<br/>- Invariants]
+            EntitiesYAML[entities.yaml<br/>- Entity definitions<br/>- Value objects<br/>- Aggregates]
+            EventsYAML[events.yaml<br/>- Event schemas<br/>- Command definitions<br/>- Projections]
         end
         
-        subgraph "Development Projections"
-            BuildState[Build State View]
-            SystemProgress[System Progress View]
-            ArchitectureView[Architecture View]
+        subgraph "Infrastructure Configuration"
+            NATSConfig[NATS Configuration<br/>- Streams setup<br/>- Subject algebra<br/>- Security]
+            NetworkConfig[Network Topology<br/>- Service mesh<br/>- Load balancing<br/>- Routing]
+            ModuleConfig[Module Assembly<br/>- cim-* selection<br/>- Integration config<br/>- Dependencies]
         end
         
-        DevEvents --> BuildState
-        DevCommands --> SystemProgress
-        DevGraphs --> ArchitectureView
+        DomainYAML --> NATSConfig
+        EntitiesYAML --> ModuleConfig
+        EventsYAML --> NATSConfig
     end
     
-    subgraph "Live CIM System - Production"
-        subgraph "Production Events"
-            ProdEvents[Production Events]
-            ProdCommands[Production Commands]
-            ProdData[Production Data]
+    subgraph "Runtime - Emerges from Configuration"
+        subgraph "NATS JetStream"
+            EventStore[Event Store<br/>From events.yaml]
+            CommandBus[Command Bus<br/>From domain.yaml]
+            Projections[Projections<br/>From entities.yaml]
         end
         
-        subgraph "Production Projections"
-            LiveViews[Live System Views]
-            BusinessMetrics[Business Metrics]
-            OperationalData[Operational Data]
+        subgraph "CIM Runtime"
+            LiveSystem[Live CIM System<br/>Assembled from configs]
+            BusinessLogic[Business Logic<br/>From workflows.yaml]
+            APIs[API Layer<br/>From module configs]
         end
         
-        ProdEvents --> LiveViews
-        ProdCommands --> BusinessMetrics
-        ProdData --> OperationalData
+        EventStore --> LiveSystem
+        CommandBus --> BusinessLogic
+        Projections --> APIs
     end
     
-    subgraph "Replication Flow"
-        ReplicationEngine[JetStream Replication<br/>DEV → PROD]
+    subgraph "Configuration Tools"
+        SAGE[SAGE Orchestrator<br/>Guides all configuration]
+        Experts[25 Expert Agents<br/>Domain-specific guidance]
     end
     
-    DevEvents -->|Replicate Up| ReplicationEngine
-    DevCommands -->|Replicate Up| ReplicationEngine
-    DevGraphs -->|Replicate Up| ReplicationEngine
+    SAGE -->|Creates| DomainYAML
+    SAGE -->|Generates| EntitiesYAML
+    SAGE -->|Defines| EventsYAML
+    Experts -->|Validate| NATSConfig
+    Experts -->|Design| NetworkConfig
+    Experts -->|Select| ModuleConfig
     
-    ReplicationEngine -->|System Comes Online| ProdEvents
-    ReplicationEngine -->|System Comes Online| ProdCommands
-    ReplicationEngine -->|System Comes Online| ProdData
-    
-    style DevEvents fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style DevCommands fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style DevGraphs fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
-    style BuildState fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style SystemProgress fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style ArchitectureView fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
-    style ReplicationEngine fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
-    style ProdEvents fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
-    style ProdCommands fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
-    style ProdData fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
+    style DomainYAML fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style EntitiesYAML fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style EventsYAML fill:#4ECDC4,stroke:#2B8A89,stroke-width:3px,color:#FFF
+    style NATSConfig fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style NetworkConfig fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style ModuleConfig fill:#FFE66D,stroke:#FCC419,stroke-width:3px,color:#000
+    style SAGE fill:#FF6B6B,stroke:#C92A2A,stroke-width:4px,color:#FFF
+    style EventStore fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
+    style LiveSystem fill:#95E1D3,stroke:#63C7B8,stroke-width:3px,color:#000
 ```
 
-### Development Workflow: DEV Channel to Production
+### Configuration-Driven Development Workflow
 
 ```mermaid
 graph LR
@@ -251,65 +281,102 @@ cim-start/
 └── docker-compose.yml  # NATS infrastructure
 ```
 
-## 🚀 Getting Started
+## 🚀 Getting Started - Domain Context First!
 
-### Step 1: Create Your CIM Project from Template
+### Step 1: Clone with Your Domain Name
 
-**Use this repository as a GitHub template** (don't clone directly):
-
-1. Click "Use this template" → "Create a new repository" on GitHub
-2. Name your new repository (e.g., `my-ecommerce-cim`)
-3. Clone your new repository:
+**Your repository name becomes your domain name:**
 
 ```bash
-git clone https://github.com/your-username/my-ecommerce-cim.git
-cd my-ecommerce-cim
+# Clone with YOUR domain name (this is critical!)
+git clone https://github.com/TheCowboyAI/cim-start.git ecommerce
+cd ecommerce
+# "ecommerce" is now your Domain name
 ```
 
-### Step 2: Initialize Claude Code
-
-**Set up Claude Code with CIM-Start agents:**
+### Step 2: Initialize SAGE
 
 ```bash
-# Initialize Claude Code in your project
+# Initialize SAGE and expert agents
 claude init
-
-# Verify agents are available
-claude --help
-# You should see @cim-expert and @domain-expert listed
+# SAGE detects "ecommerce" as your domain name
 ```
 
-### Step 3: Start Your Domain Creation
+### Step 3: MANDATORY - Create Domain Context
 
-**Choose your path:**
+**Before ANY configuration or infrastructure:**
 
-**Option A - Complete Guided Setup:**
 ```bash
-# 1. Launch NATS JetStream
-make dev
+# Create your domain.json with context data
+@sage Initialize domain context for ecommerce
 
-# 2. Build network topology with cim-network MCP
-claude "@network-expert Set up network topology for this domain"
+# Provide required information:
+# - Purpose: "Manage online retail operations"
+# - People: [{"name": "Jane Doe", "role": "Admin", "email": "jane@shop.com"}]
+# - Organizations: [{"name": "Shop Inc", "type": "owner"}]
+# - Resources: {"deployment_target": "container", "nats": {"location": "local"}}
 
-# 3. Create your domain
-claude "@domain-expert Help me create a customer service domain"
+# This creates: domains/ecommerce/domain.json
 ```
 
-**Option B - Get Architecture Guidance:**
+### Step 4: Configure Infrastructure Based on Context
+
+**Only AFTER domain.json exists:**
+
 ```bash
-claude "@cim-expert Explain how the DEV channel works with JetStream"
+# SAGE reads your context and configures appropriately
+@sage Configure infrastructure for ecommerce domain
+
+# Based on deployment_target in domain.json:
+# - "local": Uses existing NATS installation
+# - "vm": Creates Nix flake for VM deployment
+# - "container": Configures Docker/Kubernetes
+# - "cloud": Sets up cloud provider resources
+# - "metal": Configures bare metal deployment
 ```
 
-**Option C - Just Launch NATS (minimal start):**
-```bash
-# Configure and launch JetStream container
-make dev
+### Step 5: Domain Configuration
 
-# Start capturing events
-make test-events
+**Now you can configure the actual domain:**
+
+```bash
+# With context and infrastructure ready:
+@sage Configure domain model for ecommerce
+
+# This creates:
+# - domains/ecommerce/entities.yaml
+# - domains/ecommerce/events.yaml
+# - domains/ecommerce/workflows.yaml
 ```
 
 ## 🏗️ Working with CIM-Start
+
+### Domain Context Structure
+
+Every CIM starts with a `domain.json` file containing:
+
+```json
+{
+  "domain": {
+    "name": "${REPO_NAME}",
+    "purpose": "Clear description of domain's role"
+  },
+  "context": {
+    "people": [
+      {"name": "Admin Name", "role": "Domain Administrator", "email": "admin@org.com"}
+    ],
+    "organizations": [
+      {"name": "Your Org", "type": "owner", "role": "Domain Owner"}
+    ],
+    "resources": {
+      "infrastructure": {
+        "deployment_target": "local|vm|container|metal|cloud",
+        "nats": {"location": "local|remote", "host": ""}
+      }
+    }
+  }
+}
+```
 
 ### The SAGE Agent System
 
@@ -357,18 +424,25 @@ make test-events
 - **@org-expert** - Organizational structures and workflows
 - **@location-expert** - Spatial and geographic modeling
 
-### SAGE-Orchestrated Workflow
+### Configuration-First Workflow with SAGE
 
-**🎯 Primary Approach: Let SAGE Guide Everything**
+**🎯 Primary Workflow: Configure Your CIM with SAGE**
 ```bash
-# Single command that coordinates all experts automatically
-/sage I want to build a CIM for my [business domain]
+# Start configuration in this repository
+@sage I need to configure a CIM for [business domain]
+
+# SAGE creates configuration files, not code:
+# - domains/[domain]/domain.yaml
+# - domains/[domain]/entities.yaml  
+# - domains/[domain]/events.yaml
+# - nats-config/streams.yaml
+# - cim-modules.yaml
 
 # Examples:
-/sage I want to build a CIM for my e-commerce business
-/sage Help my team understand our order processing domain  
-/sage Set up complete CIM infrastructure for logistics
-/sage Convert my existing microservices to CIM architecture
+@sage Configure a CIM for my e-commerce business
+@sage Set up domain configuration for order processing
+@sage Configure NATS infrastructure and event streams
+@sage Select cim-* modules for my inventory system
 ```
 
 **🔧 Advanced: Direct Expert Access (when you know exactly what you need)**
@@ -462,23 +536,67 @@ claude "@domain-expert I need to create a billing domain for my SaaS"
 
 No complex setup, no configuration files to edit - the agents guide you through everything.
 
-## 🔧 Available Modules
+## 🔧 CIM Module Ecosystem - Assemble, Don't Build
 
-CIM provides 38+ modules you can assemble:
+**The CIM philosophy: ASSEMBLE existing modules, don't build from scratch**
 
-### Core
-- `cim-domain` - Domain definitions and event schemas
-- `cim-projections` - Read models
-- `cim-graph` - Knowledge graphs and workflow modeling (supersedes cim-domain-workflow)
+CIM provides **38+ pre-built modules** that you configure and assemble:
 
-### Domain
-- `cim-domain-identity` - Users & auth
-- `cim-domain-policy` - Business rules
+### Configuration-Based Assembly
+```yaml
+# cim-modules.yaml - Module assembly configuration
+modules:
+  core:
+    - name: cim-domain
+      version: latest
+      config: domains/myapp/domain.yaml
+    - name: cim-graph
+      version: latest
+      config: domains/myapp/graph.yaml
+    - name: cim-projections
+      version: latest
+      config: domains/myapp/projections.yaml
+  
+  domain:
+    - name: cim-domain-identity
+      version: latest
+      config: domains/myapp/identity.yaml
+    - name: cim-domain-policy
+      version: latest
+      config: domains/myapp/policies.yaml
+  
+  infrastructure:
+    - name: cim-network
+      version: latest
+      config: infrastructure/network.yaml
+    - name: cim-flashstor
+      version: latest  
+      config: infrastructure/storage.yaml
+```
 
-### Infrastructure  
-- `cim-network` - Network topology and infrastructure provisioning
-- `cim-flashstor` - Object storage
-- `cim-security` - Authorization
+### Core Modules (Configure These First)
+- `cim-domain` - Domain boundaries and event definitions
+- `cim-projections` - Read model configurations
+- `cim-graph` - Graph structures and workflows
+
+### Domain Modules (Add As Needed)
+- `cim-domain-identity` - User authentication configuration
+- `cim-domain-policy` - Business rule definitions
+- `cim-domain-location` - Geographic and spatial configs
+- `cim-domain-person` - Person entity management
+- `cim-domain-organization` - Org structure configs
+
+### Infrastructure Modules (Platform Layer)
+- `cim-network` - Network topology configuration
+- `cim-flashstor` - Object storage settings
+- `cim-security` - Authorization policies
+
+**SAGE helps you select and configure the right modules:**
+```bash
+@sage What modules do I need for e-commerce?
+@sage Configure cim-domain-identity for my use case
+@sage Help me assemble modules for order processing
+```
 
 ## 🎓 Learning Path
 
@@ -496,34 +614,62 @@ See `/domains/example-business/` for a complete e-commerce domain with:
 - Inventory tracking
 - Fulfillment workflow
 
-## 🚦 Quick Start Process
+## 🚦 Quick Start Process - Domain Context First!
 
-1. **Clone CIM-Start as your project:**
+1. **Clone with YOUR domain name:**
    ```bash
-   git clone https://github.com/TheCowboyAI/cim-start.git MyCIM
-   cd MyCIM
+   git clone https://github.com/TheCowboyAI/cim-start.git restaurant-ordering
+   cd restaurant-ordering
+   # "restaurant-ordering" is now your Domain name
    ```
 
-2. **Initialize SAGE for your domain:**
+2. **Initialize SAGE and expert agents:**
    ```bash
    claude init
-   # SAGE detects "MyCIM" repo name and initializes as your domain
-   # Template status removed - SAGE becomes active for your CIM
+   # SAGE detects "restaurant-ordering" as domain name
    ```
 
-3. **Start building with SAGE:**
+3. **MANDATORY - Create Domain Context First:**
    ```bash
-   # SAGE is now domain-aware and ready to orchestrate your CIM development
-   @sage I want to build a CIM for my restaurant ordering system
-   @sage Help me convert my existing API to event-driven CIM architecture  
-   @sage My team needs to discover our complex business domain
+   # This MUST happen before ANY infrastructure!
+   @sage Initialize domain context for restaurant-ordering
+   
+   # Provide:
+   # - Purpose: "Manage restaurant orders and delivery"
+   # - People: [{"name": "Admin Name", "role": "Administrator"}]
+   # - Organizations: [{"name": "Restaurant Inc", "type": "owner"}]
+   # - Resources: {"deployment_target": "container"}
+   
+   # Creates: domains/restaurant-ordering/domain.json
    ```
 
-4. **SAGE orchestrates everything:**
-   - Domain discovery and boundary analysis
-   - Infrastructure setup and configuration  
-   - Development workflow and quality assurance
-   - Complete CIM development journey
+4. **Configure Infrastructure Based on Context:**
+   ```bash
+   # SAGE reads domain.json and configures accordingly
+   @sage Set up infrastructure for restaurant-ordering
+   
+   # Creates appropriate configuration based on deployment_target:
+   # - Local: Uses existing NATS
+   # - VM/Container: Creates Nix flake
+   # - Cloud/Metal: Configures provider resources
+   ```
+
+5. **Configure Domain and Launch:**
+   ```bash
+   # Now configure the actual domain
+   @sage Configure domain model for restaurant-ordering
+   @sage Select cim-* modules for order processing
+   
+   # Launch your configured CIM
+   make dev  # or nix run .#domain-vm for VM deployment
+   ```
+
+**What gets created:**
+   - `domains/restaurant-ordering/domain.json` - Context data (FIRST!)
+   - `domains/restaurant-ordering/*.yaml` - Domain configuration
+   - `flake.nix` - Infrastructure definition (if not local)
+   - `cim-modules.yaml` - Module assembly configuration
+   - **Context drives everything** - Infrastructure adapts to your resources
 
 ## 📝 License
 
