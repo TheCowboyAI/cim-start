@@ -1,0 +1,388 @@
+api_observation:
+  # Observation metadata
+  observed_date: "2024-11-10"
+  observed_by: "ACME Lending technical team"
+  system_name: "Equifax Credit Bureau API"
+  environment: "Sandbox"
+  base_url: "https://sandbox.equifax.com/v1"
+
+  # IMPORTANT: This is OBSERVATION ONLY - NO INTEGRATION
+  observation_only: true
+  coupling_forbidden: true
+
+  # What we're observing
+  purpose: |
+    Document Equifax API to understand:
+    - Credit score data structures
+    - Credit history patterns
+    - Terminology used in credit industry
+    - Data freshness and update patterns
+    - Prototypical "good" vs "poor" credit profiles
+
+  # Observed API endpoints
+  observed_endpoints:
+    - path: "/credit-report"
+      method: GET
+      purpose: "Retrieve complete credit report for borrower"
+
+      observed_request_schema:
+        ssn: "string (9 digits)"
+        date_of_birth: "date (YYYY-MM-DD)"
+        consent_token: "string (UUID)"
+        purpose_code: "string (e.g., 'MORTGAGE_APPLICATION')"
+
+      observed_response_schema:
+        request_id: "string (UUID)"
+        timestamp: "datetime (ISO 8601)"
+
+        credit_score:
+          score: "integer [300-850]"
+          score_type: "string ('FICO' or 'VantageScore')"
+          calculated_date: "date"
+          factors:
+            - code: "string"
+              description: "string"
+              impact: "string ('positive', 'negative', 'neutral')"
+
+        personal_information:
+          name:
+            first_name: "string"
+            last_name: "string"
+            middle_initial: "string (optional)"
+          current_address:
+            street: "string"
+            city: "string"
+            state: "string (2-letter code)"
+            zip: "string (5 or 9 digits)"
+          previous_addresses: "array (last 7 years)"
+          date_of_birth: "date"
+          ssn: "string (last 4 digits only)"
+
+        tradelines:
+          - account_number: "string (masked)"
+            creditor_name: "string"
+            account_type: "string ('revolving', 'installment', 'mortgage')"
+            open_date: "date"
+            balance: "decimal"
+            credit_limit: "decimal (for revolving accounts)"
+            payment_status: "string ('current', 'late30', 'late60', 'late90', 'default')"
+            payment_history: "array (24 months)"
+            last_payment_date: "date"
+            last_payment_amount: "decimal"
+
+        inquiries:
+          hard_inquiries:
+            - inquiry_date: "date"
+              creditor_name: "string"
+              inquiry_type: "string ('auto', 'mortgage', 'credit_card')"
+          soft_inquiries:
+            - inquiry_date: "date"
+              creditor_name: "string"
+              inquiry_type: "string"
+
+        public_records:
+          - record_type: "string ('bankruptcy', 'tax_lien', 'judgment')"
+            file_date: "date"
+            status: "string ('filed', 'discharged', 'satisfied')"
+            amount: "decimal (optional)"
+
+        collections:
+          - creditor_name: "string"
+            collection_agency: "string"
+            amount: "decimal"
+            date_opened: "date"
+            status: "string ('unpaid', 'paid', 'settled')"
+
+      observed_sample_response:
+        example_good_credit: |
+          {
+            "credit_score": {
+              "score": 780,
+              "score_type": "FICO",
+              "calculated_date": "2024-11-08",
+              "factors": [
+                {"code": "00", "description": "No negative factors", "impact": "positive"}
+              ]
+            },
+            "tradelines": [
+              {
+                "account_type": "revolving",
+                "balance": 2500,
+                "credit_limit": 10000,
+                "payment_status": "current",
+                "payment_history": ["current", "current", ... (24 months)]
+              }
+            ],
+            "inquiries": {
+              "hard_inquiries": [
+                {"inquiry_date": "2024-09-15", "creditor_name": "Auto Lender", "inquiry_type": "auto"}
+              ]
+            }
+          }
+
+        example_poor_credit: |
+          {
+            "credit_score": {
+              "score": 580,
+              "score_type": "FICO",
+              "calculated_date": "2024-11-08",
+              "factors": [
+                {"code": "01", "description": "Level of delinquency on accounts", "impact": "negative"},
+                {"code": "02", "description": "High credit utilization", "impact": "negative"}
+              ]
+            },
+            "tradelines": [
+              {
+                "account_type": "revolving",
+                "balance": 9800,
+                "credit_limit": 10000,
+                "payment_status": "late60",
+                "payment_history": ["late60", "late30", "current", ... ]
+              }
+            ],
+            "collections": [
+              {
+                "creditor_name": "Medical Provider",
+                "amount": 1200,
+                "status": "unpaid"
+              }
+            ]
+          }
+
+  # Observed patterns and behaviors
+  observed_patterns:
+    authentication:
+      - "Uses OAuth 2.0 for API authentication"
+      - "Requires consent token from borrower"
+      - "Purpose code required for compliance (FCRA)"
+
+    rate_limiting:
+      - "100 requests per minute per client"
+      - "10,000 requests per day per client"
+      - "Rate limit headers: X-RateLimit-Limit, X-RateLimit-Remaining"
+
+    data_freshness:
+      - "Credit scores updated daily at 2:00 AM EST"
+      - "Tradeline data updated weekly"
+      - "Hard inquiries appear within 24 hours"
+      - "Soft inquiries not reported to scoring models"
+
+    error_handling:
+      - "400: Invalid request (missing parameters)"
+      - "401: Unauthorized (invalid credentials)"
+      - "403: Forbidden (no consent or invalid purpose)"
+      - "404: No credit file found"
+      - "429: Rate limit exceeded"
+      - "500: Internal server error (rare)"
+
+    compliance:
+      - "FCRA-compliant adverse action notices required"
+      - "Purpose codes track permissible use"
+      - "Audit trail maintained by Equifax"
+      - "Consumer dispute process integrated"
+
+  # Observed terminology (ubiquitous language)
+  observed_terminology:
+    credit_score:
+      term: "Credit Score"
+      definition: "Numerical representation of creditworthiness [300-850]"
+      prototypes:
+        excellent: "750-850"
+        good: "700-749"
+        fair: "650-699"
+        poor: "600-649"
+        bad: "300-599"
+
+    tradeline:
+      term: "Trade Line"
+      definition: "Individual credit account (credit card, loan, mortgage)"
+      types: ["revolving", "installment", "mortgage"]
+      importance: "Payment history on tradelines = 35% of credit score"
+
+    hard_inquiry:
+      term: "Hard Inquiry"
+      definition: "Credit check that affects credit score (e.g., loan application)"
+      impact: "Each hard inquiry reduces score by 2-5 points"
+      duration: "Remains on report for 2 years, impacts score for 1 year"
+      acceptable_rate: "1-2 per year normal, 5+ per year concerning"
+
+    soft_inquiry:
+      term: "Soft Inquiry"
+      definition: "Credit check that does NOT affect credit score (e.g., pre-approval)"
+      impact: "No impact on credit score"
+      examples: ["employer checks", "pre-qualified offers", "personal credit monitoring"]
+
+    utilization:
+      term: "Credit Utilization"
+      definition: "Percentage of available credit being used"
+      calculation: "(Total Balances / Total Credit Limits) × 100"
+      prototypes:
+        excellent: "< 10%"
+        good: "10-30%"
+        fair: "30-50%"
+        poor: "50-75%"
+        bad: "> 75%"
+      importance: "30% of credit score"
+
+    payment_history:
+      term: "Payment History"
+      definition: "Record of on-time vs late payments"
+      importance: "35% of credit score (most important factor)"
+      categories: ["current", "late30", "late60", "late90", "default"]
+      impact: "Single 30-day late payment = 60-80 point drop"
+
+    credit_age:
+      term: "Credit Age"
+      definition: "Average age of all credit accounts"
+      importance: "15% of credit score"
+      prototypes:
+        excellent: "> 10 years"
+        good: "5-10 years"
+        fair: "2-5 years"
+        poor: "< 2 years"
+
+    credit_mix:
+      term: "Credit Mix"
+      definition: "Variety of credit types (revolving, installment, mortgage)"
+      importance: "10% of credit score"
+      ideal: "At least 3 different types of credit"
+
+  # Insights for CIM development
+  insights:
+    - insight: "Credit score is REFERENCED, never OWNED"
+      implication: "CIM should store score value + timestamp + bureau name, not recompute"
+      pattern: "External reference in prototypical space"
+
+    - insight: "Scores expire after 30 days"
+      implication: "CIM must track score freshness, request new score if stale"
+      pattern: "Temporal validity in aggregate"
+
+    - insight: "Multiple scoring models exist (FICO vs VantageScore)"
+      implication: "CIM should normalize or specify which model for consistency"
+      pattern: "Value object: CreditScoreReference with model + score + date"
+
+    - insight: "Payment history is most important factor"
+      implication: "CIM underwriting logic should weight payment patterns heavily"
+      pattern: "Risk calculation gives 35% weight to payment history dimension"
+
+    - insight: "Hard inquiries indicate recent credit-seeking"
+      implication: "Many recent inquiries = risk signal (possible financial distress)"
+      pattern: "Risk factor: HardInquiryCount in last 6 months"
+
+    - insight: "Credit utilization is dynamic"
+      implication: "High utilization can change quickly (pay off card)"
+      pattern: "Consider utilization trend, not just point-in-time"
+
+    - insight: "Prototypical 'good' credit profile emerges"
+      implication: "CIM can build geometric representation of creditworthiness"
+      pattern: "Conceptual space with dimensions: [score, utilization, payment_history, age, mix]"
+
+  # Prototypical space extraction
+  prototypical_space:
+    dimensions:
+      - dimension: "credit_score"
+        range: [300, 850]
+        importance_weight: 0.40
+        prototype_good: 750
+        prototype_poor: 580
+
+      - dimension: "utilization_rate"
+        range: [0, 1.0]
+        importance_weight: 0.25
+        prototype_good: 0.15
+        prototype_poor: 0.85
+
+      - dimension: "payment_history_score"
+        range: [0, 1.0]
+        importance_weight: 0.20
+        prototype_good: 0.98
+        prototype_poor: 0.60
+
+      - dimension: "credit_age_years"
+        range: [0, 40]
+        importance_weight: 0.10
+        prototype_good: 12
+        prototype_poor: 2
+
+      - dimension: "hard_inquiries_6mo"
+        range: [0, 10]
+        importance_weight: 0.05
+        prototype_good: 1
+        prototype_poor: 6
+
+    prototypes:
+      excellent_borrower:
+        position: [800, 0.10, 1.0, 15, 0]
+        category: "Prime"
+        approval_probability: 0.95
+
+      good_borrower:
+        position: [750, 0.25, 0.95, 10, 1]
+        category: "Near-Prime"
+        approval_probability: 0.80
+
+      fair_borrower:
+        position: [680, 0.45, 0.85, 5, 2]
+        category: "Subprime"
+        approval_probability: 0.40
+
+      poor_borrower:
+        position: [600, 0.80, 0.65, 2, 5]
+        category: "Deep-Subprime"
+        approval_probability: 0.10
+
+  # DDD artifact hints (for Phase 3: DISTILL)
+  ddd_hints:
+    value_objects:
+      - name: "CreditScoreReference"
+        properties: ["score", "score_type", "bureau_name", "calculated_date"]
+        invariant: "Score must be between 300-850"
+
+      - name: "CreditUtilizationRate"
+        properties: ["utilization_rate", "total_balance", "total_limit"]
+        invariant: "Rate must be between 0-1"
+
+    entities:
+      - name: "CreditProfile"
+        identity: "BorrowerId + BureauName + RetrievalDate"
+        lifecycle: "Retrieved on-demand, cached for 30 days, refreshed if stale"
+
+    aggregates:
+      - name: "RiskProfile"
+        root: "RiskProfileId"
+        entities: ["CreditProfile"]
+        value_objects: ["CreditScoreReference", "CreditUtilizationRate"]
+        invariants:
+          - "CreditScore must be < 30 days old for underwriting"
+          - "At least one CreditProfile required per borrower"
+
+    events:
+      - "CreditScoreObtained"
+      - "CreditScoreExpired"
+      - "CreditScoreRefreshRequested"
+      - "HighUtilizationDetected"
+      - "RecentDelinquencyDetected"
+
+  # What NOT to do (anti-patterns)
+  anti_patterns:
+    - pattern: "Integrate with Equifax API directly from domain services"
+      why_bad: "Tight coupling, can't test without API, bureau changes break domain"
+      correct_approach: "Reference credit scores as external data, don't couple to API"
+
+    - pattern: "Store raw credit report data in domain"
+      why_bad: "FCRA compliance issues, data duplication, staleness problems"
+      correct_approach: "Store reference (CID/IPLD) to credit report, not full data"
+
+    - pattern: "Recompute credit scores internally"
+      why_bad: "Illegal (FCRA), inaccurate, not authoritative"
+      correct_approach: "Reference bureau-provided scores as authoritative"
+
+    - pattern: "Assume credit data never changes"
+      why_bad: "Credit data updates weekly, scores expire"
+      correct_approach: "Track data freshness, refresh stale data"
+
+# Notes for Phase 2: REFINE
+# - This observation will feed into Iteration 1 (extract nouns)
+# - Terminology section provides ubiquitous language seeds
+# - Prototypical space guides conceptual space creation
+# - DDD hints will validate against Phase 3 artifacts

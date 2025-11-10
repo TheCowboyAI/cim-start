@@ -1,0 +1,276 @@
+purpose:
+  # Domain name (matches cloned repository name)
+  name: "mortgage-underwriting"
+
+  # Clear description of what this CIM does
+  description: |
+    Automate mortgage underwriting decisions by observing loan applications,
+    credit data, and property valuations, then distilling prototypical
+    underwriting patterns for consistent, rapid decision-making.
+
+  # Quantified problem statement
+  problem_statement: |
+    ACME Lending's manual underwriting process is:
+    - SLOW: 5-7 days per application (industry standard: 3-4 days)
+    - INCONSISTENT: 20% variance in decisions between underwriters
+    - NON-LEARNING: Same mistakes repeated, no pattern improvement
+    - HIGH COST: $500-800 per underwriting decision
+    - LIMITED SCALE: Maximum 50 applications/month per underwriter
+
+    This creates:
+    - Customer frustration (long wait times)
+    - Competitive disadvantage (slower than fintech competitors)
+    - Regulatory risk (inconsistent decisions may violate Fair Lending)
+    - High operational costs (need more underwriters to scale)
+
+  # Measurable success criteria
+  success_criteria:
+    - metric: "Decision Time"
+      current: "5-7 days"
+      target: "<24 hours"
+      measurement: "Time from application submission to automated decision"
+      critical: true
+
+    - metric: "Consistency"
+      current: "20% variance"
+      target: "<5% variance"
+      measurement: "Decision agreement rate between CIM and senior underwriters"
+      critical: true
+
+    - metric: "Throughput"
+      current: "50 applications/month"
+      target: "500+ applications/month"
+      measurement: "Applications processed per month"
+      critical: false  # Can scale hardware if needed
+
+    - metric: "Learning"
+      current: "None (static rules)"
+      target: "Continuous improvement"
+      measurement: "Monthly reduction in false positive/negative rates"
+      critical: true
+
+    - metric: "Cost per Decision"
+      current: "$500-800"
+      target: "<$100"
+      measurement: "Total operational cost / decisions made"
+      critical: false
+
+  # Domain boundaries - what's in and out of scope
+  scope:
+    in_scope:
+      - "Loan application data validation"
+      - "Credit risk assessment from bureau data"
+      - "Property valuation analysis from appraisals"
+      - "Automated underwriting decision recommendation"
+      - "Risk scoring and classification"
+      - "Decision explanation and audit trail"
+      - "Pattern learning from historical decisions"
+
+    out_of_scope:
+      - "Loan origination (separate system)"
+      - "Loan servicing (separate system)"
+      - "Payment processing (separate system)"
+      - "Customer relationship management"
+      - "Marketing and lead generation"
+      - "Closing and title services"
+      - "Secondary market sales"
+
+  # Bounded contexts anticipated (will refine in Phase 2)
+  bounded_contexts_anticipated:
+    - name: "Application"
+      responsibility: "Capture and validate loan application data"
+      why: "Entry point for all underwriting decisions"
+
+    - name: "Risk-Assessment"
+      responsibility: "Analyze credit, property, and financial risk factors"
+      why: "Specialized risk calculations independent of underwriting logic"
+
+    - name: "Underwriting"
+      responsibility: "Assess risk and generate decision recommendations"
+      why: "Core decision-making logic applying guidelines to risk factors"
+
+  # External systems to observe (NEVER couple to!)
+  external_systems:
+    - name: "Equifax Credit Bureau API"
+      purpose: "Credit scores, credit history, trade lines"
+      observation_method: "API responses (schema + sample data)"
+      observation_only: true
+      coupling_forbidden: true
+      reason: "We distill credit patterns, don't integrate with bureau"
+      update_frequency: "Daily (scores updated 2 AM EST)"
+      data_freshness_requirement: "Credit score < 30 days old"
+
+    - name: "Property Valuation System (AVMs)"
+      purpose: "Automated property valuations, comparables, market trends"
+      observation_method: "API responses (schema + sample data)"
+      observation_only: true
+      coupling_forbidden: true
+      reason: "Reference valuations, don't own property data"
+      update_frequency: "On-demand"
+      data_freshness_requirement: "Appraisal < 120 days old"
+
+    - name: "Legacy Underwriting Database"
+      purpose: "Historical decisions for pattern learning"
+      observation_method: "Database schema + sample queries"
+      observation_only: true
+      coupling_forbidden: true
+      reason: "Learn from history, don't depend on legacy system"
+      historical_data: "10 years of decisions (50,000+ applications)"
+      pattern_extraction: "Success/failure rates by borrower profile"
+
+    - name: "Income Verification System"
+      purpose: "Employment verification, income documentation"
+      observation_method: "JSON payloads + schemas"
+      observation_only: true
+      coupling_forbidden: true
+      reason: "Reference income data, don't store personal financial info"
+      update_frequency: "On-demand"
+      data_freshness_requirement: "Income verification < 60 days old"
+
+    - name: "Fannie Mae Selling Guide"
+      purpose: "Underwriting guidelines and requirements"
+      observation_method: "Documentation analysis"
+      observation_only: true
+      coupling_forbidden: true
+      reason: "Distill rules and patterns, not integrate document system"
+      version: "2024.1"
+      update_frequency: "Quarterly"
+
+  # Resources available for deployment
+  resources:
+    current_environment: "On-premises office"
+
+    available_hardware:
+      - type: "Mac Studio M4 Ultra"
+        quantity: 1
+        specs: "512GB RAM, 2TB SSD, 10Gb Ethernet"
+        location: "ACME Lending HQ - IT Room"
+        purpose: "Single leaf node deployment"
+
+      - type: "Synology NAS"
+        quantity: 1
+        specs: "96TB RAID, 10Gb Ethernet"
+        location: "ACME Lending HQ - IT Room"
+        purpose: "Backup storage"
+
+    network:
+      - vlan: "10.0.50.0/24 (Production Services)"
+        gateway: "10.0.50.1"
+        firewall: "UniFi Dream Machine Pro"
+
+    deployment_preference: "nix-darwin"  # macOS with Nix
+    scaling_plan: "Start with leaf node, add cluster if volume exceeds 1,000 apps/month"
+
+  # People involved
+  stakeholders:
+    - role: "Product Owner"
+      name: "Sarah Chen"
+      email: "sarah.chen@acmelending.com"
+      responsibility: "Business requirements and success criteria"
+      availability: "20 hours/week"
+
+    - role: "Domain Expert"
+      name: "Michael Torres"
+      email: "michael.torres@acmelending.com"
+      responsibility: "Underwriting expertise and pattern validation"
+      background: "15 years as senior underwriter"
+      availability: "10 hours/week"
+
+    - role: "System Administrator"
+      name: "Alex Kumar"
+      email: "alex.kumar@acmelending.com"
+      responsibility: "Infrastructure deployment and operations"
+      background: "5 years DevOps, Nix expert"
+      availability: "30 hours/week"
+
+  # Timeline expectations
+  timeline:
+    phase_1_observation: "2 weeks"
+    phase_2_refinement: "2 weeks"
+    phase_3_distillation: "2 weeks"
+    phase_4_testing: "2 weeks"
+    phase_5_infrastructure: "1 week"
+    phase_6_deployment: "1 week"
+    phase_7_validation: "1 week"
+    total_estimated: "11 weeks"
+
+    milestones:
+      - week: 2
+        milestone: "All external systems observed"
+      - week: 4
+        milestone: "Domain model refined (n=6 complete)"
+      - week: 6
+        milestone: "DDD artifacts generated (T=3 complete)"
+      - week: 8
+        milestone: "Local testing complete"
+      - week: 9
+        milestone: "Mac Studio deployed"
+      - week: 10
+        milestone: "Services deployed"
+      - week: 11
+        milestone: "Production validated"
+
+  # Compliance and regulatory considerations
+  compliance:
+    regulations:
+      - name: "Fair Lending Act"
+        requirement: "Non-discriminatory decisions"
+        implementation: "No protected class information in decision logic"
+        audit_requirement: "All decisions explainable and auditable"
+
+      - name: "ECOA (Equal Credit Opportunity Act)"
+        requirement: "Equal credit access"
+        implementation: "Consistent decision criteria applied to all applicants"
+        audit_requirement: "Adverse action notices with specific reasons"
+
+      - name: "FCRA (Fair Credit Reporting Act)"
+        requirement: "Credit data handling"
+        implementation: "Reference credit scores, don't store raw credit data"
+        audit_requirement: "Credit score usage documented"
+
+      - name: "GDPR (for EU customers)"
+        requirement: "Data privacy and right to be forgotten"
+        implementation: "Event sourcing with data minimization"
+        audit_requirement: "Complete audit trail of data access"
+
+      - name: "SOC 2 Type II"
+        requirement: "Data security and operational controls"
+        implementation: "Encrypted event streams, access controls"
+        audit_requirement: "Annual independent audit"
+
+    audit_requirements:
+      - "All decisions must be explainable with specific reasons"
+      - "Complete audit trail of data sources and inputs"
+      - "No protected class information (race, religion, etc.) in decision logic"
+      - "Regular testing for disparate impact"
+      - "Adverse action notices generated automatically with reasons"
+
+  # Risk mitigation
+  risks:
+    - risk: "Domain model doesn't match business reality"
+      mitigation: "Weekly reviews with Michael Torres (domain expert)"
+      likelihood: "Medium"
+      impact: "High"
+
+    - risk: "External systems change schemas"
+      mitigation: "Observation-only approach, no tight coupling"
+      likelihood: "Medium"
+      impact: "Low"
+
+    - risk: "Performance insufficient"
+      mitigation: "Start with Mac Studio (proven capacity), scale if needed"
+      likelihood: "Low"
+      impact: "Medium"
+
+    - risk: "Regulatory compliance issues"
+      mitigation: "Early legal review, explainability built-in"
+      likelihood: "Low"
+      impact: "Very High"
+
+  # Version and metadata
+  version: "1.0.0"
+  created: "2024-11-10"
+  created_by: "SAGE + ACME Lending team"
+  last_updated: "2024-11-10"
+  status: "Approved"
+  approved_by: "Sarah Chen (Product Owner)"
