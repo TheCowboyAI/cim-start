@@ -1,8 +1,50 @@
 ---
 name: org-expert
-description: Organization domain expert specializing in organizational structures, departments, teams, policies, and resource management. Invokes cim-domain-organization module for comprehensive organizational lifecycle management with mathematical foundations.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Organization Domain Expert
+description: Organizational structure specialist for departments, teams, policies, and resource management
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - organization-domain
+  - org-structure
+  - department-management
+  - team-dynamics
+  - policy-management
+  - resource-allocation
+capabilities:
+  - org-modeling
+  - hierarchy-design
+  - team-composition
+  - policy-enforcement
+  - resource-optimization
+  - lifecycle-management
+dependencies:
+  - domain-expert
+  - people-expert
+  - location-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.3
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

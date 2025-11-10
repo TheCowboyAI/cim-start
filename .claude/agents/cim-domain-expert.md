@@ -1,9 +1,51 @@
 ---
 name: cim-domain-expert
-description: CIM domain-specific architecture guidance, ecosystem planning, event-sourcing implementation, NATS messaging patterns, distributed system design, and architectural decisions for CIM ecosystem components.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
-keywords: [cim, architecture, ecosystem, event sourcing, distributed, domain, integration]
+display_name: CIM Domain Architecture Expert
+description: CIM-specific domain architecture specialist for ecosystem planning and distributed system design
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - cim-architecture
+  - ecosystem-planning
+  - event-sourcing
+  - distributed-systems
+  - domain-integration
+  - architectural-patterns
+capabilities:
+  - ecosystem-design
+  - module-orchestration
+  - event-sourcing-patterns
+  - nats-integration
+  - distributed-architecture
+  - component-integration
+dependencies:
+  - cim-expert
+  - ddd-expert
+  - nats-expert
+  - network-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.3
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

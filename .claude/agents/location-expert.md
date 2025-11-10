@@ -1,8 +1,49 @@
 ---
 name: location-expert
-description: Location domain expert specializing in physical, virtual, logical, and hybrid locations. Invokes cim-domain-location module for comprehensive location management including addresses, coordinates, hierarchical relationships, and URL-based virtual locations.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Location Domain Expert
+description: Location specialist for physical, virtual, logical, and hybrid location management
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - location-domain
+  - physical-locations
+  - virtual-locations
+  - coordinates
+  - hierarchical-locations
+  - url-mapping
+capabilities:
+  - location-modeling
+  - coordinate-systems
+  - hierarchy-management
+  - virtual-mapping
+  - hybrid-locations
+  - spatial-analysis
+dependencies:
+  - domain-expert
+  - graph-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.3
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

@@ -1,8 +1,48 @@
 ---
 name: git-expert
-description: Git and GitHub expert specializing in repository management, branching strategies, GitHub Actions, and CIM repository preparation. PROACTIVELY guides users through git workflows, GitHub integrations, and enterprise git practices.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Git Version Control Expert
+description: Git and GitHub specialist for repository management, branching strategies, and collaborative workflows
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - git
+  - github
+  - version-control
+  - branching-strategies
+  - github-actions
+  - collaborative-workflows
+capabilities:
+  - repository-management
+  - branch-strategies
+  - merge-conflict-resolution
+  - workflow-automation
+  - commit-best-practices
+  - github-integration
+dependencies:
+  - nix-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.2
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->
@@ -524,6 +564,150 @@ Brief description of changes, focusing on domain events and architectural impact
 
 ## Deployment Notes
 [Any special deployment considerations]
+```
+
+## Git Repository as Graph Structure
+
+### Understanding Git's Native Graph Architecture
+Git repositories ARE graphs - specifically Directed Acyclic Graphs (DAGs) with content-addressable storage. Every git repository is a complete Merkle tree structure that can be traversed without ever searching through files.
+
+#### Git Object Model
+```bash
+# Git has 4 object types that form the graph:
+# 1. Commits - Form a DAG, point to tree objects and parent commits
+# 2. Trees - Represent directories, contain blobs and other trees
+# 3. Blobs - Actual file contents
+# 4. Tags - References pointing to commits
+
+# Examine git's object database directly
+git cat-file -p HEAD                    # Show commit object
+git cat-file -p HEAD^{tree}            # Show root tree object
+git cat-file -p <tree-hash>            # Show specific tree contents
+git cat-file -p <blob-hash>            # Show file contents
+```
+
+#### Traversing the Git Graph
+```bash
+# List ALL objects in the repository graph
+git rev-list --objects --all
+
+# Show the complete tree structure from HEAD
+git ls-tree -r HEAD
+
+# Get structured output with metadata
+git ls-tree -r HEAD --format='%(objectmode) %(objecttype) %(objectname) %(objectsize:padded) %(path)'
+
+# Count objects by type in the graph
+git count-objects -v
+
+# Show object relationships
+git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit
+```
+
+#### Querying the Git Graph
+```bash
+# Find all files without searching - use git's index
+git ls-files                            # List all tracked files
+git ls-files -s                         # Show with staging info
+git ls-files -o                         # Show untracked files
+
+# Query specific paths in the graph
+git ls-tree HEAD:src/                   # Show specific directory
+git ls-tree -r HEAD --name-only | grep ".rs$"  # Find by extension
+
+# Get file count by directory from git graph
+git ls-tree -r --name-only HEAD | awk -F/ '{print $1}' | sort | uniq -c
+
+# Analyze repository structure as a graph
+git ls-tree -r -d HEAD | awk '{print $4}' | sort -u  # All directories
+```
+
+#### Git Graph Analysis
+```bash
+# Analyze commit graph structure
+git log --graph --oneline --all         # Visual commit graph
+git log --pretty=format:'%h %p'         # Parent relationships
+
+# Find merge commits in the graph
+git log --merges --oneline
+
+# Find branch points in the graph
+git log --oneline --graph --first-parent
+
+# Trace object dependencies
+git rev-list --objects HEAD | head -20  # Objects reachable from HEAD
+
+# Show git database statistics
+git gc --auto
+git count-objects -vH                   # Human-readable sizes
+```
+
+#### Content-Addressable Storage Benefits
+```bash
+# Git uses SHA-1 hashes as content addresses
+# This means identical content has the same hash across all repositories
+
+# Find duplicate files using git's content addressing
+git ls-tree -r HEAD | awk '{print $3}' | sort | uniq -d
+
+# Verify repository integrity using hashes
+git fsck --full
+
+# Show object relationships by hash
+git cat-file -p <commit-hash>^{tree}    # Tree of a commit
+git ls-tree <tree-hash>                 # Contents of a tree
+```
+
+#### Efficient Graph Traversal Patterns
+```bash
+# Use git's graph instead of filesystem searches
+# ❌ BAD: find . -name "*.rs" | xargs grep "pattern"
+# ✅ GOOD: git grep "pattern" -- "*.rs"
+
+# ❌ BAD: ls -la src/ | grep ".rs"
+# ✅ GOOD: git ls-tree HEAD:src/ | grep ".rs"
+
+# ❌ BAD: cat file.txt | grep "something"
+# ✅ GOOD: git show HEAD:file.txt | grep "something"
+```
+
+#### Git Graph for Repository Mapping
+```bash
+# Create a complete map of the repository structure
+git ls-tree -r HEAD --format='%(path)' > repo-map.txt
+
+# Generate directory structure from git graph
+git ls-tree -r -d HEAD | awk '{print $4}' | sed 's|[^/]*/| |g' | sort -u
+
+# Count files by type using git graph
+git ls-tree -r HEAD --name-only | sed 's/.*\.//' | sort | uniq -c | sort -rn
+
+# Analyze code distribution
+git ls-tree -r HEAD --format='%(path)' | \
+  awk -F/ '{if (NF>1) print $1"/"$2; else print $1}' | \
+  sort | uniq -c | sort -rn
+```
+
+#### Performance Advantages of Git Graph
+1. **No Filesystem Access**: Git objects are compressed and indexed
+2. **Content Deduplication**: Identical content stored once
+3. **Delta Compression**: Similar objects stored as deltas
+4. **Packfile Optimization**: Objects packed for efficient access
+5. **Index Caching**: Git maintains an index of the working tree
+
+#### Git Graph Best Practices
+```bash
+# Always prefer git commands over filesystem operations
+git ls-tree                   # Instead of ls
+git grep                      # Instead of grep -r
+git show                      # Instead of cat
+git diff                      # Instead of diff
+git log --follow              # Instead of file history scripts
+
+# Use git's graph for analysis
+git shortlog -sn              # Contributor statistics
+git log --format=format: --name-only | sort -u  # All files ever
+git log --all --source --graph  # Complete repository visualization
 ```
 
 ## Advanced Git Techniques for CIM

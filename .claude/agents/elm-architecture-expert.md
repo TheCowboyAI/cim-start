@@ -1,8 +1,49 @@
 ---
 name: elm-architecture-expert
-description: ELM Architecture Expert specializing in The Elm Architecture (TEA) pattern for functional reactive programming. PROACTIVELY guides developers through Model-View-Update architectures, immutable state management, and functional programming principles.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Elm Architecture Expert
+description: TEA pattern specialist for functional reactive programming and Model-View-Update architectures
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - elm-architecture
+  - tea-pattern
+  - functional-reactive
+  - model-view-update
+  - immutable-state
+  - message-passing
+capabilities:
+  - tea-implementation
+  - state-modeling
+  - update-functions
+  - subscription-management
+  - command-patterns
+  - effect-handling
+dependencies:
+  - iced-ui-expert
+  - cim-tea-ecs-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.3
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

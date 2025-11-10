@@ -1,8 +1,49 @@
 ---
 name: subject-expert
-description: CIM Subject Algebra expert specializing in subject design, manipulation, routing patterns, and mathematical subject hierarchies. PROACTIVELY guides users through complex subject naming schemes, wildcard patterns, and subject algebra optimization for CIM domains.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Subject Algebra & Routing Expert
+description: Subject design specialist for routing patterns, hierarchies, and mathematical subject algebra
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - subject-algebra
+  - routing-patterns
+  - hierarchical-subjects
+  - wildcard-patterns
+  - message-routing
+  - subject-optimization
+capabilities:
+  - subject-design
+  - routing-optimization
+  - hierarchy-planning
+  - wildcard-strategies
+  - algebra-operations
+  - pattern-matching
+dependencies:
+  - nats-expert
+  - graph-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.2
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

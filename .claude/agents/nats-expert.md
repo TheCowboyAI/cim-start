@@ -1,8 +1,51 @@
 ---
 name: nats-expert
-description: NATS infrastructure expert specializing in Message Bus, IPLD Object Store, KV Store, channel partitioning, and NSC security. PROACTIVELY guides users through NATS JetStream configuration, subject algebra, stream design, and security implementation for CIM domains.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: NATS Messaging Infrastructure Expert
+description: NATS and JetStream specialist for event-driven architectures, distributed messaging, and security
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - nats
+  - jetstream
+  - messaging
+  - ipld-store
+  - kv-store
+  - nsc-security
+capabilities:
+  - jetstream-configuration
+  - subject-algebra
+  - stream-design
+  - security-implementation
+  - clustering-setup
+  - partitioning-strategies
+dependencies:
+  - network-expert
+  - subject-expert
+  - git-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.2
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
+  - mcp__nats__*
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

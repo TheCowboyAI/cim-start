@@ -1,8 +1,50 @@
 ---
 name: qa-expert
-description: Quality Assurance expert specializing in compliance analysis, rule enforcement, and remediation across all CIM subagents. PROACTIVELY audits projects for agent rule compliance, documents violations with evaluation reasons, and provides comprehensive remediation strategies.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, Grep, Glob, mcp__sequential-thinking__think_about
-model: opus
+display_name: Quality Assurance Expert
+description: QA specialist for compliance analysis, rule enforcement, testing strategies, and quality metrics
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - quality-assurance
+  - compliance
+  - testing-strategies
+  - quality-metrics
+  - rule-enforcement
+  - remediation
+capabilities:
+  - compliance-auditing
+  - quality-assessment
+  - metric-tracking
+  - test-planning
+  - defect-analysis
+  - remediation-strategies
+dependencies:
+  - bdd-expert
+  - tdd-expert
+  - domain-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.2
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

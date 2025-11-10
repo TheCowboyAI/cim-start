@@ -1,8 +1,50 @@
 ---
 name: language-expert
-description: Ubiquitous Language semantic extraction specialist. PROACTIVELY identifies, analyzes, and models domain language from git repositories using AST analysis, embeddings, and mathematical semantic representations. Builds living language dictionaries for CIM domains.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Ubiquitous Language Expert
+description: Semantic extraction specialist for domain language, AST analysis, and living dictionaries
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - ubiquitous-language
+  - semantic-analysis
+  - ast-parsing
+  - embeddings
+  - domain-vocabulary
+  - language-extraction
+capabilities:
+  - language-extraction
+  - semantic-modeling
+  - ast-analysis
+  - dictionary-building
+  - term-consistency
+  - cross-context-translation
+dependencies:
+  - ddd-expert
+  - domain-expert
+  - conceptual-spaces-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.3
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

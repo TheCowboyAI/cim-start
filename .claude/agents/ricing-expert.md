@@ -1,8 +1,49 @@
 ---
 name: ricing-expert
-description: NixOS ricing and desktop aesthetics expert specializing in Tufte-inspired information design, Wayland/Hyprland configuration, and beautiful functional desktop environments. Creates mathematically precise visual systems through declarative configuration.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Desktop Aesthetics & Ricing Expert
+description: NixOS desktop customization specialist for Tufte-inspired design and beautiful functional environments
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - nixos-ricing
+  - desktop-aesthetics
+  - tufte-design
+  - wayland-hyprland
+  - visual-systems
+  - declarative-theming
+capabilities:
+  - aesthetic-design
+  - color-theory
+  - typography-selection
+  - layout-optimization
+  - theme-creation
+  - configuration-management
+dependencies:
+  - nix-expert
+  - iced-ui-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.4
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

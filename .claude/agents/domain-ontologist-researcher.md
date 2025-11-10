@@ -1,8 +1,50 @@
 ---
 name: domain-ontologist-researcher
-description: Use this agent when you need specialized research and analysis of domain-specific ontological aspects within CIM architectures. This includes researching industry standards, compliance requirements, regulatory frameworks, conceptual relationships, domain boundaries, and event-driven ontological patterns. Examples: <example>Context: User is developing a healthcare CIM system and needs to understand HIPAA compliance requirements for their domain model. user: 'I need to understand how HIPAA requirements should be reflected in our patient data domain model for our CIM system' assistant: 'I'll use the domain-ontologist-researcher agent to conduct comprehensive research on HIPAA compliance requirements and their ontological implications for healthcare domain modeling.'</example> <example>Context: User is working on financial services domain and needs to integrate multiple regulatory frameworks. user: 'We need to harmonize PCI DSS and DORA requirements in our payment processing domain ontology' assistant: 'Let me engage the domain-ontologist-researcher agent to analyze both regulatory frameworks and provide ontological patterns for harmonized compliance modeling.'</example> <example>Context: User is designing cross-domain integration patterns. user: 'How should we model the relationships between our manufacturing and supply chain domains while maintaining regulatory compliance?' assistant: 'I'll use the domain-ontologist-researcher agent to research cross-domain integration patterns and compliance requirements for manufacturing-supply chain ontological modeling.'</example>
-model: opus
-color: purple
+display_name: Domain Ontology Research Expert
+description: Ontological research specialist for industry standards, compliance, regulatory frameworks, and knowledge graphs
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - ontology
+  - knowledge-graphs
+  - compliance-research
+  - regulatory-frameworks
+  - industry-standards
+  - semantic-web
+capabilities:
+  - ontology-research
+  - compliance-analysis
+  - knowledge-graph-construction
+  - semantic-modeling
+  - regulatory-mapping
+  - cross-domain-integration
+dependencies:
+  - domain-expert
+  - conceptual-spaces-expert
+  - language-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.4
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

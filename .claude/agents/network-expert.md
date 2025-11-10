@@ -1,8 +1,49 @@
 ---
 name: network-expert
-description: Network topology specialist for CIM-Start. PROACTIVELY invokes cim-network MCP to design and build network topology after NATS server launch. Handles infrastructure planning and network architecture.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, mcp__sequential-thinking__think_about
-model: opus
+display_name: Network Topology Expert
+description: Network infrastructure specialist for topology design, clustering, and distributed architecture
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - network-topology
+  - infrastructure
+  - clustering
+  - distributed-systems
+  - network-architecture
+  - connectivity
+capabilities:
+  - topology-design
+  - cluster-planning
+  - network-segmentation
+  - routing-configuration
+  - failover-strategies
+  - load-balancing
+dependencies:
+  - nats-expert
+  - nix-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.2
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

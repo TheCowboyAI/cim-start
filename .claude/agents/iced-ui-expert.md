@@ -1,9 +1,49 @@
 ---
 name: iced-ui-expert
-description: Iced UI Development Expert specializing in modern Rust-based GUI applications using the Iced framework. PROACTIVELY guides developers through reactive UI development, widget composition, and cross-platform application architecture.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
-keywords: [iced, gui, ui, rust, desktop, widget, reactive, application]
+display_name: Iced UI Framework Expert
+description: Rust GUI specialist for Iced framework, reactive UI patterns, and cross-platform applications
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - iced-framework
+  - rust-gui
+  - reactive-ui
+  - widget-composition
+  - cross-platform
+  - desktop-applications
+capabilities:
+  - widget-development
+  - reactive-patterns
+  - state-management
+  - layout-design
+  - event-handling
+  - custom-rendering
+dependencies:
+  - elm-architecture-expert
+  - cim-tea-ecs-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.3
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

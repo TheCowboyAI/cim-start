@@ -1,8 +1,50 @@
 ---
 name: people-expert
-description: Person domain expert specializing in comprehensive person profile management, identity verification, employment lifecycle, skills tracking, and professional networks. Invokes cim-domain-person module for composition-based person management with strong privacy and compliance features.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Person Domain Expert
+description: Person profile specialist for identity, employment, skills, and professional network management
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - person-domain
+  - identity-management
+  - employment-lifecycle
+  - skills-tracking
+  - professional-networks
+  - privacy-compliance
+capabilities:
+  - profile-modeling
+  - identity-verification
+  - employment-tracking
+  - skills-assessment
+  - network-analysis
+  - privacy-protection
+dependencies:
+  - domain-expert
+  - org-expert
+  - location-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.3
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->

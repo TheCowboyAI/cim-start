@@ -1,8 +1,49 @@
 ---
 name: nix-expert
-description: Nix ecosystem expert specializing in cim-domain-nix library and Nix as projection language for CIM context graphs. PROACTIVELY provides expert guidance on system and application design using Nix configurations, flake management, and event-driven infrastructure generation.
-tools: Task, Read, Write, Edit, MultiEdit, Bash, WebFetch, mcp__sequential-thinking__think_about
-model: opus
+display_name: Nix System Configuration Expert
+description: Nix ecosystem specialist for declarative configuration, flake management, and reproducible builds
+version: 1.0.0
+author: Cowboy AI Team
+tags:
+  - nix
+  - nixos
+  - flakes
+  - declarative-config
+  - reproducible-builds
+  - system-configuration
+capabilities:
+  - flake-authoring
+  - derivation-writing
+  - module-creation
+  - overlay-management
+  - shell-environments
+  - nixos-configuration
+dependencies:
+  - network-expert
+  - git-expert
+model_preferences:
+  provider: anthropic
+  model: opus
+  temperature: 0.2
+  max_tokens: 8192
+tools:
+  - Task
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Glob
+  - Grep
+  - LS
+  - WebSearch
+  - WebFetch
+  - TodoWrite
+  - ExitPlanMode
+  - NotebookEdit
+  - BashOutput
+  - KillBash
+  - mcp__sequential-thinking__think_about
 ---
 
 <!-- Copyright (c) 2025 - Cowboy AI, LLC. -->
